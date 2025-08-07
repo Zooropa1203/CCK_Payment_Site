@@ -1,7 +1,7 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
-import { db } from '../database/init.ts';
-import { authenticateToken } from '../middleware/auth.ts';
+import { db } from '../database/init';
+import { authenticateToken } from '../middleware/auth';
 
 const router = express.Router();
 

@@ -4,16 +4,12 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
-import authRoutes from './routes/auth.ts';
-import competitionRoutes from './routes/competitions.ts';
-import userRoutes from './routes/users.ts';
-import paymentRoutes from './routes/payments.ts';
-import { initDatabase } from './database/init.ts';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import authRoutes from './routes/auth';
+import competitionRoutes from './routes/competitions';
+import userRoutes from './routes/users';
+import paymentRoutes from './routes/payments';
+import { initDatabase } from './database/init';
 
 const app = express();
 const PORT = process.env.PORT || 3001;

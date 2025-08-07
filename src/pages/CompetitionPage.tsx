@@ -1,14 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { 
-  CalendarIcon, 
-  MapPinIcon, 
-  UsersIcon, 
-  CurrencyYenIcon,
-  ClockIcon,
-  UserGroupIcon
-} from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
@@ -157,12 +149,11 @@ export default function CompetitionPage() {
       <div className="border-b border-gray-200 dark:border-gray-700">
         <nav className="flex space-x-8">
           {[
-            { id: 'general', label: '일반', icon: CalendarIcon },
-            { id: 'schedule', label: '일정', icon: ClockIcon },
-            { id: 'participants', label: '참가자 명단', icon: UsersIcon },
-            { id: 'waitlist', label: '대기자 명단', icon: UserGroupIcon }
+            { id: 'general', label: '일반' },
+            { id: 'schedule', label: '일정' },
+            { id: 'participants', label: '참가자 명단' },
+            { id: 'waitlist', label: '대기자 명단' }
           ].map((tab) => {
-            const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
@@ -173,7 +164,6 @@ export default function CompetitionPage() {
                     : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
                 }`}
               >
-                <Icon className="w-5 h-5" />
                 <span>{tab.label}</span>
                 {tab.id === 'participants' && (
                   <span className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-2 py-1 rounded-full text-xs">
@@ -203,7 +193,6 @@ export default function CompetitionPage() {
               
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <MapPinIcon className="w-5 h-5 text-gray-500 mt-0.5" />
                   <div>
                     <p className="font-medium text-gray-900 dark:text-gray-100">
                       {competition.location}
@@ -215,21 +204,18 @@ export default function CompetitionPage() {
                 </div>
 
                 <div className="flex items-center space-x-3">
-                  <CalendarIcon className="w-5 h-5 text-gray-500" />
                   <span className="text-gray-900 dark:text-gray-100">
                     {format(new Date(competition.date), 'yyyy년 M월 d일 (EEEE)', { locale: ko })}
                   </span>
                 </div>
 
                 <div className="flex items-center space-x-3">
-                  <UsersIcon className="w-5 h-5 text-gray-500" />
                   <span className="text-gray-900 dark:text-gray-100">
                     정원 {competition.max_participants}명
                   </span>
                 </div>
 
                 <div className="flex items-center space-x-3">
-                  <CurrencyYenIcon className="w-5 h-5 text-gray-500" />
                   <span className="text-gray-900 dark:text-gray-100">
                     참가비 {competition.entry_fee.toLocaleString()}원
                   </span>

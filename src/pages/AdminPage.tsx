@@ -1,13 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { 
-  PlusIcon, 
-  PencilIcon, 
-  TrashIcon,
-  UserIcon,
-  CalendarIcon,
-  UsersIcon
-} from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
@@ -107,7 +99,12 @@ export default function AdminPage() {
   const handleCreateCompetition = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('Form submission triggered');
+    console.log('Competition form data:', competitionForm);
+    console.log('Token:', token);
+    
     try {
+      console.log('Sending request to /api/competitions');
       const response = await fetch('/api/competitions', {
         method: 'POST',
         headers: {
@@ -117,7 +114,11 @@ export default function AdminPage() {
         body: JSON.stringify(competitionForm)
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
+
       if (response.ok) {
+        console.log('Competition created successfully');
         setShowCreateForm(false);
         setCompetitionForm({
           name: '',
@@ -133,7 +134,8 @@ export default function AdminPage() {
         });
         fetchCompetitions();
       } else {
-        console.error('Failed to create competition');
+        const errorData = await response.text();
+        console.error('Failed to create competition:', response.status, errorData);
       }
     } catch (error) {
       console.error('Error creating competition:', error);
@@ -181,6 +183,7 @@ export default function AdminPage() {
   };
 
   const handleEventToggle = (event: string) => {
+    console.log('Event toggle clicked:', event, 'Current events:', competitionForm.events);
     setCompetitionForm(prev => ({
       ...prev,
       events: prev.events.includes(event)
@@ -253,7 +256,6 @@ export default function AdminPage() {
                 : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
             }`}
           >
-            <CalendarIcon className="w-5 h-5" />
             <span>대회 관리</span>
           </button>
           
@@ -266,7 +268,6 @@ export default function AdminPage() {
                   : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
               }`}
             >
-              <UsersIcon className="w-5 h-5" />
               <span>회원 관리</span>
             </button>
           )}
@@ -285,7 +286,6 @@ export default function AdminPage() {
               onClick={() => setShowCreateForm(true)}
               className="btn-primary flex items-center space-x-2"
             >
-              <PlusIcon className="w-5 h-5" />
               <span>새 대회 만들기</span>
             </button>
           </div>
@@ -423,7 +423,7 @@ export default function AdminPage() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                        대회 종목 선택 *
+                        대회 종목 선택 * ({competitionForm.events.length}개 선택됨)
                       </label>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-40 overflow-y-auto">
                         {availableEvents.map((event) => (
@@ -431,11 +431,16 @@ export default function AdminPage() {
                             key={event}
                             type="button"
                             onClick={() => handleEventToggle(event)}
-                            className={`p-2 text-sm rounded border ${
+                            className={`p-2 text-sm rounded border transition-colors ${
                               competitionForm.events.includes(event)
-                                ? 'border-primary-500 bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300'
-                                : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+                                ? ''
+                                : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
                             }`}
+                            style={competitionForm.events.includes(event) ? {
+                              backgroundColor: 'rgb(10, 10, 233)',
+                              borderColor: 'rgb(10, 10, 233)',
+                              color: 'white'
+                            } : {}}
                           >
                             {event}
                           </button>
@@ -506,14 +511,14 @@ export default function AdminPage() {
                         <td className="py-4 px-4">
                           <div className="flex space-x-2">
                             <button className="p-1 text-gray-600 hover:text-primary-600">
-                              <PencilIcon className="w-4 h-4" />
+                              편집
                             </button>
                             {user.role === 'administrator' && (
                               <button 
                                 onClick={() => handleDeleteCompetition(competition.id)}
                                 className="p-1 text-gray-600 hover:text-red-600"
                               >
-                                <TrashIcon className="w-4 h-4" />
+                                삭제
                               </button>
                             )}
                           </div>
@@ -558,7 +563,6 @@ export default function AdminPage() {
                       <tr key={userData.id} className="border-b border-gray-100 dark:border-gray-800">
                         <td className="py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
                           <div className="flex items-center space-x-2">
-                            <UserIcon className="w-4 h-4 text-gray-400" />
                             <span>{userData.name}</span>
                           </div>
                         </td>
