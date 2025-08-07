@@ -15,28 +15,40 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <Router>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/competition/:id" element={<CompetitionPage />} />
-              <Route path="/competition/:id/register" element={
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/competition/:id" element={
+              <Layout>
+                <CompetitionPage />
+              </Layout>
+            } />
+            <Route path="/competition/:id/register" element={
+              <Layout>
                 <ProtectedRoute>
                   <RegistrationPage />
                 </ProtectedRoute>
-              } />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/profile" element={
+              </Layout>
+            } />
+            <Route path="/login" element={
+              <Layout>
+                <LoginPage />
+              </Layout>
+            } />
+            <Route path="/profile" element={
+              <Layout>
                 <ProtectedRoute>
                   <ProfilePage />
                 </ProtectedRoute>
-              } />
-              <Route path="/admin" element={
+              </Layout>
+            } />
+            <Route path="/admin" element={
+              <Layout>
                 <ProtectedRoute requiredRole={['administrator', 'organizer']}>
                   <AdminPage />
                 </ProtectedRoute>
-              } />
-            </Routes>
-          </Layout>
+              </Layout>
+            } />
+          </Routes>
         </Router>
       </AuthProvider>
     </ThemeProvider>

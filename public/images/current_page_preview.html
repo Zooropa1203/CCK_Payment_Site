@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>현재 구현된 페이지 미리보기</title>
+    <style>
+        body { 
+            margin: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 20px;
+            border-left: 4px solid #2196f3;
+            margin: 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 800px;
+            border: none;
+            border: 2px solid #ddd;
+        }
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="instructions">
+            <h2>📸 현재 구현된 페이지 확인</h2>
+            <p><strong>새로운 디자인이 적용된 메인 페이지입니다.</strong></p>
+            <p>포트 5175에서 실행 중인 페이지를 아래에서 확인하실 수 있습니다.</p>
+        </div>
+        
+        <div class="note">
+            <p><strong>스크린샷을 직접 생성하려면:</strong></p>
+            <ol>
+                <li>브라우저에서 <a href="http://localhost:5175" target="_blank">http://localhost:5175</a>로 이동</li>
+                <li>Ctrl + Shift + I (개발자 도구 열기)</li>
+                <li>Ctrl + Shift + P → "screenshot" 검색 → "Capture full size screenshot" 선택</li>
+                <li>또는 브라우저의 스크린샷 확장 프로그램 사용</li>
+            </ol>
+        </div>
+        
+        <h3 style="padding: 0 20px;">현재 페이지 미리보기:</h3>
+        <div style="padding: 20px;">
+            <iframe src="http://localhost:5175"></iframe>
+        </div>
+        
+        <div style="padding: 20px;">
+            <h3>변경된 주요 디자인 요소:</h3>
+            <ul>
+                <li>✅ 헤더 크기 축소 (py-3)</li>
+                <li>✅ 로고 크기 조정 (w-10 h-10)</li>
+                <li>✅ 섹션 제목에 컬러 바 추가 (w-1 h-6)</li>
+                <li>✅ 테이블 둥근 모서리 제거</li>
+                <li>✅ 텍스트 크기 축소 (text-sm)</li>
+                <li>✅ 패딩 조정 (px-4 py-2)</li>
+                <li>✅ 푸터 텍스트 크기 축소 (text-xs)</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // 페이지가 로드된 후 iframe 새로고침
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const iframe = document.querySelector('iframe');
+                iframe.src = iframe.src;
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
