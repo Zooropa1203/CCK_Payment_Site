@@ -1,0 +1,9 @@
+{
+  "watch": ["server"],
+  "ext": "ts,js",
+  "ignore": ["node_modules"],
+  "exec": "ts-node --esm server/index.ts",
+  "env": {
+    "NODE_ENV": "development"
+  }
+}
