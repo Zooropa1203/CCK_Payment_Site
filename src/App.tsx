@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage';
 import HomePage_new from './pages/HomePage_new';
 import CompetitionPage from './pages/CompetitionPage';
 import RegistrationPage from './pages/RegistrationPage';
-import LoginPage from './pages/LoginPage';
+import LoginPage_new from './pages/LoginPage_new';
 import AdminPage from './pages/AdminPage';
 import ProfilePage from './pages/ProfilePage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -31,11 +31,7 @@ function App() {
                 </ProtectedRoute>
               </Layout>
             } />
-            <Route path="/login" element={
-              <Layout>
-                <LoginPage />
-              </Layout>
-            } />
+            <Route path="/login" element={<LoginPage_new />} />
             <Route path="/profile" element={
               <Layout>
                 <ProtectedRoute>

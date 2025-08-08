@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // 더미 데이터 사용 여부 (true=샘플 표시, false=모두 없음 상태)
 // URL 쿼리로도 제어 가능: ?dummy=true | ?dummy=false
@@ -18,6 +19,7 @@ interface Competition {
 }
 
 const HomePage_new: React.FC = () => {
+  const navigate = useNavigate();
   const [useDummy, setUseDummy] = useState<boolean>(getUseDummy());
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -65,8 +67,8 @@ const HomePage_new: React.FC = () => {
   }, []);
 
   const handleLoginClick = useCallback(() => {
-    window.location.href = '/login';
-  }, []);
+    navigate('/login');
+  }, [navigate]);
 
   return (
     <>
