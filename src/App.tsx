@@ -3,6 +3,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
+import HomePage_new from './pages/HomePage_new';
 import CompetitionPage from './pages/CompetitionPage';
 import RegistrationPage from './pages/RegistrationPage';
 import LoginPage from './pages/LoginPage';
@@ -16,7 +17,8 @@ function App() {
       <AuthProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage_new />} />
+            <Route path="/old" element={<HomePage />} />
             <Route path="/competition/:id" element={
               <Layout>
                 <CompetitionPage />
