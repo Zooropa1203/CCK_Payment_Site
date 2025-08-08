@@ -335,8 +335,8 @@ export default function HomePage() {
         <div className="custom-header-container">
           <div className="custom-logo">
             <img 
-              src="/images/CCK_LOGO.png" 
-              alt="CCK Logo" 
+              src="/images/cck_logo.png" 
+              alt="Cubing Club Korea 로고" 
               className="custom-logo-image"
             />
             Cubing Club Korea

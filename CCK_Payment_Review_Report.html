@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCK_Payment 프로젝트 종합 리뷰 리포트</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            font-size: 12px;
+        }
+        
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 0;
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        
+        .header .meta {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+        }
+        
+        .section h2 {
+            font-size: 18px;
+            color: #1f2937;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .section h3 {
+            font-size: 16px;
+            color: #374151;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+        
+        .summary {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .summary ol {
+            padding-left: 20px;
+        }
+        
+        .summary li {
+            margin-bottom: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 11px;
+        }
+        
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .critical { background-color: #fef2f2; }
+        .high { background-color: #fff7ed; }
+        .medium { background-color: #fffbeb; }
+        .low { background-color: #f0fdf4; }
+        
+        .code-block {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 12px;
+            margin: 10px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 10px;
+            overflow-x: auto;
+        }
+        
+        .code-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .checklist li {
+            margin-bottom: 5px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .checklist li:before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            font-size: 14px;
+        }
+        
+        .quality-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .metric {
+            background-color: #f8fafc;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        
+        .metric-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+        
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+        
+        @media print {
+            body { font-size: 11px; }
+            .code-block { font-size: 9px; }
+            table { font-size: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <div class="header">
+            <h1>🔍 CCK_Payment 프로젝트 종합 리뷰 리포트</h1>
+            <div class="meta">
+                <strong>프로젝트:</strong> CCK_Payment (큐빙클럽코리아 대회 접수 및 결제 시스템)<br>
+                <strong>기술스택:</strong> React 19 + TypeScript + Vite + Tailwind CSS + Express + SQLite<br>
+                <strong>리뷰일자:</strong> 2025-08-08 | <strong>리뷰범위:</strong> 프론트엔드 전체 (새로 구현된 HomePage_new.tsx 중심)
+            </div>
+        </div>
+
+        <!-- 요약 -->
+        <div class="section">
+            <h2>📊 요약</h2>
+            <div class="summary">
+                <ol>
+                    <li><strong>신규 HomePage_new.tsx</strong>는 참조 이미지 기반으로 기능적으로 잘 구현되었음</li>
+                    <li><strong>이미지 경로 불일치</strong> 문제: HomePage.tsx(<code>CCK_LOGO.png</code>) vs HomePage_new.tsx(<code>cck_logo.png</code>)</li>
+                    <li><strong>반응형 설계</strong>는 기본 구조는 있으나 1024px 브레이크포인트에서 테이블 overflow-x 처리 누락</li>
+                    <li><strong>접근성</strong>은 테이블 구조는 양호하나 키보드 포커스(:focus-visible) 스타일 완전 누락</li>
+                    <li><strong>품질 도구</strong>는 ESLint만 설정되어 있고 Prettier 미설정, 기본 SEO 메타태그 누락</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Issues 목록 -->
+        <div class="section">
+            <h2>🚨 Issues 상세 목록</h2>
+            
+            <h3>Critical Issues (즉시 수정 필요)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>항목</th>
+                        <th>파일 위치</th>
+                        <th>현재 상태</th>
+                        <th>문제점</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="critical">
+                        <td><strong>SEO 메타태그</strong></td>
+                        <td><code>index.html:7</code></td>
+                        <td><code>&lt;title&gt;Vite + React + TS&lt;/title&gt;</code></td>
+                        <td>개발용 기본값, 실제 서비스명 필요</td>
+                    </tr>
+                    <tr class="critical">
+                        <td><strong>이미지 경로 불일치</strong></td>
+                        <td><code>HomePage.tsx:338</code> vs <code>HomePage_new.tsx:322</code></td>
+                        <td><code>CCK_LOGO.png</code> vs <code>cck_logo.png</code></td>
+                        <td>대소문자 불일치로 이미지 로딩 실패 가능</td>
+                    </tr>
+                    <tr class="critical">
+                        <td><strong>Favicon</strong></td>
+                        <td><code>index.html:5</code></td>
+                        <td><code>/vite.svg</code></td>
+                        <td>기본 Vite 아이콘, CCK 로고로 변경 필요</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>High Issues (단기 수정 권장)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>항목</th>
+                        <th>파일 위치</th>
+                        <th>현재 상태</th>
+                        <th>문제점</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="high">
+                        <td><strong>키보드 접근성</strong></td>
+                        <td><code>HomePage_new.tsx:64-69</code></td>
+                        <td>hover만 있음</td>
+                        <td><code>:focus-visible</code> 스타일 완전 누락</td>
+                    </tr>
+                    <tr class="high">
+                        <td><strong>반응형 테이블</strong></td>
+                        <td><code>HomePage_new.tsx</code> 전체</td>
+                        <td>768px만 처리</td>
+                        <td>1024px 브레이크포인트에서 overflow-x 누락</td>
+                    </tr>
+                    <tr class="high">
+                        <td><strong>이미지 CLS 방지</strong></td>
+                        <td><code>HomePage_new.tsx:322,330</code></td>
+                        <td>width/height 미명시</td>
+                        <td>Cumulative Layout Shift 발생 가능</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Medium Issues (중기 개선)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>항목</th>
+                        <th>파일 위치</th>
+                        <th>현재 상태</th>
+                        <th>문제점</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="medium">
+                        <td><strong>CSS 하드코딩</strong></td>
+                        <td><code>HomePage_new.tsx:61-200</code></td>
+                        <td>색상값 직접 입력</td>
+                        <td>CSS 변수 시스템 미사용</td>
+                    </tr>
+                    <tr class="medium">
+                        <td><strong>Prettier 설정</strong></td>
+                        <td>프로젝트 루트</td>
+                        <td>설정 파일 없음</td>
+                        <td>코드 포맷팅 일관성 부족</td>
+                    </tr>
+                    <tr class="medium">
+                        <td><strong>로딩/에러 UI</strong></td>
+                        <td><code>HomePage_new.tsx:29-43</code></td>
+                        <td>기본 상태만</td>
+                        <td>데이터 로딩 상태 처리 누락</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 페이지 브레이크 -->
+        <div class="page-break"></div>
+
+        <!-- 구체적 수정안 -->
+        <div class="section">
+            <h2>🔧 구체적 수정안</h2>
+            
+            <h3>1. SEO/메타태그 개선 (Critical)</h3>
+            <div class="code-title">파일: index.html</div>
+            <div class="code-block">
+&lt;!-- 수정 전 --&gt;
+&lt;html lang="en"&gt;
+&lt;link rel="icon" type="image/svg+xml" href="/vite.svg" /&gt;
+&lt;title&gt;Vite + React + TS&lt;/title&gt;
+
+&lt;!-- 수정 후 --&gt;
+&lt;html lang="ko"&gt;
+&lt;link rel="icon" type="image/png" href="/images/cck_logo.png" /&gt;
+&lt;title&gt;큐빙클럽코리아 - 루빅스 큐브 대회 접수 및 결제&lt;/title&gt;
+&lt;meta name="description" content="큐빙클럽코리아에서 주최하는 루빅스 큐브 대회 접수 및 결제 시스템. 온라인으로 간편하게 대회 참가 신청을 하세요." /&gt;
+&lt;meta name="keywords" content="루빅스큐브, 스피드큐빙, 대회, 접수, 결제, 큐빙클럽코리아" /&gt;
+            </div>
+
+            <h3>2. 이미지 경로 통일 (Critical)</h3>
+            <div class="code-title">파일: src/pages/HomePage.tsx:338</div>
+            <div class="code-block">
+&lt;!-- 수정 전 --&gt;
+src="/images/CCK_LOGO.png"
+
+&lt;!-- 수정 후 --&gt;
+src="/images/cck_logo.png"
+            </div>
+
+            <h3>3. 키보드 접근성 개선 (High)</h3>
+            <div class="code-title">파일: src/pages/HomePage_new.tsx CSS 섹션</div>
+            <div class="code-block">
+/* 추가 필요 */
+.header-right:focus-visible {
+  background-color: rgba(0, 0, 0, 0.1);
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+            </div>
+
+            <h3>4. 반응형 테이블 처리 (High)</h3>
+            <div class="code-title">파일: src/pages/HomePage_new.tsx CSS 섹션</div>
+            <div class="code-block">
+/* 1024px 브레이크포인트 추가 */
+@media (max-width: 1024px) {
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .competition-table {
+    min-width: 600px;
+  }
+}
+            </div>
+
+            <h3>5. 이미지 CLS 방지 (High)</h3>
+            <div class="code-title">파일: src/pages/HomePage_new.tsx:322,330</div>
+            <div class="code-block">
+&lt;!-- 수정 전 --&gt;
+&lt;img src="/images/cck_logo.png" alt="Cubing Club Korea 로고" className="logo" /&gt;
+
+&lt;!-- 수정 후 --&gt;
+&lt;img src="/images/cck_logo.png" alt="Cubing Club Korea 로고" className="logo" width="auto" height="36" /&gt;
+            </div>
+
+            <h3>6. Prettier 설정 추가 (Medium)</h3>
+            <div class="code-title">파일: .prettierrc (신규 생성)</div>
+            <div class="code-block">
+{
+  "semi": true,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "printWidth": 80,
+  "endOfLine": "auto"
+}
+            </div>
+        </div>
+
+        <!-- 액션 아이템 -->
+        <div class="section">
+            <h2>✅ 액션 아이템 체크리스트</h2>
+            
+            <h3>즉시 수행 (Critical) - 1주일 내</h3>
+            <ul class="checklist">
+                <li>index.html SEO 메타태그 업데이트</li>
+                <li>HomePage.tsx 이미지 경로 cck_logo.png로 통일</li>
+                <li>favicon을 CCK 로고로 변경</li>
+                <li>언어 설정 lang="ko"로 변경</li>
+            </ul>
+
+            <h3>단기 수행 (High) - 2주일 내</h3>
+            <ul class="checklist">
+                <li>키보드 포커스 스타일 추가 (:focus-visible)</li>
+                <li>반응형 테이블 1024px 브레이크포인트 처리</li>
+                <li>이미지 width/height 속성 명시</li>
+                <li>테이블 데이터 셀에 data-label 속성 추가</li>
+            </ul>
+
+            <h3>중기 수행 (Medium) - 1개월 내</h3>
+            <ul class="checklist">
+                <li>CSS 변수 시스템 도입 (:root 변수)</li>
+                <li>Prettier 설정 및 format scripts 추가</li>
+                <li>로딩/에러 상태 UI 구현</li>
+                <li>더미 데이터를 실제 API 연동으로 변경</li>
+            </ul>
+
+            <h3>장기 수행 (Low) - 3개월 내</h3>
+            <ul class="checklist">
+                <li>다크모드 지원 검토</li>
+                <li>PWA 설정 검토 (manifest.json)</li>
+                <li>성능 최적화 (React.memo, useMemo)</li>
+                <li>E2E 테스트 도입 검토</li>
+            </ul>
+        </div>
+
+        <!-- 품질 지표 -->
+        <div class="section">
+            <h2>📈 품질 지표 현황</h2>
+            <div class="quality-metrics">
+                <div class="metric">
+                    <div class="metric-title">접근성</div>
+                    <div class="metric-value">70%</div>
+                    <div>테이블 구조 양호, 키보드 포커스 누락</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-title">SEO</div>
+                    <div class="metric-value">30%</div>
+                    <div>메타태그 미설정</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-title">반응형</div>
+                    <div class="metric-value">80%</div>
+                    <div>기본 구조 완성, 1024px 처리 누락</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-title">성능</div>
+                    <div class="metric-value">75%</div>
+                    <div>CLS 이슈 있음</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-title">코드 품질</div>
+                    <div class="metric-value">65%</div>
+                    <div>ESLint만 설정, Prettier 누락</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 15px; background-color: #f0f9ff; border-left: 4px solid #3b82f6; border-radius: 4px;">
+                <strong>전체 평가:</strong> 기능 구현은 우수하나 프로덕션 배포를 위한 기본 설정 보완 필요
+            </div>
+        </div>
+
+        <!-- 푸터 -->
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 11px;">
+            <p>CCK_Payment 프로젝트 종합 리뷰 리포트 | 생성일: 2025-08-08</p>
+            <p>GitHub Repository: CCK_Payment_Site | Branch: main</p>
+        </div>
+    </div>
+</body>
+</html>

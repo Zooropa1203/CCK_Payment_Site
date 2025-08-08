@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 // 더미 데이터 사용 여부 (true=샘플 표시, false=모두 없음 상태)
 // URL 쿼리로도 제어 가능: ?dummy=true | ?dummy=false
@@ -19,46 +19,107 @@ interface Competition {
 
 const HomePage_new: React.FC = () => {
   const [useDummy, setUseDummy] = useState<boolean>(getUseDummy());
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [ongoingCompetitions, setOngoingCompetitions] = useState<Competition[]>([]);
   const [upcomingCompetitions, setUpcomingCompetitions] = useState<Competition[]>([]);
 
-  // 더미 데이터
-  const dummyOngoing: Competition[] = [
+  // 더미 데이터 - 메모이제이션
+  const dummyOngoing: Competition[] = useMemo(() => [
     { id: 1, date: '2025-08-15', name: '2025 큐빙클럽코리아 여름 대회', location: '서울시립청소년미디어센터' },
     { id: 2, date: '2025-08-22', name: '제5회 부산 오픈', location: '부산문화회관' },
-  ];
+  ], []);
 
-  const dummyUpcoming: Competition[] = [
+  const dummyUpcoming: Competition[] = useMemo(() => [
     { id: 3, date: '2025-09-01', name: '2025 추석 특별대회', location: '대전컨벤션센터' },
     { id: 4, date: '2025-09-15', name: '제3회 대구 챔피언십', location: '대구 EXCO' },
     { id: 5, date: '2025-09-29', name: '2025 가을 정기대회', location: '서울올림픽공원' },
-  ];
+  ], []);
 
   useEffect(() => {
-    if (useDummy) {
-      setOngoingCompetitions(dummyOngoing);
-      setUpcomingCompetitions(dummyUpcoming);
-    } else {
-      setOngoingCompetitions([]);
-      setUpcomingCompetitions([]);
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      if (useDummy) {
+        setOngoingCompetitions(dummyOngoing);
+        setUpcomingCompetitions(dummyUpcoming);
+      } else {
+        setOngoingCompetitions([]);
+        setUpcomingCompetitions([]);
+      }
+    } catch (err) {
+      setError('데이터를 불러오는 중 오류가 발생했습니다.');
+      console.error('Data loading error:', err);
+    } finally {
+      setIsLoading(false);
     }
-  }, [useDummy]);
+  }, [useDummy, dummyOngoing, dummyUpcoming]);
 
-  const formatDate = (dateString: string): string => {
+  const formatDate = useCallback((dateString: string): string => {
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}.${month}.${day}`;
-  };
+  }, []);
 
-  const handleLoginClick = () => {
+  const handleLoginClick = useCallback(() => {
     window.location.href = '/login';
-  };
+  }, []);
 
   return (
     <>
       <style>{`
+        :root {
+          --max-width: 1160px;
+          --header-height: 64px;
+
+          /* Light theme (default) */
+          --bg: #ffffff;
+          --bg-muted: #f3f4f6;
+          --bg-header: #e5e5e5;
+          --text: #111827;
+          --text-muted: #6b7280;
+          --brand: #2563eb;
+          --brand-secondary: #10b981;
+          --border: #d1d5db;
+          --border-light: #e5e7eb;
+          --border-dark: #6b7280;
+          --surface: #ffffff;
+          --shadow: 0 1px 3px rgba(0,0,0,.1);
+          --border-radius: 8px;
+          --border-radius-sm: 6px;
+          --table-header-bg: #8b8b8b;
+          --table-hover: #f9fafb;
+          --error-bg: #fef2f2;
+          --error-border: #fecaca;
+          --text-on-dark: #ffffff;
+        }
+
+        /* Dark theme */
+        @media (prefers-color-scheme: dark) {
+          :root {
+            --bg: #0b0f14;
+            --bg-muted: #0f141a;
+            --bg-header: #1a1a1a;
+            --text: #e5e7eb;
+            --text-muted: #94a3b8;
+            --brand: #60a5fa;
+            --brand-secondary: #34d399;
+            --border: #273345;
+            --border-light: #374151;
+            --border-dark: #6b7280;
+            --surface: #111827;
+            --shadow: 0 1px 3px rgba(0,0,0,.4);
+            --table-header-bg: #1b2430;
+            --table-hover: #1f2937;
+            --error-bg: #7f1d1d;
+            --error-border: #dc2626;
+            --text-on-dark: #ffffff;
+          }
+        }
+
         * {
           margin: 0;
           padding: 0;
@@ -67,27 +128,29 @@ const HomePage_new: React.FC = () => {
 
         body {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          background-color: #ffffff;
+          background-color: var(--bg);
+          color: var(--text);
           min-height: 100vh;
           display: flex;
           flex-direction: column;
         }
 
         .container {
-          max-width: 1160px;
+          max-width: var(--max-width);
           margin: 0 auto;
           padding: 0 24px;
         }
 
         /* 헤더 스타일 */
         .header {
-          background-color: #e5e5e5;
-          height: 64px;
+          background-color: var(--bg-header);
+          color: var(--text);
+          height: var(--header-height);
           display: flex;
           justify-content: space-between;
           align-items: center;
           padding: 0 24px;
-          border-bottom: 1px solid #d1d5db;
+          border-bottom: 1px solid var(--border);
         }
 
         .header-content {
@@ -111,7 +174,7 @@ const HomePage_new: React.FC = () => {
         .site-name {
           font-size: 20px;
           font-weight: 600;
-          color: #333333;
+          color: var(--text);
         }
 
         .header-right {
@@ -120,12 +183,19 @@ const HomePage_new: React.FC = () => {
           gap: 8px;
           cursor: pointer;
           padding: 8px 16px;
-          border-radius: 6px;
+          border-radius: var(--border-radius-sm);
           transition: background-color 0.2s;
+          color: var(--text);
         }
 
         .header-right:hover {
-          background-color: rgba(0, 0, 0, 0.05);
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .header-right:focus-visible {
+          background-color: rgba(255, 255, 255, 0.2);
+          outline: 2px solid var(--brand);
+          outline-offset: 2px;
         }
 
         .profile-icon {
@@ -137,7 +207,7 @@ const HomePage_new: React.FC = () => {
 
         .login-text {
           font-size: 16px;
-          color: #333333;
+          color: var(--text);
           font-weight: 500;
         }
 
@@ -154,7 +224,7 @@ const HomePage_new: React.FC = () => {
         .section-title {
           font-size: 24px;
           font-weight: 600;
-          color: #333333;
+          color: var(--text);
           margin-bottom: 20px;
           position: relative;
           padding-bottom: 8px;
@@ -167,24 +237,26 @@ const HomePage_new: React.FC = () => {
           left: 0;
           width: 60px;
           height: 3px;
-          background-color: #3b82f6;
+          background-color: var(--brand);
         }
 
         .section-title.upcoming::after {
-          background-color: #10b981;
+          background-color: var(--brand-secondary);
         }
 
-        /* 테이블 스타일 */
+        /* 테이블 기본 스타일 */
         .table-container {
-          background-color: #ffffff;
-          border-radius: 8px;
+          border: 1px solid var(--border);
+          border-radius: var(--border-radius);
           overflow: hidden;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          background-color: var(--surface);
+          box-shadow: var(--shadow);
         }
 
         .competition-table {
           width: 100%;
           border-collapse: collapse;
+          background: var(--surface);
         }
 
         .competition-table caption {
@@ -199,19 +271,22 @@ const HomePage_new: React.FC = () => {
           border: 0;
         }
 
-        .competition-table thead th {
-          background-color: #8b8b8b;
-          color: #ffffff;
-          font-weight: 600;
+        .competition-table th,
+        .competition-table td {
+          border-bottom: 1px solid var(--border-light);
           padding: 16px;
           text-align: left;
-          border-bottom: 2px solid #6b7280;
+        }
+
+        .competition-table thead th {
+          background-color: var(--table-header-bg);
+          color: var(--text-on-dark);
+          font-weight: 600;
+          border-bottom: 2px solid var(--border-dark);
         }
 
         .competition-table tbody td {
-          padding: 16px;
-          border-bottom: 1px solid #e5e7eb;
-          color: #374151;
+          color: var(--text);
         }
 
         .competition-table tbody tr:last-child td {
@@ -219,30 +294,53 @@ const HomePage_new: React.FC = () => {
         }
 
         .competition-table tbody tr:hover {
-          background-color: #f9fafb;
+          background-color: var(--table-hover);
         }
 
         /* 빈 상태 메시지 */
         .empty-state {
           text-align: center;
           padding: 60px 20px;
-          color: #6b7280;
+          color: var(--text-muted);
           font-size: 16px;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: var(--border-radius);
         }
 
         /* 푸터 스타일 */
         .footer {
-          background-color: #f3f4f6;
+          background-color: var(--bg-muted);
+          color: var(--text);
           padding: 24px 0;
-          border-top: 1px solid #e5e7eb;
+          border-top: 1px solid var(--border-light);
           margin-top: auto;
         }
 
         .footer-content {
           text-align: center;
-          color: #6b7280;
+          color: var(--text-muted);
           font-size: 14px;
           line-height: 1.6;
+        }
+
+        /* 로딩 및 에러 상태 스타일 */
+        .loading-state, .error-state {
+          text-align: center;
+          padding: 60px 20px;
+          font-size: 16px;
+        }
+
+        .loading-state {
+          color: var(--text-muted);
+        }
+
+        .error-state {
+          color: #dc2626;
+          background-color: var(--error-bg);
+          border: 1px solid var(--error-border);
+          border-radius: var(--border-radius);
+          margin: 20px 0;
         }
 
         .footer-line {
@@ -253,7 +351,19 @@ const HomePage_new: React.FC = () => {
           margin-bottom: 0;
         }
 
-        /* 반응형 디자인 */
+        /* 1024px 이하: 가로 스크롤 */
+        @media (max-width: 1024px) {
+          .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+          }
+          
+          .competition-table {
+            min-width: 600px;
+          }
+        }
+
+        /* 768px 이하: 카드형 전환 (data-label 사용) */
         @media (max-width: 768px) {
           .container {
             padding: 0 16px;
@@ -287,49 +397,98 @@ const HomePage_new: React.FC = () => {
             font-size: 20px;
           }
 
-          .competition-table {
-            font-size: 14px;
-          }
-
-          .competition-table thead th,
-          .competition-table tbody td {
-            padding: 12px 8px;
-          }
-
           .footer-content {
             font-size: 12px;
+          }
+
+          /* 테이블 -> 카드형 전환 */
+          .competition-table thead {
+            display: none;
+          }
+
+          .competition-table,
+          .competition-table tbody,
+          .competition-table tr,
+          .competition-table td {
+            display: block;
+            width: 100%;
+          }
+
+          .competition-table tr {
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            background: var(--surface);
+            margin-bottom: 12px;
+          }
+
+          .competition-table td {
+            position: relative;
+            padding-left: 120px;
+            min-height: 44px;
+            border-bottom: 1px solid var(--border-light);
+          }
+
+          .competition-table tr:last-child td:last-child {
+            border-bottom: none;
+          }
+
+          .competition-table td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            width: 96px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-align: left;
+            white-space: nowrap;
           }
         }
 
         @media (max-width: 480px) {
-          .competition-table thead th,
-          .competition-table tbody td {
-            padding: 8px 4px;
-            font-size: 12px;
-          }
-
           .section-title {
             font-size: 18px;
+          }
+
+          .competition-table td {
+            padding-left: 100px;
+            font-size: 14px;
+          }
+
+          .competition-table td::before {
+            width: 80px;
+            font-size: 12px;
           }
         }
       `}</style>
 
       <div className="page-wrapper">
         {/* 헤더 */}
-        <header className="header">
+        <header className="header" role="banner">
           <div className="header-left">
             <img 
               src="/images/cck_logo.png" 
               alt="Cubing Club Korea 로고" 
               className="logo"
+              width="auto"
+              height="36"
             />
             <h1 className="site-name">Cubing Club Korea</h1>
           </div>
-          <div className="header-right" onClick={handleLoginClick}>
+          <div className="header-right" onClick={handleLoginClick} role="button" tabIndex={0}
+               onKeyDown={(e) => {
+                 if (e.key === 'Enter' || e.key === ' ') {
+                   e.preventDefault();
+                   handleLoginClick();
+                 }
+               }}>
             <img 
               src="/images/person_icon.png" 
               alt="사용자 프로필" 
               className="profile-icon"
+              width="36"
+              height="36"
             />
             <span className="login-text">로그인</span>
           </div>
@@ -338,74 +497,92 @@ const HomePage_new: React.FC = () => {
         {/* 메인 콘텐츠 */}
         <main className="main-content">
           <div className="container">
-            {/* 접수 진행중인 행사 섹션 */}
-            <section className="section">
-              <h2 className="section-title">접수 진행중인 행사</h2>
-              {ongoingCompetitions.length > 0 ? (
-                <div className="table-container">
-                  <table className="competition-table">
-                    <caption>접수 진행중인 행사 목록</caption>
-                    <thead>
-                      <tr>
-                        <th scope="col">날짜</th>
-                        <th scope="col">대회명</th>
-                        <th scope="col">장소</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {ongoingCompetitions.map((competition) => (
-                        <tr key={competition.id}>
-                          <td>{formatDate(competition.date)}</td>
-                          <td>{competition.name}</td>
-                          <td>{competition.location}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <div className="empty-state">
-                  <p>접수 진행중인 행사가 없습니다.</p>
-                </div>
-              )}
-            </section>
+            {/* 에러 상태 */}
+            {error && (
+              <div className="error-state">
+                <p>{error}</p>
+              </div>
+            )}
 
-            {/* 접수 예정인 행사 섹션 */}
-            <section className="section">
-              <h2 className="section-title upcoming">접수 예정인 행사</h2>
-              {upcomingCompetitions.length > 0 ? (
-                <div className="table-container">
-                  <table className="competition-table">
-                    <caption>접수 예정인 행사 목록</caption>
-                    <thead>
-                      <tr>
-                        <th scope="col">날짜</th>
-                        <th scope="col">대회명</th>
-                        <th scope="col">장소</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {upcomingCompetitions.map((competition) => (
-                        <tr key={competition.id}>
-                          <td>{formatDate(competition.date)}</td>
-                          <td>{competition.name}</td>
-                          <td>{competition.location}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <div className="empty-state">
-                  <p>접수 예정인 행사가 없습니다.</p>
-                </div>
-              )}
-            </section>
+            {/* 로딩 상태 */}
+            {isLoading && (
+              <div className="loading-state">
+                <p>데이터를 불러오는 중입니다...</p>
+              </div>
+            )}
+
+            {/* 정상 상태 - 접수 진행중인 행사 섹션 */}
+            {!isLoading && !error && (
+              <>
+                <section className="section">
+                  <h2 className="section-title">접수 진행중인 행사</h2>
+                  {ongoingCompetitions.length > 0 ? (
+                    <div className="table-container">
+                      <table className="competition-table">
+                        <caption>접수 진행중인 행사 목록</caption>
+                        <thead>
+                          <tr>
+                            <th scope="col">날짜</th>
+                            <th scope="col">대회명</th>
+                            <th scope="col">장소</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {ongoingCompetitions.map((competition) => (
+                            <tr key={competition.id}>
+                              <td data-label="날짜">{formatDate(competition.date)}</td>
+                              <td data-label="대회명">{competition.name}</td>
+                              <td data-label="장소">{competition.location}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="empty-state">
+                      <p>접수 진행중인 행사가 없습니다.</p>
+                    </div>
+                  )}
+                </section>
+
+                {/* 접수 예정인 행사 섹션 */}
+                <section className="section">
+                  <h2 className="section-title upcoming">접수 예정인 행사</h2>
+                  {upcomingCompetitions.length > 0 ? (
+                    <div className="table-container">
+                      <table className="competition-table">
+                        <caption>접수 예정인 행사 목록</caption>
+                        <thead>
+                          <tr>
+                            <th scope="col">날짜</th>
+                            <th scope="col">대회명</th>
+                            <th scope="col">장소</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {upcomingCompetitions.map((competition) => (
+                            <tr key={competition.id}>
+                              <td data-label="날짜">{formatDate(competition.date)}</td>
+                              <td data-label="대회명">{competition.name}</td>
+                              <td data-label="장소">{competition.location}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="empty-state">
+                      <p>접수 예정인 행사가 없습니다.</p>
+                    </div>
+                  )}
+                </section>
+              </>
+            )}
           </div>
         </main>
 
         {/* 푸터 */}
-        <footer className="footer">
+        <footer className="footer" role="contentinfo">
           <div className="container">
             <div className="footer-content">
               <div className="footer-line">
@@ -422,4 +599,4 @@ const HomePage_new: React.FC = () => {
   );
 };
 
-export default HomePage_new;
+export default React.memo(HomePage_new);
