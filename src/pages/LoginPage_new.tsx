@@ -464,7 +464,7 @@ export default function LoginPage() {
               name="id"
               type="text"
               autoComplete="username"
-              placeholder="ex) rubikscube"
+              placeholder="아이디 입력"
               value={id}
               onChange={(e) => setId(e.target.value)}
               className="login-input"
