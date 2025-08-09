@@ -11,6 +11,7 @@ import LoginPage_new from './pages/LoginPage_new';
 import SignupTerms from './pages/SignupTerms';
 import SignupInfo from './pages/SignupInfo';
 import SignupVerify from './pages/SignupVerify';
+import ForgotPassword from './pages/ForgotPassword';
 import AdminPage from './pages/AdminPage';
 import ProfilePage from './pages/ProfilePage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -40,6 +41,7 @@ function App() {
               <Route path="/signup" element={<SignupTerms />} />
               <Route path="/signup/info" element={<SignupInfo />} />
               <Route path="/signup/verify" element={<SignupVerify />} />
+              <Route path="/forgot" element={<ForgotPassword />} />
               <Route path="/profile" element={
                 <Layout>
                   <ProtectedRoute>
