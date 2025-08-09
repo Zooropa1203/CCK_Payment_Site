@@ -66,21 +66,15 @@ const HomePage_new: React.FC = () => {
     return `${year}.${month}.${day}`;
   }, []);
 
-  const handleLoginClick = useCallback(() => {
-    navigate('/login');
-  }, [navigate]);
-
   return (
     <>
       <style>{`
         :root {
           --max-width: 1160px;
-          --header-height: 64px;
 
           /* Light theme (default) */
           --bg: #ffffff;
           --bg-muted: #f3f4f6;
-          --bg-header: #e5e5e5;
           --text: #111827;
           --text-muted: #6b7280;
           --brand: #2563eb;
@@ -104,7 +98,6 @@ const HomePage_new: React.FC = () => {
           :root {
             --bg: #0b0f14;
             --bg-muted: #0f141a;
-            --bg-header: #1a1a1a;
             --text: #e5e7eb;
             --text-muted: #94a3b8;
             --brand: #60a5fa;
@@ -143,61 +136,7 @@ const HomePage_new: React.FC = () => {
           padding: 0 24px;
         }
 
-        /* 헤더 스타일 */
-        .header {
-          background-color: var(--bg-header);
-          color: var(--text);
-          height: var(--header-height);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0 24px;
-          border-bottom: 1px solid var(--border);
-        }
-
-        .header-content {
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .header-left {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .logo {
-          height: 36px;
-          width: auto;
-        }
-
-        .site-name {
-          font-size: 20px;
-          font-weight: 600;
-          color: var(--text);
-        }
-
-        .header-right {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          cursor: pointer;
-          padding: 8px 16px;
-          border-radius: var(--border-radius-sm);
-          transition: background-color 0.2s;
-          color: var(--text);
-        }
-
-        .header-right:hover {
-          background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .header-right:focus-visible {
-          background-color: rgba(255, 255, 255, 0.2);
-          outline: 2px solid var(--brand);
-          outline-offset: 2px;
+        /* 페이지 레이아웃 */
         }
 
         .profile-icon {
@@ -371,22 +310,6 @@ const HomePage_new: React.FC = () => {
             padding: 0 16px;
           }
 
-          .header {
-            height: auto;
-            padding: 12px 16px;
-            flex-direction: column;
-            gap: 12px;
-          }
-
-          .header-left,
-          .header-right {
-            justify-content: center;
-          }
-
-          .site-name {
-            font-size: 18px;
-          }
-
           .main-content {
             padding: 24px 0;
           }
@@ -466,36 +389,6 @@ const HomePage_new: React.FC = () => {
       `}</style>
 
       <div className="page-wrapper">
-        {/* 헤더 */}
-        <header className="header" role="banner">
-          <div className="header-left">
-            <img 
-              src="/images/cck_logo.png" 
-              alt="Cubing Club Korea 로고" 
-              className="logo"
-              width="auto"
-              height="36"
-            />
-            <h1 className="site-name">Cubing Club Korea</h1>
-          </div>
-          <div className="header-right" onClick={handleLoginClick} role="button" tabIndex={0}
-               onKeyDown={(e) => {
-                 if (e.key === 'Enter' || e.key === ' ') {
-                   e.preventDefault();
-                   handleLoginClick();
-                 }
-               }}>
-            <img 
-              src="/images/person_icon.png" 
-              alt="사용자 프로필" 
-              className="profile-icon"
-              width="36"
-              height="36"
-            />
-            <span className="login-text">로그인</span>
-          </div>
-        </header>
-
         {/* 메인 콘텐츠 */}
         <main className="main-content">
           <div className="container">
@@ -531,7 +424,20 @@ const HomePage_new: React.FC = () => {
                         </thead>
                         <tbody>
                           {ongoingCompetitions.map((competition) => (
-                            <tr key={competition.id}>
+                            <tr 
+                              key={competition.id}
+                              role="button"
+                              tabIndex={0}
+                              className="row-clickable"
+                              onClick={() => navigate(`/competitions/${competition.id}`)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  navigate(`/competitions/${competition.id}`);
+                                }
+                              }}
+                              style={{ cursor: 'pointer' }}
+                            >
                               <td data-label="날짜">{formatDate(competition.date)}</td>
                               <td data-label="대회명">{competition.name}</td>
                               <td data-label="장소">{competition.location}</td>
@@ -563,7 +469,20 @@ const HomePage_new: React.FC = () => {
                         </thead>
                         <tbody>
                           {upcomingCompetitions.map((competition) => (
-                            <tr key={competition.id}>
+                            <tr 
+                              key={competition.id}
+                              role="button"
+                              tabIndex={0}
+                              className="row-clickable"
+                              onClick={() => navigate(`/competitions/${competition.id}`)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  navigate(`/competitions/${competition.id}`);
+                                }
+                              }}
+                              style={{ cursor: 'pointer' }}
+                            >
                               <td data-label="날짜">{formatDate(competition.date)}</td>
                               <td data-label="대회명">{competition.name}</td>
                               <td data-label="장소">{competition.location}</td>

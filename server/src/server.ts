@@ -6,6 +6,7 @@ import { initializeDatabase } from './models/index.js';
 import competitionsRouter from './routes/competitions.routes.js';
 import authRouter from './routes/auth.routes.js';
 import registrationsRouter from './routes/registrations.routes.js';
+import paymentsRouter from './routes/payments.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5175;
@@ -33,6 +34,7 @@ app.get('/health', (req, res) => {
 app.use('/api/competitions', competitionsRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/registrations', registrationsRouter);
+app.use('/api/payments', paymentsRouter);
 
 // 404 핸들러
 app.use((req, res) => {

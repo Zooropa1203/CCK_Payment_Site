@@ -8,7 +8,7 @@ const router = Router();
 // 대회 등록
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { competition_id, user_id, selected_events } = req.body;
+    const { competition_id, user_id, selected_events, participant_info } = req.body;
 
     if (!competition_id || !user_id || !selected_events || !Array.isArray(selected_events)) {
       return res.status(400).json({
@@ -37,6 +37,7 @@ router.post('/', async (req: Request, res: Response) => {
       competition_id,
       user_id,
       selected_events,
+      participant_info,
       total_fee: 0, // 훅에서 계산됨
     });
 

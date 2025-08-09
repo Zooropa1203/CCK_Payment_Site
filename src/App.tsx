@@ -1,67 +1,41 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from './contexts/ThemeContext';
-import { AuthProvider } from './contexts/AuthContext';
 import { SignupProvider } from './context/SignupContext';
-import Layout from './components/Layout';
-import HomePage from './pages/HomePage';
-import HomePage_new from './pages/HomePage_new';
-import CompetitionPage from './pages/CompetitionPage';
-import RegistrationPage from './pages/RegistrationPage';
-import LoginPage_new from './pages/LoginPage_new';
-import SignupTerms from './pages/SignupTerms';
-import SignupInfo from './pages/SignupInfo';
-import SignupVerify from './pages/SignupVerify';
-import ForgotPassword from './pages/ForgotPassword';
-import AdminPage from './pages/AdminPage';
-import ProfilePage from './pages/ProfilePage';
-import ProtectedRoute from './components/ProtectedRoute';
+import AppLayout from "./layouts/AppLayout";
 
-function App() {
+import HomePage_new from "./pages/HomePage_new"; // 메인
+import CompetitionRegisterPage from "./pages/CompetitionRegisterPage";
+import CompetitionApplicationPage from "./pages/CompetitionApplicationPage";
+import CompetitionSchedulePage from "./pages/CompetitionSchedulePage";
+import CompetitionParticipantsPage from "./pages/CompetitionParticipantsPage";
+import CompetitionWaitlistPage from "./pages/CompetitionWaitlistPage";
+import LoginPage_new from "./pages/LoginPage_new";
+import SignupTerms from "./pages/SignupTerms";
+import SignupInfo from "./pages/SignupInfo";
+import SignupVerify from "./pages/SignupVerify";
+
+export default function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <SignupProvider>
-          <Router>
-            <Routes>
+      <SignupProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<AppLayout />}>
               <Route path="/" element={<HomePage_new />} />
-              <Route path="/old" element={<HomePage />} />
-              <Route path="/competition/:id" element={
-                <Layout>
-                  <CompetitionPage />
-                </Layout>
-              } />
-              <Route path="/competition/:id/register" element={
-                <Layout>
-                  <ProtectedRoute>
-                    <RegistrationPage />
-                  </ProtectedRoute>
-                </Layout>
-              } />
               <Route path="/login" element={<LoginPage_new />} />
-              <Route path="/signup" element={<SignupTerms />} />
+              <Route path="/signup/terms" element={<SignupTerms />} />
               <Route path="/signup/info" element={<SignupInfo />} />
               <Route path="/signup/verify" element={<SignupVerify />} />
-              <Route path="/forgot" element={<ForgotPassword />} />
-              <Route path="/profile" element={
-                <Layout>
-                  <ProtectedRoute>
-                    <ProfilePage />
-                  </ProtectedRoute>
-                </Layout>
-              } />
-              <Route path="/admin" element={
-                <Layout>
-                  <ProtectedRoute requiredRole={['administrator', 'organizer']}>
-                    <AdminPage />
-                  </ProtectedRoute>
-                </Layout>
-              } />
-            </Routes>
-          </Router>
-        </SignupProvider>
-      </AuthProvider>
+              <Route path="/competitions/:id" element={<CompetitionRegisterPage />} />
+              <Route path="/competitions/:id/apply" element={<CompetitionApplicationPage />} />
+              <Route path="/competitions/:id/schedule" element={<CompetitionSchedulePage />} />
+              <Route path="/competitions/:id/participants" element={<CompetitionParticipantsPage />} />
+              <Route path="/competitions/:id/waitlist" element={<CompetitionWaitlistPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </SignupProvider>
     </ThemeProvider>
   );
 }
-
-export default App;

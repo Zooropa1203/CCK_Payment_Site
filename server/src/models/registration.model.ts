@@ -10,6 +10,8 @@ class Registration extends Model<InferAttributes<Registration>, InferCreationAtt
   declare selected_events: string[];
   declare total_fee: number;
   declare payment_status: CreationOptional<'pending' | 'paid' | 'cancelled'>;
+  declare registration_status: CreationOptional<'pending' | 'confirmed' | 'cancelled'>;
+  declare participant_info: CreationOptional<any>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
@@ -82,6 +84,15 @@ Registration.init({
     type: DataTypes.ENUM('pending', 'paid', 'cancelled'),
     allowNull: false,
     defaultValue: 'pending',
+  },
+  registration_status: {
+    type: DataTypes.ENUM('pending', 'confirmed', 'cancelled'),
+    allowNull: false,
+    defaultValue: 'pending',
+  },
+  participant_info: {
+    type: DataTypes.JSON,
+    allowNull: true,
   },
   createdAt: DataTypes.DATE,
   updatedAt: DataTypes.DATE,

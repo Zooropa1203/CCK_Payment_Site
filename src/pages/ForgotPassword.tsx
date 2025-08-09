@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../components/Header';
 import '../styles/auth.css';
 
 export default function ForgotPassword() {
@@ -47,7 +46,6 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <Header />
       <main className="auth-page" aria-labelledby="forgot-title">
         <form className="auth-card" onSubmit={onSubmit} noValidate>
           <h1 id="forgot-title" className="title">비밀번호 찾기</h1>

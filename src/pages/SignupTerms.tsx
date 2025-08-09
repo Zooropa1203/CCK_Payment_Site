@@ -1,7 +1,6 @@
 import { useSignup } from "../context/SignupContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 export default function SignupTerms() {
   const { state, setAgreements } = useSignup();
@@ -417,33 +416,6 @@ export default function SignupTerms() {
       `}</style>
 
       <div className="page-wrapper">
-        {/* 헤더 */}
-        <header className="header" role="banner">
-          <div className="header-left">
-            <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none', color: 'inherit' }}>
-              <img 
-                src="/images/cck_logo.png" 
-                alt="Cubing Club Korea 로고" 
-                className="logo"
-                width="auto"
-                height="36"
-              />
-              <h1 className="site-name">Cubing Club Korea</h1>
-            </Link>
-          </div>
-          <Link to="/login" className="header-right" aria-label="로그인 페이지로 이동">
-            <img 
-              src="/images/person_icon.png" 
-              alt="" 
-              aria-hidden="true"
-              className="profile-icon"
-              width="36"
-              height="36"
-            />
-            <span className="login-text">로그인</span>
-          </Link>
-        </header>
-
         {/* 회원가입 메인 콘텐츠 */}
         <main className="signup-page">
           <div className="signup step1">

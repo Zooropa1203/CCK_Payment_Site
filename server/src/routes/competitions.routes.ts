@@ -202,4 +202,120 @@ router.delete('/:id', async (req: Request, res: Response) => {
   }
 });
 
+// 대회 스케줄 조회
+router.get('/:id/schedule', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    // 실제로는 별도의 Schedule 모델이 있어야 하지만, 
+    // 현재는 더미 데이터로 대응
+    const scheduleData = [
+      {
+        time: '09:00',
+        round: '1라운드',
+        event: '3x3',
+        group: 'A그룹',
+        note: '예선'
+      },
+      {
+        time: '10:30',
+        round: '1라운드',
+        event: '4x4',
+        group: 'A그룹',
+        note: '예선'
+      },
+      {
+        time: '14:00',
+        round: '결승',
+        event: '3x3',
+        group: '전체',
+        note: '결승전'
+      }
+    ];
+    
+    res.json(scheduleData);
+  } catch (error) {
+    console.error('스케줄 조회 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '스케줄 조회 중 오류가 발생했습니다.',
+    });
+  }
+});
+
+// 대회 참가자 목록 조회
+router.get('/:id/participants', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    const registrations = await Registration.findAll({
+      where: { 
+        competition_id: id,
+        payment_status: 'paid' // 결제 완료된 참가자만
+      },
+      include: [
+        {
+          model: User,
+          as: 'User',
+          attributes: ['id', 'name'],
+        },
+      ],
+      order: [['createdAt', 'ASC']],
+    });
+
+    const participants = registrations.map(reg => ({
+      id: reg.get('User')?.id,
+      name: reg.get('User')?.name,
+      events: reg.selected_events,
+      paid: reg.payment_status === 'paid',
+      total_fee: reg.total_fee,
+    }));
+
+    res.json(participants);
+  } catch (error) {
+    console.error('참가자 목록 조회 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '참가자 목록 조회 중 오류가 발생했습니다.',
+    });
+  }
+});
+
+// 대회 대기자 목록 조회
+router.get('/:id/waitlist', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    const registrations = await Registration.findAll({
+      where: { 
+        competition_id: id,
+        payment_status: 'pending' // 결제 대기 중인 참가자
+      },
+      include: [
+        {
+          model: User,
+          as: 'User',
+          attributes: ['id', 'name'],
+        },
+      ],
+      order: [['createdAt', 'ASC']],
+    });
+
+    const waitlist = registrations.map(reg => ({
+      id: reg.get('User')?.id,
+      name: reg.get('User')?.name,
+      events: reg.selected_events,
+      registered_at: reg.createdAt,
+    }));
+
+    res.json(waitlist);
+  } catch (error) {
+    console.error('대기자 목록 조회 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '대기자 목록 조회 중 오류가 발생했습니다.',
+    });
+  }
+});
+
 export default router;

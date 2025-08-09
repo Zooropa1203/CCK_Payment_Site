@@ -2,6 +2,7 @@ import { sequelize } from '../config/sequelize.js';
 import Competition from './competition.model.js';
 import User from './user.model.js';
 import Registration from './registration.model.js';
+import Payment from './payment.model.js';
 
 // 모델 간 관계 설정
 function setupAssociations() {
@@ -23,6 +24,16 @@ function setupAssociations() {
   Registration.belongsTo(User, {
     foreignKey: 'user_id',
     as: 'User',
+  });
+
+  // Registration과 Payment의 관계 (1:N)
+  Registration.hasMany(Payment, {
+    foreignKey: 'registration_id',
+    as: 'payments',
+  });
+  Payment.belongsTo(Registration, {
+    foreignKey: 'registration_id',
+    as: 'Registration',
   });
 }
 
@@ -104,4 +115,4 @@ async function initializeDatabase() {
   }
 }
 
-export { Competition, User, Registration, setupAssociations, createSampleData, initializeDatabase };
+export { Competition, User, Registration, Payment, setupAssociations, createSampleData, initializeDatabase };

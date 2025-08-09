@@ -20,12 +20,10 @@ export default function LoginPage() {
       <style>{`
         :root {
           --max-width: 1160px;
-          --header-height: 64px;
 
           /* Light theme (default) */
           --bg: #ffffff;
           --bg-muted: #f3f4f6;
-          --bg-header: #e5e5e5;
           --text: #111827;
           --text-muted: #6b7280;
           --brand: #2563eb;
@@ -37,7 +35,6 @@ export default function LoginPage() {
           --shadow: 0 1px 3px rgba(0,0,0,.1);
           --border-radius: 8px;
           --border-radius-sm: 6px;
-          --table-header-bg: #8b8b8b;
           --table-hover: #f9fafb;
           --error-bg: #fef2f2;
           --error-border: #fecaca;
@@ -49,7 +46,6 @@ export default function LoginPage() {
           :root {
             --bg: #0b0f14;
             --bg-muted: #0f141a;
-            --bg-header: #1a1a1a;
             --text: #e5e7eb;
             --text-muted: #94a3b8;
             --brand: #60a5fa;
@@ -59,7 +55,6 @@ export default function LoginPage() {
             --border-dark: #6b7280;
             --surface: #111827;
             --shadow: 0 1px 3px rgba(0,0,0,.4);
-            --table-header-bg: #1b2430;
             --table-hover: #1f2937;
             --error-bg: #7f1d1d;
             --error-border: #dc2626;
@@ -95,72 +90,18 @@ export default function LoginPage() {
           border: 0;
         }
 
-        /* 헤더 스타일 */
-        .header {
-          background-color: var(--bg-header);
+        /* 페이지 레이아웃 */
+        .page-wrapper {
+          background-color: var(--bg);
           color: var(--text);
-          height: var(--header-height);
+          min-height: 100vh;
           display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0 24px;
-          border-bottom: 1px solid var(--border);
+          flex-direction: column;
         }
 
-        .header-left {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .logo {
-          height: 36px;
-          width: auto;
-        }
-
-        .site-name {
-          font-size: 20px;
-          font-weight: 600;
-          color: var(--text);
-        }
-
-        .header-right {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 8px 16px;
-          border-radius: var(--border-radius-sm);
-          text-decoration: none;
-          color: var(--text);
-          transition: background-color 0.2s;
-        }
-
-        .header-right:hover {
-          background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .header-right:focus-visible {
-          background-color: rgba(255, 255, 255, 0.2);
-          outline: 2px solid var(--brand);
-          outline-offset: 2px;
-        }
-
-        .profile-icon {
-          height: 36px;
-          width: 36px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-
-        .login-text {
-          font-size: 16px;
-          color: var(--text);
-          font-weight: 500;
-        }
-
-        /* 레이아웃 */
+        /* 로그인 페이지 레이아웃 */
         .login-page {
-          min-height: calc(100vh - var(--header-height));
+          min-height: 100vh;
           display: grid;
           place-items: center;
           background: var(--bg);
@@ -346,22 +287,6 @@ export default function LoginPage() {
 
         /* 반응형 */
         @media (max-width: 768px) {
-          .header {
-            height: auto;
-            padding: 12px 16px;
-            flex-direction: column;
-            gap: 12px;
-          }
-
-          .header-left,
-          .header-right {
-            justify-content: center;
-          }
-
-          .site-name {
-            font-size: 18px;
-          }
-
           .login-row {
             flex-direction: column;
             align-items: flex-start;
@@ -426,33 +351,6 @@ export default function LoginPage() {
       `}</style>
 
       <div className="page-wrapper">
-        {/* 헤더 */}
-        <header className="header" role="banner">
-          <div className="header-left">
-            <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none', color: 'inherit' }}>
-              <img 
-                src="/images/cck_logo.png" 
-                alt="Cubing Club Korea 로고" 
-                className="logo"
-                width="auto"
-                height="36"
-              />
-              <h1 className="site-name">Cubing Club Korea</h1>
-            </Link>
-          </div>
-          <Link to="/login" className="header-right" aria-label="로그인 페이지로 이동">
-            <img 
-              src="/images/person_icon.png" 
-              alt="" 
-              aria-hidden="true"
-              className="profile-icon"
-              width="36"
-              height="36"
-            />
-            <span className="login-text">로그인</span>
-          </Link>
-        </header>
-
         {/* 로그인 메인 콘텐츠 */}
         <main className="login-page" aria-labelledby="login-title">
           <form className="login-card" onSubmit={onSubmit}>
