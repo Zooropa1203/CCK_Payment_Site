@@ -10,6 +10,7 @@ import CompetitionSchedulePage from "./pages/CompetitionSchedulePage";
 import CompetitionParticipantsPage from "./pages/CompetitionParticipantsPage";
 import CompetitionWaitlistPage from "./pages/CompetitionWaitlistPage";
 import LoginPage_new from "./pages/LoginPage_new";
+import PasswordResetPage from "./pages/PasswordResetPage";
 import SignupTerms from "./pages/SignupTerms";
 import SignupInfo from "./pages/SignupInfo";
 import SignupVerify from "./pages/SignupVerify";
@@ -23,6 +24,8 @@ export default function App() {
             <Route element={<AppLayout />}>
               <Route path="/" element={<HomePage_new />} />
               <Route path="/login" element={<LoginPage_new />} />
+              <Route path="/password-reset" element={<PasswordResetPage />} />
+              <Route path="/signup" element={<Navigate to="/signup/terms" replace />} />
               <Route path="/signup/terms" element={<SignupTerms />} />
               <Route path="/signup/info" element={<SignupInfo />} />
               <Route path="/signup/verify" element={<SignupVerify />} />

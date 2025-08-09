@@ -391,9 +391,9 @@ export default function LoginPage() {
               </label>
 
               <nav className="login-links" aria-label="계정 링크">
-                <Link to="/signup">회원가입</Link>
+                <Link to="/signup/terms">회원가입</Link>
                 <span className="divider" aria-hidden="true">|</span>
-                <Link to="/forgot">비밀번호 찾기</Link>
+                <Link to="/password-reset">비밀번호 찾기</Link>
               </nav>
             </div>
 
