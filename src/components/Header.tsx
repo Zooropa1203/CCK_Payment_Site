@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
+
 import { ROUTES } from "../routes/paths";
+
 import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {

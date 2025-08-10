@@ -1,18 +1,18 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
-import { ThemeProvider } from './contexts/ThemeContext';
-import { SignupProvider } from './context/SignupContext';
-import { ToastProvider } from './components/Toast';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import ErrorBoundary from './components/ErrorBoundary';
 import { LoadingState } from './components/LoadingStates';
+import { ToastProvider } from './components/Toast';
+import { SignupProvider } from './context/SignupContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import AppLayout from "./layouts/AppLayout";
-import { ROUTES, ROUTE_PATTERNS } from "./routes/paths";
-import SignupRouter from "./routes/SignupRouter";
-
 import HomePage_new from "./pages/HomePage_new"; // 메인 페이지는 즉시 로드
 import LoginPage_new from "./pages/LoginPage_new";
-import PasswordResetPage from "./pages/PasswordResetPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import PasswordResetPage from "./pages/PasswordResetPage";
+import { ROUTES, ROUTE_PATTERNS } from "./routes/paths";
+import SignupRouter from "./routes/SignupRouter";
 
 // 상세/스케줄/명단 페이지는 지연 로딩
 const CompetitionRegisterPage = lazy(() => import("./pages/CompetitionRegisterPage"));

@@ -20,7 +20,7 @@ interface Competition {
 
 const HomePage_new: React.FC = () => {
   const navigate = useNavigate();
-  const [useDummy, setUseDummy] = useState<boolean>(getUseDummy());
+  const [useDummy, _setUseDummy] = useState<boolean>(getUseDummy());
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [ongoingCompetitions, setOngoingCompetitions] = useState<Competition[]>([]);

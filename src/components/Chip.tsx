@@ -1,5 +1,4 @@
-import { forwardRef } from 'react';
-import type { HTMLAttributes, ReactNode } from 'react';
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 export type ChipVariant = 'default' | 'primary' | 'success' | 'warning' | 'error';
 export type ChipSize = 'sm' | 'md';

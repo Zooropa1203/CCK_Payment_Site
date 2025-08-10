@@ -1,6 +1,7 @@
 // src/services/auth.ts
-import { http } from './http.js';
 import type { User, LoginRequest, SignupRequest } from '../../shared/schemas.js';
+
+import { http } from './http.js';
 
 export interface LoginResponse {
   user: User;

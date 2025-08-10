@@ -1,7 +1,8 @@
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+
 import { useAuth } from '../contexts/AuthContext';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 export default function LoginPage() {
   const { user, login, register } = useAuth();

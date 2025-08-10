@@ -1,6 +1,7 @@
 // src/services/competition.ts
-import { http } from './http.js';
 import type { Competition, CompetitionDetail, ScheduleItem, Participant } from '../../shared/schemas.js';
+
+import { http } from './http.js';
 
 export interface CompetitionsResponse {
   competitions: Competition[];

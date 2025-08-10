@@ -1,5 +1,6 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+
 import { useDebounce, useThrottle, useLocalStorage } from '../hooks/useOptimization'
 
 describe('최적화 Hooks 테스트', () => {

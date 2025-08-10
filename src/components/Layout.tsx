@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useTheme } from '../contexts/ThemeContext';
 import { SunIcon, MoonIcon, UserIcon } from '@heroicons/react/24/outline';
 import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+
+import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface LayoutProps {
   children: ReactNode;

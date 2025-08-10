@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import SignupTerms from "../pages/SignupTerms";
+
 import SignupInfo from "../pages/SignupInfo";
+import SignupTerms from "../pages/SignupTerms";
 import SignupVerify from "../pages/SignupVerify";
 
 export default function SignupRouter() {

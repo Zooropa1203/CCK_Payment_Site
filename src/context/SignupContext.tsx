@@ -1,5 +1,4 @@
-import { createContext, useContext, useState } from "react";
-import type { ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 
 type SignupState = {
   agreedAll: boolean;

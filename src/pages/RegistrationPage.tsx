@@ -1,7 +1,8 @@
+import { CheckIcon, CurrencyYenIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+
 import { useAuth } from '../contexts/AuthContext';
-import { CheckIcon, CurrencyYenIcon } from '@heroicons/react/24/outline';
 
 interface Competition {
   id: number;

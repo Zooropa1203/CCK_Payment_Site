@@ -30,7 +30,7 @@ export default function ForgotPassword() {
       
       setMsg('입력하신 주소로 임시 비밀번호 또는 재설정 링크를 보냈습니다. 메일함(스팸 포함)을 확인해 주세요.');
       setIsError(false);
-    } catch (err) {
+    } catch (_err) {
       setMsg('요청 처리에 실패했습니다. 잠시 후 다시 시도해 주세요.');
       setIsError(true);
     } finally {

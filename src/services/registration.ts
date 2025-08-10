@@ -1,6 +1,7 @@
 // src/services/registration.ts
-import { http } from './http.js';
 import type { Registration, RegistrationRequest } from '../../shared/schemas.js';
+
+import { http } from './http.js';
 
 export interface RegistrationResponse {
   registration: Registration;

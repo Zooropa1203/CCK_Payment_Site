@@ -1,6 +1,7 @@
-import { useSignup } from "../context/SignupContext";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useSignup } from "../context/SignupContext";
 import { ROUTES } from "../routes/paths";
 
 export default function SignupTerms() {

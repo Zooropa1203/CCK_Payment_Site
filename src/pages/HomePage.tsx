@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
 import { useAuth } from '../contexts/AuthContext';
 
 interface Competition {
@@ -19,7 +20,7 @@ interface Competition {
 
 export default function HomePage() {
   const { user, logout } = useAuth();
-  const [competitions, setCompetitions] = useState<Competition[]>([]);
+  const [_competitions, setCompetitions] = useState<Competition[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

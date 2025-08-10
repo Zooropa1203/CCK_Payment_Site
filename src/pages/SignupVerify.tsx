@@ -1,6 +1,7 @@
-import { useSignup } from "../context/SignupContext";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useSignup } from "../context/SignupContext";
 import { ROUTES } from "../routes/paths";
 
 export default function SignupVerify() {
@@ -44,7 +45,7 @@ export default function SignupVerify() {
       
       setTimeLeft(300);
       alert("인증번호가 재발송되었습니다.");
-    } catch (err) {
+    } catch (_err) {
       setError("인증번호 재발송에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsResending(false);
@@ -81,7 +82,7 @@ export default function SignupVerify() {
       } else {
         setError("인증번호가 올바르지 않습니다.");
       }
-    } catch (err) {
+    } catch (_err) {
       setError("인증 확인에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsVerifying(false);

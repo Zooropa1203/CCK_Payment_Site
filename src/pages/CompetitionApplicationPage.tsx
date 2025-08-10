@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
+
 import type { Competition } from '../types';
 import { KRW, fmt } from '../utils/format';
 import '../styles/application.css';

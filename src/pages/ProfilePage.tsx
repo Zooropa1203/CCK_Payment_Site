@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
 import { 
   UserIcon, 
   EnvelopeIcon, 
@@ -11,6 +9,9 @@ import {
 } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import { useState, useEffect } from 'react';
+
+import { useAuth } from '../contexts/AuthContext';
 
 interface Registration {
   id: number;

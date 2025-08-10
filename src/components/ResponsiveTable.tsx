@@ -1,5 +1,6 @@
-import { useIsMobile } from '../hooks/useMatchMedia';
 import type { ReactNode } from 'react';
+
+import { useIsMobile } from '../hooks/useMatchMedia';
 
 interface TableColumn {
   key: string;
