@@ -1,18 +1,20 @@
-import { useSignup } from "../context/SignupContext";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useSignup } from '../context/SignupContext';
+import { ROUTES } from '../routes/paths';
 
 const EMAIL_DOMAINS = [
-  "직접입력",
-  "naver.com",
-  "daum.net", 
-  "gmail.com",
-  "nate.com",
-  "hanmail.net",
-  "dreamwiz.com",
-  "yahoo.com",
-  "icloud.com",
-  "hotmail.com",
+  '직접입력',
+  'naver.com',
+  'daum.net',
+  'gmail.com',
+  'nate.com',
+  'hanmail.net',
+  'dreamwiz.com',
+  'yahoo.com',
+  'icloud.com',
+  'hotmail.com',
 ];
 
 // 간단한 이메일 검증 (RFC-lite)
@@ -24,9 +26,9 @@ function isValidEmailLocal(s: string) {
 function isValidEmailDomain(s: string) {
   // 영문/숫자/.-, 점 최소 1개, 양끝/연속점 금지
   if (!/^[A-Za-z0-9.-]+$/.test(s)) return false;
-  if (!s.includes(".")) return false;
-  if (s.startsWith(".") || s.endsWith(".")) return false;
-  if (s.includes("..")) return false;
+  if (!s.includes('.')) return false;
+  if (s.startsWith('.') || s.endsWith('.')) return false;
+  if (s.includes('..')) return false;
   return true;
 }
 
@@ -35,17 +37,17 @@ export default function SignupInfo() {
   const nav = useNavigate();
   const [showPw, setShowPw] = useState(false);
   const [showPw2, setShowPw2] = useState(false);
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   // 비밀번호 관련 state
-  const [pw, setPw] = useState(state.password || "");
-  const [pw2, setPw2] = useState("");
+  const [pw, setPw] = useState(state.password || '');
+  const [pw2, setPw2] = useState('');
 
   // 이메일 관련 state
-  const [emailLocal, setEmailLocal] = useState(state.email.split("@")[0] || "");
-  const initialDomain = state.email.split("@")[1] || "naver.com";
+  const [emailLocal, setEmailLocal] = useState(state.email.split('@')[0] || '');
+  const initialDomain = state.email.split('@')[1] || 'naver.com';
   const [domainMode, setDomainMode] = useState(
-    EMAIL_DOMAINS.includes(initialDomain) ? initialDomain : "직접입력"
+    EMAIL_DOMAINS.includes(initialDomain) ? initialDomain : '직접입력'
   );
   const [emailDomain, setEmailDomain] = useState(
     EMAIL_DOMAINS.includes(initialDomain) ? initialDomain : initialDomain
@@ -53,39 +55,53 @@ export default function SignupInfo() {
 
   // 비밀번호 유효성 검증
   function validatePassword(pw: string, id: string) {
-    if (pw.length < 8 || pw.length > 16) return "8~16자로 입력하세요";
-    if (/\s/.test(pw)) return "공백은 사용할 수 없습니다";
-    const kinds = [/[a-z]/, /[A-Z]/, /\d/, /[^A-Za-z0-9]/].reduce((n, r) => n + (r.test(pw)?1:0), 0);
-    if (kinds < 2) return "영문과 숫자를 포함해 주세요";
-    if (/(.)\1\1/.test(pw)) return "같은 문자를 3회 이상 연속 사용할 수 없습니다";
-    if (id && pw.toLowerCase().includes(id.toLowerCase())) return "아이디를 비밀번호에 포함할 수 없습니다";
-    return "";
+    if (pw.length < 8 || pw.length > 16) return '8~16자로 입력하세요';
+    if (/\s/.test(pw)) return '공백은 사용할 수 없습니다';
+    const kinds = [/[a-z]/, /[A-Z]/, /\d/, /[^A-Za-z0-9]/].reduce(
+      (n, r) => n + (r.test(pw) ? 1 : 0),
+      0
+    );
+    if (kinds < 2) return '영문과 숫자를 포함해 주세요';
+    if (/(.)\1\1/.test(pw))
+      return '같은 문자를 3회 이상 연속 사용할 수 없습니다';
+    if (id && pw.toLowerCase().includes(id.toLowerCase()))
+      return '아이디를 비밀번호에 포함할 수 없습니다';
+    return '';
   }
 
   const pwErr = validatePassword(pw, state.id);
-  const pw2Err = pw && pw2 && pw !== pw2 ? "비밀번호가 일치하지 않습니다" : "";
+  const pw2Err = pw && pw2 && pw !== pw2 ? '비밀번호가 일치하지 않습니다' : '';
 
   // 합성 이메일 (도메인은 소문자)
-  const domainActual = (domainMode === "직접입력" ? emailDomain : domainMode).toLowerCase();
-  const emailComposed = emailLocal && domainActual ? `${emailLocal}@${domainActual}` : "";
+  const domainActual = (
+    domainMode === '직접입력' ? emailDomain : domainMode
+  ).toLowerCase();
+  const emailComposed =
+    emailLocal && domainActual ? `${emailLocal}@${domainActual}` : '';
 
   const validate = () => {
-    const newErrors: {[key: string]: string} = {};
-    
+    const newErrors: { [key: string]: string } = {};
+
     if (!state.id.trim()) {
-      newErrors.id = "아이디를 입력해주세요";
+      newErrors.id = '아이디를 입력해주세요';
     } else if (state.id.length < 4) {
-      newErrors.id = "아이디는 4자 이상이어야 합니다";
+      newErrors.id = '아이디는 4자 이상이어야 합니다';
     } else if (!/^[a-zA-Z0-9_]+$/.test(state.id)) {
-      newErrors.id = "아이디는 영문, 숫자, 언더바(_)만 사용 가능합니다";
+      newErrors.id = '아이디는 영문, 숫자, 언더바(_)만 사용 가능합니다';
     }
 
     // 이메일 검증
-    const emailLocalErr = emailLocal && !isValidEmailLocal(emailLocal) ? "이메일 앞자리를 확인해 주세요." : "";
-    const emailDomainErr = domainActual && !isValidEmailDomain(domainActual) ? "도메인을 올바르게 입력해 주세요." : "";
-    
+    const emailLocalErr =
+      emailLocal && !isValidEmailLocal(emailLocal)
+        ? '이메일 앞자리를 확인해 주세요.'
+        : '';
+    const emailDomainErr =
+      domainActual && !isValidEmailDomain(domainActual)
+        ? '도메인을 올바르게 입력해 주세요.'
+        : '';
+
     if (!emailLocal || !domainActual) {
-      newErrors.email = "이메일을 올바르게 입력하세요.";
+      newErrors.email = '이메일을 올바르게 입력하세요.';
     } else if (emailLocalErr) {
       newErrors.email = emailLocalErr;
     } else if (emailDomainErr) {
@@ -97,19 +113,26 @@ export default function SignupInfo() {
   };
 
   // 제출 가능 여부 계산
-  const canSubmit = !pwErr && !pw2Err && pw.length > 0 && pw2.length > 0 && 
-                    state.id.length >= 4 && emailLocal && domainActual && 
-                    !errors.email && !errors.id;
+  const canSubmit =
+    !pwErr &&
+    !pw2Err &&
+    pw.length > 0 &&
+    pw2.length > 0 &&
+    state.id.length >= 4 &&
+    emailLocal &&
+    domainActual &&
+    !errors.email &&
+    !errors.id;
 
   const onNext = () => {
     if (!validate() || !canSubmit) return;
-    
+
     setForm({ email: emailComposed, password: pw });
-    nav("/signup/verify");
+    nav(ROUTES.SIGNUP.VERIFY);
   };
 
   const onBack = () => {
-    nav("/signup");
+    nav(ROUTES.SIGNUP.TERMS);
   };
 
   return (
@@ -731,7 +754,7 @@ export default function SignupInfo() {
               <li>3 이메일인증</li>
             </ol>
 
-            <form onSubmit={(e) => e.preventDefault()}>
+            <form onSubmit={e => e.preventDefault()}>
               <div className="form-group">
                 <label htmlFor="signup-id" className="form-label">
                   아이디
@@ -741,10 +764,10 @@ export default function SignupInfo() {
                   type="text"
                   className={`form-input ${errors.id ? 'error' : ''}`}
                   value={state.id}
-                  onChange={(e) => setForm({ id: e.target.value })}
+                  onChange={e => setForm({ id: e.target.value })}
                   placeholder="아이디를 입력하세요"
                   autoComplete="username"
-                  aria-describedby={errors.id ? "id-error" : "id-help"}
+                  aria-describedby={errors.id ? 'id-error' : 'id-help'}
                 />
                 {errors.id ? (
                   <div id="id-error" className="form-error" role="alert">
@@ -764,10 +787,10 @@ export default function SignupInfo() {
                 <div className="input-with-btn">
                   <input
                     id="signup-password"
-                    type={showPw ? "text" : "password"}
+                    type={showPw ? 'text' : 'password'}
                     className={`form-input ${pwErr ? 'error' : ''}`}
                     value={pw}
-                    onChange={(e) => setPw(e.target.value)}
+                    onChange={e => setPw(e.target.value)}
                     placeholder="비밀번호를 입력하세요"
                     autoComplete="new-password"
                     aria-describedby="pw-help"
@@ -777,13 +800,17 @@ export default function SignupInfo() {
                     type="button"
                     className="password-toggle ghost"
                     onClick={() => setShowPw(!showPw)}
-                    aria-label={showPw ? "비밀번호 숨기기" : "비밀번호 보기"}
+                    aria-label={showPw ? '비밀번호 숨기기' : '비밀번호 보기'}
                   >
-                    {showPw ? "숨기기" : "보기"}
+                    {showPw ? '숨기기' : '보기'}
                   </button>
                 </div>
-                <div id="pw-help" className={`form-help ${pwErr ? 'error' : ''}`} role={pwErr ? "alert" : undefined}>
-                  {pwErr || "8~16자, 공백 금지, 영문/숫자 포함"}
+                <div
+                  id="pw-help"
+                  className={`form-help ${pwErr ? 'error' : ''}`}
+                  role={pwErr ? 'alert' : undefined}
+                >
+                  {pwErr || '8~16자, 공백 금지, 영문/숫자 포함'}
                 </div>
               </div>
 
@@ -794,10 +821,10 @@ export default function SignupInfo() {
                 <div className="input-with-btn">
                   <input
                     id="signup-password2"
-                    type={showPw2 ? "text" : "password"}
+                    type={showPw2 ? 'text' : 'password'}
                     className={`form-input ${pw2Err ? 'error' : ''}`}
                     value={pw2}
-                    onChange={(e) => setPw2(e.target.value)}
+                    onChange={e => setPw2(e.target.value)}
                     placeholder="비밀번호를 다시 입력하세요"
                     autoComplete="new-password"
                     aria-invalid={!!pw2Err}
@@ -806,14 +833,17 @@ export default function SignupInfo() {
                     type="button"
                     className="password-toggle ghost"
                     onClick={() => setShowPw2(!showPw2)}
-                    aria-label={showPw2 ? "비밀번호 숨기기" : "비밀번호 보기"}
+                    aria-label={showPw2 ? '비밀번호 숨기기' : '비밀번호 보기'}
                   >
-                    {showPw2 ? "숨기기" : "보기"}
+                    {showPw2 ? '숨기기' : '보기'}
                   </button>
                 </div>
                 {pw2 && (
-                  <div className={`form-help ${pw2Err ? 'error' : 'success'}`} role={pw2Err ? "alert" : undefined}>
-                    {pw2Err || "비밀번호가 일치합니다"}
+                  <div
+                    className={`form-help ${pw2Err ? 'error' : 'success'}`}
+                    role={pw2Err ? 'alert' : undefined}
+                  >
+                    {pw2Err || '비밀번호가 일치합니다'}
                   </div>
                 )}
               </div>
@@ -828,9 +858,9 @@ export default function SignupInfo() {
                     type="text"
                     className={`email-local ${errors.email ? 'error' : ''}`}
                     value={emailLocal}
-                    onChange={(e) => {
+                    onChange={e => {
                       setEmailLocal(e.target.value);
-                      if (errors.email) setErrors({...errors, email: ""});
+                      if (errors.email) setErrors({ ...errors, email: '' });
                     }}
                     placeholder="이메일 앞자리"
                     inputMode="email"
@@ -840,26 +870,28 @@ export default function SignupInfo() {
                   <select
                     className={`email-domain-select ${errors.email ? 'error' : ''}`}
                     value={domainMode}
-                    onChange={(e) => {
+                    onChange={e => {
                       const v = e.target.value;
                       setDomainMode(v);
-                      if (v !== "직접입력") setEmailDomain(v);
-                      if (errors.email) setErrors({...errors, email: ""});
+                      if (v !== '직접입력') setEmailDomain(v);
+                      if (errors.email) setErrors({ ...errors, email: '' });
                     }}
                     aria-label="이메일 도메인 선택"
                   >
                     {EMAIL_DOMAINS.map(d => (
-                      <option key={d} value={d}>{d}</option>
+                      <option key={d} value={d}>
+                        {d}
+                      </option>
                     ))}
                   </select>
-                  {domainMode === "직접입력" && (
+                  {domainMode === '직접입력' && (
                     <input
                       type="text"
                       className={`email-domain-input ${errors.email ? 'error' : ''}`}
                       value={emailDomain}
-                      onChange={(e) => {
+                      onChange={e => {
                         setEmailDomain(e.target.value);
-                        if (errors.email) setErrors({...errors, email: ""});
+                        if (errors.email) setErrors({ ...errors, email: '' });
                       }}
                       placeholder="도메인 입력 (예: gmail.com)"
                       inputMode="email"
@@ -880,17 +912,17 @@ export default function SignupInfo() {
             </form>
 
             <div className="btn-group">
-              <button 
-                type="button" 
-                className="btn secondary" 
+              <button
+                type="button"
+                className="btn secondary"
                 onClick={onBack}
                 aria-label="이전 단계로 돌아가기"
               >
                 이전
               </button>
-              <button 
-                type="button" 
-                className="btn primary" 
+              <button
+                type="button"
+                className="btn primary"
                 onClick={onNext}
                 disabled={!canSubmit}
                 aria-label="다음 단계로 진행하기"
@@ -905,11 +937,10 @@ export default function SignupInfo() {
         <footer className="footer" role="contentinfo">
           <div className="footer-content">
             <div className="footer-line">
-              큐빙클럽코리아 | 사업자등록번호 : 358-54-00896 | 대표 : 정현재 | 이메일 : cubingclubkorea@gmail.com
+              큐빙클럽코리아 | 사업자등록번호 : 358-54-00896 | 대표 : 정현재 |
+              이메일 : cubingclubkorea@gmail.com
             </div>
-            <div className="footer-line">
-              COPYRIGHT © Cubing Club Korea
-            </div>
+            <div className="footer-line">COPYRIGHT © Cubing Club Korea</div>
           </div>
         </footer>
       </div>

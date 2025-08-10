@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import { CheckIcon, CurrencyYenIcon } from '@heroicons/react/24/outline';
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+
+import { useAuth } from '../contexts/AuthContext';
 
 interface Competition {
   id: number;
@@ -28,21 +29,20 @@ const eventIcons: { [key: string]: string } = {
   '3x3x3 One-Handed': '🖐️',
   '3x3x3 Blindfolded': '👁️',
   '3x3x3 Feet': '🦶',
-  'Pyraminx': '🔺',
-  'Megaminx': '⬟',
-  'Skewb': '◊',
+  Pyraminx: '🔺',
+  Megaminx: '⬟',
+  Skewb: '◊',
   'Square-1': '⬜',
-  'Clock': '🕐',
+  Clock: '🕐',
   '3x3x3 Multi-Blind': '👁️‍🗨️',
   '4x4x4 Blindfolded': '👁️',
-  '5x5x5 Blindfolded': '👁️'
+  '5x5x5 Blindfolded': '👁️',
 };
 
 export default function RegistrationPage() {
   const { id } = useParams<{ id: string }>();
   const { user, token } = useAuth();
-  const navigate = useNavigate();
-  
+
   const [competition, setCompetition] = useState<Competition | null>(null);
   const [selectedEvents, setSelectedEvents] = useState<EventSelection>({});
   const [loading, setLoading] = useState(true);
@@ -76,7 +76,7 @@ export default function RegistrationPage() {
   const handleEventToggle = (event: string) => {
     setSelectedEvents(prev => ({
       ...prev,
-      [event]: !prev[event]
+      [event]: !prev[event],
     }));
   };
 
@@ -86,7 +86,7 @@ export default function RegistrationPage() {
 
   const handleRegistration = async () => {
     const selected = getSelectedEventsList();
-    
+
     if (selected.length === 0) {
       setError('최소 하나의 종목을 선택해주세요.');
       return;
@@ -100,12 +100,12 @@ export default function RegistrationPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           competition_id: parseInt(id!),
-          events: selected
-        })
+          events: selected,
+        }),
       });
 
       const data = await response.json();
@@ -135,7 +135,7 @@ export default function RegistrationPage() {
       // 여기서 토스 페이먼츠 위젯을 호출
       // 현재는 시뮬레이션으로 처리
       const paymentSuccess = await simulatePayment(paymentId, amount);
-      
+
       if (paymentSuccess) {
         setRegistrationComplete(true);
       } else {
@@ -148,8 +148,11 @@ export default function RegistrationPage() {
   };
 
   // 결제 시뮬레이션 (실제로는 토스 페이먼츠 API 호출)
-  const simulatePayment = async (paymentId: string, amount: number): Promise<boolean> => {
-    return new Promise((resolve) => {
+  const simulatePayment = async (
+    _paymentId: string,
+    _amount: number
+  ): Promise<boolean> => {
+    return new Promise(resolve => {
       setTimeout(() => {
         // 90% 확률로 성공
         resolve(Math.random() > 0.1);
@@ -192,13 +195,13 @@ export default function RegistrationPage() {
             {competition.name} 대회 접수가 성공적으로 완료되었습니다.
           </p>
           <div className="space-y-4">
-            <Link 
+            <Link
               to={`/competition/${competition.id}`}
               className="btn-primary w-full block text-center"
             >
               대회 페이지로 돌아가기
             </Link>
-            <Link 
+            <Link
               to="/profile"
               className="btn-secondary w-full block text-center"
             >
@@ -248,7 +251,9 @@ export default function RegistrationPage() {
           </div>
           {user?.cck_id && (
             <div>
-              <span className="text-gray-600 dark:text-gray-400">CCK 아이디:</span>
+              <span className="text-gray-600 dark:text-gray-400">
+                CCK 아이디:
+              </span>
               <span className="ml-2 font-medium text-gray-900 dark:text-gray-100">
                 {user.cck_id}
               </span>
@@ -256,7 +261,9 @@ export default function RegistrationPage() {
           )}
           {user?.phone && (
             <div>
-              <span className="text-gray-600 dark:text-gray-400">전화번호:</span>
+              <span className="text-gray-600 dark:text-gray-400">
+                전화번호:
+              </span>
               <span className="ml-2 font-medium text-gray-900 dark:text-gray-100">
                 {user.phone}
               </span>
@@ -271,7 +278,7 @@ export default function RegistrationPage() {
           종목 선택
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {competition.events.map((event) => (
+          {competition.events.map(event => (
             <button
               key={event}
               onClick={() => handleEventToggle(event)}
@@ -282,12 +289,8 @@ export default function RegistrationPage() {
               }`}
             >
               <div className="text-center">
-                <div className="text-3xl mb-2">
-                  {eventIcons[event] || '🧩'}
-                </div>
-                <div className="text-sm font-medium">
-                  {event}
-                </div>
+                <div className="text-3xl mb-2">{eventIcons[event] || '🧩'}</div>
+                <div className="text-sm font-medium">{event}</div>
                 {selectedEvents[event] && (
                   <div className="mt-2">
                     <CheckIcon className="w-5 h-5 text-primary-600 mx-auto" />
@@ -324,7 +327,9 @@ export default function RegistrationPage() {
             </div>
             <div className="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">
               <div className="flex justify-between font-semibold">
-                <span className="text-gray-900 dark:text-gray-100">총 참가비</span>
+                <span className="text-gray-900 dark:text-gray-100">
+                  총 참가비
+                </span>
                 <span className="text-primary-600 dark:text-primary-400 text-lg">
                   {totalFee.toLocaleString()}원
                 </span>
@@ -337,9 +342,7 @@ export default function RegistrationPage() {
       {/* Error Message */}
       {error && (
         <div className="card p-4 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700">
-          <p className="text-red-700 dark:text-red-300 text-sm">
-            {error}
-          </p>
+          <p className="text-red-700 dark:text-red-300 text-sm">{error}</p>
         </div>
       )}
 
@@ -352,12 +355,11 @@ export default function RegistrationPage() {
         >
           <CurrencyYenIcon className="w-5 h-5" />
           <span>
-            {registering 
-              ? '처리 중...' 
-              : selectedCount === 0 
+            {registering
+              ? '처리 중...'
+              : selectedCount === 0
                 ? '종목을 선택해주세요'
-                : `결제하기 (${totalFee.toLocaleString()}원)`
-            }
+                : `결제하기 (${totalFee.toLocaleString()}원)`}
           </span>
         </button>
 
@@ -373,10 +375,7 @@ export default function RegistrationPage() {
 
       {/* Navigation */}
       <div className="text-center">
-        <Link 
-          to={`/competition/${competition.id}`}
-          className="btn-secondary"
-        >
+        <Link to={`/competition/${competition.id}`} className="btn-secondary">
           ← 대회 페이지로 돌아가기
         </Link>
       </div>

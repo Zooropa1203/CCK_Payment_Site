@@ -1,7 +1,16 @@
-import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+} from 'sequelize';
 import { sequelize } from '../config/sequelize.js';
 
-class Competition extends Model<InferAttributes<Competition>, InferCreationAttributes<Competition>> {
+class Competition extends Model<
+  InferAttributes<Competition>,
+  InferCreationAttributes<Competition>
+> {
   declare id: CreationOptional<number>;
   declare date: string;
   declare name: string;
@@ -33,91 +42,94 @@ class Competition extends Model<InferAttributes<Competition>, InferCreationAttri
   }
 }
 
-Competition.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  date: {
-    type: DataTypes.DATEONLY,
-    allowNull: false,
-    validate: {
-      isDate: true,
+Competition.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-  },
-  name: {
-    type: DataTypes.STRING(200),
-    allowNull: false,
-    validate: {
-      len: [3, 200],
+    date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      validate: {
+        isDate: true,
+      },
     },
-  },
-  location: {
-    type: DataTypes.STRING(300),
-    allowNull: false,
-    validate: {
-      len: [3, 300],
+    name: {
+      type: DataTypes.STRING(200),
+      allowNull: false,
+      validate: {
+        len: [3, 200],
+      },
     },
-  },
-  base_fee: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    validate: {
-      min: 0,
+    location: {
+      type: DataTypes.STRING(300),
+      allowNull: false,
+      validate: {
+        len: [3, 300],
+      },
     },
-  },
-  event_fee: {
-    type: DataTypes.JSON,
-    allowNull: false,
-    defaultValue: {},
-  },
-  reg_start_date: {
-    type: DataTypes.DATEONLY,
-    allowNull: false,
-    validate: {
-      isDate: true,
+    base_fee: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        min: 0,
+      },
     },
+    event_fee: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: {},
+    },
+    reg_start_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      validate: {
+        isDate: true,
+      },
+    },
+    reg_end_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      validate: {
+        isDate: true,
+        isAfterStartDate(value: string) {
+          if (value <= (this as any).reg_start_date) {
+            throw new Error('등록 종료일은 시작일보다 늦어야 합니다.');
+          }
+        },
+      },
+    },
+    events: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: [],
+      validate: {
+        isArray: true,
+      },
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
-  reg_end_date: {
-    type: DataTypes.DATEONLY,
-    allowNull: false,
-    validate: {
-      isDate: true,
-      isAfterStartDate(value: string) {
-        if (value <= (this as any).reg_start_date) {
-          throw new Error('등록 종료일은 시작일보다 늦어야 합니다.');
+  {
+    sequelize,
+    modelName: 'Competition',
+    tableName: 'competitions',
+    hooks: {
+      beforeCreate: competition => {
+        // 대회 날짜가 등록 기간보다 늦은지 확인
+        if (competition.date <= competition.reg_end_date) {
+          throw new Error('대회 날짜는 등록 종료일보다 늦어야 합니다.');
+        }
+      },
+      beforeUpdate: competition => {
+        if (competition.date <= competition.reg_end_date) {
+          throw new Error('대회 날짜는 등록 종료일보다 늦어야 합니다.');
         }
       },
     },
-  },
-  events: {
-    type: DataTypes.JSON,
-    allowNull: false,
-    defaultValue: [],
-    validate: {
-      isArray: true,
-    },
-  },
-  createdAt: DataTypes.DATE,
-  updatedAt: DataTypes.DATE,
-}, {
-  sequelize,
-  modelName: 'Competition',
-  tableName: 'competitions',
-  hooks: {
-    beforeCreate: (competition) => {
-      // 대회 날짜가 등록 기간보다 늦은지 확인
-      if (competition.date <= competition.reg_end_date) {
-        throw new Error('대회 날짜는 등록 종료일보다 늦어야 합니다.');
-      }
-    },
-    beforeUpdate: (competition) => {
-      if (competition.date <= competition.reg_end_date) {
-        throw new Error('대회 날짜는 등록 종료일보다 늦어야 합니다.');
-      }
-    },
-  },
-});
+  }
+);
 
 export default Competition;

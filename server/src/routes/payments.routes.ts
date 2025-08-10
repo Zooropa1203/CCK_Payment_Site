@@ -91,7 +91,7 @@ router.post('/confirm', async (req: Request, res: Response) => {
 
     // TODO: 실제 토스페이먼츠 API 호출하여 결제 승인
     // 현재는 가짜 승인으로 처리
-    
+
     // 결제 상태 업데이트
     await payment.update({
       status: 'completed',
@@ -192,11 +192,19 @@ router.get('/:payment_id', async (req: Request, res: Response) => {
     const { payment_id } = req.params;
 
     const payment = await Payment.findByPk(payment_id, {
-      include: [{
-        model: Registration,
-        as: 'Registration',
-        attributes: ['id', 'competition_id', 'user_id', 'total_fee', 'registration_status'],
-      }],
+      include: [
+        {
+          model: Registration,
+          as: 'Registration',
+          attributes: [
+            'id',
+            'competition_id',
+            'user_id',
+            'total_fee',
+            'registration_status',
+          ],
+        },
+      ],
     });
 
     if (!payment) {

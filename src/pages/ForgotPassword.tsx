@@ -7,30 +7,32 @@ export default function ForgotPassword() {
   const [sending, setSending] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [isError, setIsError] = useState(false);
-  
+
   const canSubmit = value.trim().length > 0; // 어떤 글씨든 1자 이상이면 활성화
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit || sending) return;
-    
+
     try {
       setSending(true);
       setMsg(null);
       setIsError(false);
-      
+
       // Stub API — 실제 백엔드 연동 시 교체
       const res = await fetch('/api/auth/request-reset', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ emailOrText: value })
+        body: JSON.stringify({ emailOrText: value }),
       });
-      
+
       if (!res.ok) throw new Error('request failed');
-      
-      setMsg('입력하신 주소로 임시 비밀번호 또는 재설정 링크를 보냈습니다. 메일함(스팸 포함)을 확인해 주세요.');
+
+      setMsg(
+        '입력하신 주소로 임시 비밀번호 또는 재설정 링크를 보냈습니다. 메일함(스팸 포함)을 확인해 주세요.'
+      );
       setIsError(false);
-    } catch (err) {
+    } catch {
       setMsg('요청 처리에 실패했습니다. 잠시 후 다시 시도해 주세요.');
       setIsError(true);
     } finally {
@@ -48,17 +50,17 @@ export default function ForgotPassword() {
     <>
       <main className="auth-page" aria-labelledby="forgot-title">
         <form className="auth-card" onSubmit={onSubmit} noValidate>
-          <h1 id="forgot-title" className="title">비밀번호 찾기</h1>
-          
+          <h1 id="forgot-title" className="title">
+            비밀번호 찾기
+          </h1>
+
           <div className="field">
-            <label htmlFor="forgot-input">
-              회원가입 시 입력한 이메일 주소
-            </label>
+            <label htmlFor="forgot-input">회원가입 시 입력한 이메일 주소</label>
             <input
               id="forgot-input"
               type="text"
               value={value}
-              onChange={(e) => setValue(e.target.value)}
+              onChange={e => setValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="예) example@gmail.com"
               aria-describedby="forgot-help"

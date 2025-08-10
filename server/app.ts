@@ -15,10 +15,16 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // 미들웨어 설정
-app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'], // 프론트엔드 URL
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'http://localhost:5175',
+    ], // 프론트엔드 URL
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -68,14 +74,21 @@ app.use('*', (req, res) => {
 });
 
 // 에러 핸들러
-app.use((error: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('서버 오류:', error);
-  res.status(500).json({
-    success: false,
-    message: '서버 내부 오류가 발생했습니다.',
-    error: process.env.NODE_ENV === 'development' ? error.message : undefined,
-  });
-});
+app.use(
+  (
+    error: any,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error('서버 오류:', error);
+    res.status(500).json({
+      success: false,
+      message: '서버 내부 오류가 발생했습니다.',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+    });
+  }
+);
 
 // 서버 시작 함수
 async function startServer() {
@@ -103,12 +116,20 @@ async function startServer() {
       console.log(`   GET  /api/competitions/:id       - 대회 상세 정보`);
       console.log(`   POST /api/auth/register          - 회원가입`);
       console.log(`   POST /api/auth/login             - 로그인`);
-      console.log(`   GET  /api/auth/check-username/:username - 아이디 중복 확인`);
-      console.log(`   GET  /api/auth/check-email/:email       - 이메일 중복 확인`);
+      console.log(
+        `   GET  /api/auth/check-username/:username - 아이디 중복 확인`
+      );
+      console.log(
+        `   GET  /api/auth/check-email/:email       - 이메일 중복 확인`
+      );
       console.log(`   POST /api/auth/request-reset     - 비밀번호 재설정 요청`);
       console.log(`   POST /api/registrations          - 대회 참가 신청`);
-      console.log(`   GET  /api/registrations/user/:user_id - 사용자별 신청 목록`);
-      console.log(`   GET  /api/registrations/competition/:competition_id - 대회별 참가자 목록`);
+      console.log(
+        `   GET  /api/registrations/user/:user_id - 사용자별 신청 목록`
+      );
+      console.log(
+        `   GET  /api/registrations/competition/:competition_id - 대회별 참가자 목록`
+      );
       console.log('');
     });
   } catch (error) {

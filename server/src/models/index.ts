@@ -53,8 +53,8 @@ async function createSampleData() {
             '3x3': 5000,
             '4x4': 7000,
             '5x5': 7000,
-            'OH': 6000,
-            'Pyraminx': 5000,
+            OH: 6000,
+            Pyraminx: 5000,
           },
           reg_start_date: '2025-09-01',
           reg_end_date: '2025-11-30',
@@ -68,7 +68,7 @@ async function createSampleData() {
           event_fee: {
             '3x3': 4000,
             '4x4': 6000,
-            'OH': 5000,
+            OH: 5000,
           },
           reg_start_date: '2025-08-15',
           reg_end_date: '2025-10-10',
@@ -115,4 +115,12 @@ async function initializeDatabase() {
   }
 }
 
-export { Competition, User, Registration, Payment, setupAssociations, createSampleData, initializeDatabase };
+export {
+  Competition,
+  User,
+  Registration,
+  Payment,
+  setupAssociations,
+  createSampleData,
+  initializeDatabase,
+};

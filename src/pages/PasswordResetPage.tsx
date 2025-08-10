@@ -1,18 +1,20 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import { ROUTES } from '../routes/paths';
 
 export default function PasswordResetPage() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) {
-      alert("이메일을 입력해주세요");
+      alert('이메일을 입력해주세요');
       return;
     }
     // TODO: API 연동
-    console.log("비밀번호 재설정 이메일 발송:", email);
+    console.log('비밀번호 재설정 이메일 발송:', email);
     setIsSubmitted(true);
   };
 
@@ -23,12 +25,15 @@ export default function PasswordResetPage() {
           <>
             <h1 className="reset-title">비밀번호 찾기</h1>
             <p className="reset-description">
-              가입 시 등록한 이메일 주소를 입력하시면<br />
+              가입 시 등록한 이메일 주소를 입력하시면
+              <br />
               비밀번호 재설정 링크를 보내드립니다.
             </p>
-            
+
             <form onSubmit={onSubmit}>
-              <label htmlFor="reset-email" className="sr-only">이메일</label>
+              <label htmlFor="reset-email" className="sr-only">
+                이메일
+              </label>
               <input
                 id="reset-email"
                 name="email"
@@ -36,20 +41,24 @@ export default function PasswordResetPage() {
                 autoComplete="email"
                 placeholder="이메일 주소 입력"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 className="reset-input"
                 required
               />
-              
+
               <button type="submit" className="reset-button">
                 재설정 링크 발송
               </button>
             </form>
-            
+
             <div className="reset-links">
-              <Link to="/login" className="text-link">로그인으로 돌아가기</Link>
+              <Link to={ROUTES.LOGIN} className="text-link">
+                로그인으로 돌아가기
+              </Link>
               <span className="divider">|</span>
-              <Link to="/signup/terms" className="text-link">회원가입</Link>
+              <Link to={ROUTES.SIGNUP.TERMS} className="text-link">
+                회원가입
+              </Link>
             </div>
           </>
         ) : (
@@ -57,17 +66,18 @@ export default function PasswordResetPage() {
             <h1 className="reset-title">이메일 발송 완료</h1>
             <p className="reset-description">
               <strong>{email}</strong>로<br />
-              비밀번호 재설정 링크를 발송했습니다.<br />
+              비밀번호 재설정 링크를 발송했습니다.
+              <br />
               이메일을 확인해주세요.
             </p>
-            
-            <Link to="/login" className="reset-button-link">
+
+            <Link to={ROUTES.LOGIN} className="reset-button-link">
               로그인 페이지로 이동
             </Link>
           </>
         )}
       </div>
-      
+
       <style>{`
         .reset-page {
           min-height: 100vh;

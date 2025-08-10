@@ -15,7 +15,7 @@
   --border-light: #e5e7eb;
   --border-dark: #6b7280;
   --surface: #ffffff;
-  --shadow: 0 1px 3px rgba(0,0,0,.1);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   --border-radius: 8px;
   --border-radius-sm: 6px;
   --text-on-dark: #ffffff;
@@ -35,7 +35,7 @@
     --border-light: #374151;
     --border-dark: #6b7280;
     --surface: #111827;
-    --shadow: 0 1px 3px rgba(0,0,0,.4);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     --text-on-dark: #ffffff;
   }
 }
@@ -47,7 +47,8 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -103,7 +104,9 @@ body {
   background: var(--surface);
   color: var(--text);
   font-size: 16px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .field input:focus {
@@ -142,8 +145,8 @@ body {
 }
 
 .primary.lg:disabled {
-  background: #9CA3AF;
-  border-color: #9CA3AF;
+  background: #9ca3af;
+  border-color: #9ca3af;
   cursor: not-allowed;
 }
 

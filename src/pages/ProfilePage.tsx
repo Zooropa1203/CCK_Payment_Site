@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { 
-  UserIcon, 
-  EnvelopeIcon, 
-  PhoneIcon, 
+import {
+  UserIcon,
+  EnvelopeIcon,
+  PhoneIcon,
   IdentificationIcon,
   KeyIcon,
   CalendarIcon,
-  MapPinIcon
+  MapPinIcon,
 } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import { useState, useEffect } from 'react';
+
+import { useAuth } from '../contexts/AuthContext';
 
 interface Registration {
   id: number;
@@ -29,19 +30,19 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
-  
+
   // Profile form state
   const [profileForm, setProfileForm] = useState({
     name: user?.name || '',
     phone: user?.phone || '',
-    cck_id: user?.cck_id || ''
+    cck_id: user?.cck_id || '',
   });
 
   // Password form state
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
     newPassword: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
 
   const [message, setMessage] = useState('');
@@ -56,7 +57,7 @@ export default function ProfilePage() {
       setProfileForm({
         name: user.name || '',
         phone: user.phone || '',
-        cck_id: user.cck_id || ''
+        cck_id: user.cck_id || '',
       });
     }
   }, [user]);
@@ -65,8 +66,8 @@ export default function ProfilePage() {
     try {
       const response = await fetch('/api/users/registrations', {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {
@@ -90,9 +91,9 @@ export default function ProfilePage() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(profileForm)
+        body: JSON.stringify(profileForm),
       });
 
       if (response.ok) {
@@ -104,7 +105,7 @@ export default function ProfilePage() {
         const data = await response.json();
         setError(data.message || '프로필 업데이트에 실패했습니다.');
       }
-    } catch (error) {
+    } catch {
       setError('프로필 업데이트 중 오류가 발생했습니다.');
     }
   };
@@ -129,12 +130,12 @@ export default function ProfilePage() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           currentPassword: passwordForm.currentPassword,
-          newPassword: passwordForm.newPassword
-        })
+          newPassword: passwordForm.newPassword,
+        }),
       });
 
       if (response.ok) {
@@ -143,13 +144,13 @@ export default function ProfilePage() {
         setPasswordForm({
           currentPassword: '',
           newPassword: '',
-          confirmPassword: ''
+          confirmPassword: '',
         });
       } else {
         const data = await response.json();
         setError(data.message || '비밀번호 변경에 실패했습니다.');
       }
-    } catch (error) {
+    } catch {
       setError('비밀번호 변경 중 오류가 발생했습니다.');
     }
   };
@@ -193,15 +194,20 @@ export default function ProfilePage() {
           {user?.name}
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          {user?.role === 'administrator' ? '관리자' : 
-           user?.role === 'organizer' ? '주최자' : '일반 회원'}
+          {user?.role === 'administrator'
+            ? '관리자'
+            : user?.role === 'organizer'
+              ? '주최자'
+              : '일반 회원'}
         </p>
       </div>
 
       {/* Messages */}
       {message && (
         <div className="card p-4 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700">
-          <p className="text-green-700 dark:text-green-300 text-sm">{message}</p>
+          <p className="text-green-700 dark:text-green-300 text-sm">
+            {message}
+          </p>
         </div>
       )}
 
@@ -234,38 +240,56 @@ export default function ProfilePage() {
             {editing ? (
               <form onSubmit={handleProfileUpdate} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="profile-name"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     이름
                   </label>
                   <input
+                    id="profile-name"
                     type="text"
                     value={profileForm.name}
-                    onChange={(e) => setProfileForm({...profileForm, name: e.target.value})}
+                    onChange={e =>
+                      setProfileForm({ ...profileForm, name: e.target.value })
+                    }
                     className="input-field"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="profile-phone"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     전화번호
                   </label>
                   <input
+                    id="profile-phone"
                     type="tel"
                     value={profileForm.phone}
-                    onChange={(e) => setProfileForm({...profileForm, phone: e.target.value})}
+                    onChange={e =>
+                      setProfileForm({ ...profileForm, phone: e.target.value })
+                    }
                     className="input-field"
                     placeholder="010-1234-5678"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="profile-cck-id"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     CCK 아이디
                   </label>
                   <input
+                    id="profile-cck-id"
                     type="text"
                     value={profileForm.cck_id}
-                    onChange={(e) => setProfileForm({...profileForm, cck_id: e.target.value})}
+                    onChange={e =>
+                      setProfileForm({ ...profileForm, cck_id: e.target.value })
+                    }
                     className="input-field"
                   />
                 </div>
@@ -279,15 +303,21 @@ export default function ProfilePage() {
                 <div className="flex items-center space-x-3">
                   <EnvelopeIcon className="w-5 h-5 text-gray-400" />
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">이메일</p>
-                    <p className="font-medium text-gray-900 dark:text-gray-100">{user?.email}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      이메일
+                    </p>
+                    <p className="font-medium text-gray-900 dark:text-gray-100">
+                      {user?.email}
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-3">
                   <PhoneIcon className="w-5 h-5 text-gray-400" />
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">전화번호</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      전화번호
+                    </p>
                     <p className="font-medium text-gray-900 dark:text-gray-100">
                       {user?.phone || '등록되지 않음'}
                     </p>
@@ -297,7 +327,9 @@ export default function ProfilePage() {
                 <div className="flex items-center space-x-3">
                   <IdentificationIcon className="w-5 h-5 text-gray-400" />
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">CCK 아이디</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      CCK 아이디
+                    </p>
                     <p className="font-medium text-gray-900 dark:text-gray-100">
                       {user?.cck_id || '등록되지 않음'}
                     </p>
@@ -321,7 +353,7 @@ export default function ProfilePage() {
                   setPasswordForm({
                     currentPassword: '',
                     newPassword: '',
-                    confirmPassword: ''
+                    confirmPassword: '',
                   });
                 }}
                 className="btn-secondary text-sm flex items-center space-x-2"
@@ -334,26 +366,44 @@ export default function ProfilePage() {
             {changingPassword ? (
               <form onSubmit={handlePasswordChange} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="current-password"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     현재 비밀번호
                   </label>
                   <input
+                    id="current-password"
                     type="password"
                     value={passwordForm.currentPassword}
-                    onChange={(e) => setPasswordForm({...passwordForm, currentPassword: e.target.value})}
+                    onChange={e =>
+                      setPasswordForm({
+                        ...passwordForm,
+                        currentPassword: e.target.value,
+                      })
+                    }
                     className="input-field"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="new-password"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     새 비밀번호
                   </label>
                   <input
+                    id="new-password"
                     type="password"
                     value={passwordForm.newPassword}
-                    onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
+                    onChange={e =>
+                      setPasswordForm({
+                        ...passwordForm,
+                        newPassword: e.target.value,
+                      })
+                    }
                     className="input-field"
                     required
                     minLength={6}
@@ -361,13 +411,22 @@ export default function ProfilePage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="confirm-new-password"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     새 비밀번호 확인
                   </label>
                   <input
+                    id="confirm-new-password"
                     type="password"
                     value={passwordForm.confirmPassword}
-                    onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
+                    onChange={e =>
+                      setPasswordForm({
+                        ...passwordForm,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                     className="input-field"
                     required
                   />
@@ -397,21 +456,35 @@ export default function ProfilePage() {
             </div>
           ) : registrations.length > 0 ? (
             <div className="space-y-4">
-              {registrations.map((registration) => (
-                <div key={registration.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+              {registrations.map(registration => (
+                <div
+                  key={registration.id}
+                  className="border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+                >
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="font-semibold text-gray-900 dark:text-gray-100">
                       {registration.competition_name}
                     </h3>
                     <div className="flex space-x-2">
-                      <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(registration.status)}`}>
-                        {registration.status === 'confirmed' ? '확정' :
-                         registration.status === 'pending' ? '대기' :
-                         registration.status === 'waitlist' ? '대기자' : '취소'}
+                      <span
+                        className={`px-2 py-1 text-xs rounded-full ${getStatusColor(registration.status)}`}
+                      >
+                        {registration.status === 'confirmed'
+                          ? '확정'
+                          : registration.status === 'pending'
+                            ? '대기'
+                            : registration.status === 'waitlist'
+                              ? '대기자'
+                              : '취소'}
                       </span>
-                      <span className={`px-2 py-1 text-xs rounded-full ${getPaymentStatusColor(registration.payment_status)}`}>
-                        {registration.payment_status === 'completed' ? '결제완료' :
-                         registration.payment_status === 'pending' ? '결제대기' : '결제실패'}
+                      <span
+                        className={`px-2 py-1 text-xs rounded-full ${getPaymentStatusColor(registration.payment_status)}`}
+                      >
+                        {registration.payment_status === 'completed'
+                          ? '결제완료'
+                          : registration.payment_status === 'pending'
+                            ? '결제대기'
+                            : '결제실패'}
                       </span>
                     </div>
                   </div>
@@ -420,7 +493,11 @@ export default function ProfilePage() {
                     <div className="flex items-center space-x-2">
                       <CalendarIcon className="w-4 h-4" />
                       <span>
-                        {format(new Date(registration.competition_date), 'yyyy년 M월 d일 (EEEE)', { locale: ko })}
+                        {format(
+                          new Date(registration.competition_date),
+                          'yyyy년 M월 d일 (EEEE)',
+                          { locale: ko }
+                        )}
                       </span>
                     </div>
 
@@ -430,7 +507,9 @@ export default function ProfilePage() {
                     </div>
 
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-gray-100 mb-1">참가 종목:</p>
+                      <p className="font-medium text-gray-900 dark:text-gray-100 mb-1">
+                        참가 종목:
+                      </p>
                       <div className="flex flex-wrap gap-1">
                         {registration.events.map((event, index) => (
                           <span
@@ -444,7 +523,11 @@ export default function ProfilePage() {
                     </div>
 
                     <p className="text-xs">
-                      접수일: {format(new Date(registration.registered_at), 'yyyy년 M월 d일')}
+                      접수일:{' '}
+                      {format(
+                        new Date(registration.registered_at),
+                        'yyyy년 M월 d일'
+                      )}
                     </p>
                   </div>
                 </div>
@@ -455,7 +538,10 @@ export default function ProfilePage() {
               <p className="text-gray-600 dark:text-gray-400">
                 아직 참가한 대회가 없습니다.
               </p>
-              <a href="/" className="text-primary-600 hover:text-primary-500 text-sm">
+              <a
+                href="/"
+                className="text-primary-600 hover:text-primary-500 text-sm"
+              >
                 대회 둘러보기 →
               </a>
             </div>

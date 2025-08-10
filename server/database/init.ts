@@ -3,7 +3,7 @@ import path from 'path';
 
 const dbPath = path.join(__dirname, '../../database.sqlite');
 
-export const db = new sqlite3.Database(dbPath, (err) => {
+export const db = new sqlite3.Database(dbPath, err => {
   if (err) {
     console.error('Error opening database:', err);
   } else {
@@ -70,7 +70,8 @@ export async function initDatabase() {
       `);
 
       // Payments table
-      db.run(`
+      db.run(
+        `
         CREATE TABLE IF NOT EXISTS payments (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           registration_id INTEGER NOT NULL,
@@ -83,14 +84,16 @@ export async function initDatabase() {
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (registration_id) REFERENCES registrations (id)
         )
-      `, (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          console.log('Database tables created successfully');
-          resolve();
+      `,
+        err => {
+          if (err) {
+            reject(err);
+          } else {
+            console.log('Database tables created successfully');
+            resolve();
+          }
         }
-      });
+      );
     });
   });
 }

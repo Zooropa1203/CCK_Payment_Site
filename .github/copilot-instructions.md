@@ -3,9 +3,11 @@
 # CCK Payment - 루빅스 큐브 대회 접수 및 결제 시스템
 
 ## 프로젝트 개요
+
 이 프로젝트는 루빅스 큐브 대회 접수 및 결제를 위한 웹 애플리케이션입니다.
 
 ## 기술 스택
+
 - **Frontend**: React + TypeScript + Vite
 - **Backend**: Node.js + Express + TypeScript
 - **Database**: SQLite (개발용)
@@ -14,6 +16,7 @@
 - **Authentication**: JWT
 
 ## 주요 기능
+
 1. 대회 목록 및 상세 정보 표시
 2. 사용자 등록 및 로그인
 3. 대회 접수 및 결제
@@ -22,11 +25,13 @@
 6. 라이트/다크 모드
 
 ## 사용자 권한
+
 - **Administrator**: 모든 기능 접근 가능
-- **Organizer**: 대회 관리 기능만 접근 가능  
+- **Organizer**: 대회 관리 기능만 접근 가능
 - **Member**: 일반 회원 (대회 접수만 가능)
 
 ## 코딩 가이드라인
+
 - TypeScript 사용 시 엄격한 타입 체크
 - React 함수형 컴포넌트와 Hooks 사용
 - Tailwind CSS를 활용한 반응형 디자인

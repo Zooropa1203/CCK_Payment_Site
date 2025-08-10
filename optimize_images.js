@@ -8,6 +8,10 @@ console.log('2. cck_logo.png (7KB) -> 이미 최적화됨');
 console.log('3. WebP 형식 지원을 위한 변환 권장');
 console.log('');
 console.log('권장 도구:');
-console.log('- ImageMagick: magick convert person_icon.png -resize 36x36 person_icon_optimized.png');
-console.log('- Sharp (Node.js): sharp("person_icon.png").resize(36, 36).png().toFile("person_icon_optimized.png")');
+console.log(
+  '- ImageMagick: magick convert person_icon.png -resize 36x36 person_icon_optimized.png'
+);
+console.log(
+  '- Sharp (Node.js): sharp("person_icon.png").resize(36, 36).png().toFile("person_icon_optimized.png")'
+);
 console.log('- WebP 변환: magick convert person_icon.png person_icon.webp');

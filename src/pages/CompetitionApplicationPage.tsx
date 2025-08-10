@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
+
 import type { Competition } from '../types';
 import { KRW, fmt } from '../utils/format';
 import '../styles/application.css';
@@ -18,12 +19,12 @@ export default function CompetitionApplicationPage() {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const [comp, setComp] = useState<Competition | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
-  
+
   const [formData, setFormData] = useState<RegistrationFormData>({
     name: '',
     wca_id: '',
@@ -52,21 +53,24 @@ export default function CompetitionApplicationPage() {
           id: Number(id) || 1,
           date: '2025-12-15',
           name: '2025 CCK Winter Championship',
+          created_at: '2025-01-01T00:00:00Z',
+          updated_at: '2025-01-01T00:00:00Z',
           location: '서울 강남구 코엑스',
           base_fee: 15000,
           event_fee: {
             '3x3': 5000,
             '4x4': 7000,
             '5x5': 7000,
-            'OH': 6000,
-            'Pyraminx': 5000
+            OH: 6000,
+            Pyraminx: 5000,
           },
           reg_start_date: '2025-08-01',
           reg_end_date: '2025-12-10',
           events: ['3x3', '4x4', '5x5', 'OH', 'Pyraminx'],
-          capacity: 100
+          organizer: 'CCK',
+          capacity: 100,
         };
-        
+
         setComp(dummyComp);
         setLoading(false);
       } catch (error) {
@@ -93,7 +97,7 @@ export default function CompetitionApplicationPage() {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -102,7 +106,7 @@ export default function CompetitionApplicationPage() {
     if (!comp) return;
 
     setSubmitting(true);
-    
+
     try {
       // 1. 임시 사용자 생성 (실제로는 로그인된 사용자 정보 사용)
       const userResponse = await fetch('/api/auth/register', {
@@ -148,7 +152,7 @@ export default function CompetitionApplicationPage() {
       }
 
       const registrationData = await registrationResponse.json();
-      
+
       // 2. 결제 준비
       const paymentResponse = await fetch('/api/payments/prepare', {
         method: 'POST',
@@ -166,11 +170,13 @@ export default function CompetitionApplicationPage() {
       }
 
       const paymentData = await paymentResponse.json();
-      
+
       // 3. 토스페이먼츠 결제 페이지로 이동
       // TODO: 실제 토스페이먼츠 SDK 사용
-      alert(`결제를 진행합니다.\n주문번호: ${paymentData.data.order_id}\n결제금액: ${KRW(paymentData.data.amount)}`);
-      
+      alert(
+        `결제를 진행합니다.\n주문번호: ${paymentData.data.order_id}\n결제금액: ${KRW(paymentData.data.amount)}`
+      );
+
       // 임시로 바로 결제 완료 처리
       const confirmResponse = await fetch('/api/payments/confirm', {
         method: 'POST',
@@ -191,7 +197,6 @@ export default function CompetitionApplicationPage() {
 
       alert('참가 신청 및 결제가 완료되었습니다!');
       navigate(`/competitions/${comp.id}`);
-      
     } catch (error) {
       console.error('신청 처리 에러:', error);
       alert('참가 신청 중 오류가 발생했습니다. 다시 시도해주세요.');
@@ -203,9 +208,7 @@ export default function CompetitionApplicationPage() {
   if (loading) {
     return (
       <div className="container">
-        <div className="page-loading">
-          로딩중...
-        </div>
+        <div className="page-loading">로딩중...</div>
       </div>
     );
   }
@@ -213,9 +216,7 @@ export default function CompetitionApplicationPage() {
   if (!comp) {
     return (
       <div className="container">
-        <div className="page-error">
-          대회 정보를 불러오지 못했습니다.
-        </div>
+        <div className="page-error">대회 정보를 불러오지 못했습니다.</div>
       </div>
     );
   }
@@ -225,8 +226,8 @@ export default function CompetitionApplicationPage() {
       <div className="application-page">
         <header className="application-header">
           <h1>🏆 {comp.name} - 참가 신청</h1>
-          <button 
-            className="ghost" 
+          <button
+            className="ghost"
             onClick={() => navigate(`/competitions/${comp.id}`)}
           >
             ← 뒤로
@@ -237,25 +238,37 @@ export default function CompetitionApplicationPage() {
           <div className="application-summary">
             <h3>신청 내용</h3>
             <div className="summary-info">
-              <div><span>대회:</span> {comp.name}</div>
-              <div><span>날짜:</span> {fmt(comp.date)}</div>
-              <div><span>장소:</span> {comp.location}</div>
-              <div><span>선택 종목:</span> {selectedEvents.join(', ')}</div>
+              <div>
+                <span>대회:</span> {comp.name}
+              </div>
+              <div>
+                <span>날짜:</span> {fmt(comp.date)}
+              </div>
+              <div>
+                <span>장소:</span> {comp.location}
+              </div>
+              <div>
+                <span>선택 종목:</span> {selectedEvents.join(', ')}
+              </div>
               <div className="fee-breakdown">
-                <div><span>기본 참가비:</span> {KRW(comp.base_fee)}</div>
+                <div>
+                  <span>기본 참가비:</span> {KRW(comp.base_fee)}
+                </div>
                 {selectedEvents.map(event => (
                   <div key={event}>
                     <span>{event}:</span> {KRW(comp.event_fee[event] || 0)}
                   </div>
                 ))}
-                <div className="total"><span>총 참가비:</span> {KRW(calculateTotalFee())}</div>
+                <div className="total">
+                  <span>총 참가비:</span> {KRW(calculateTotalFee())}
+                </div>
               </div>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="application-form">
             <h3>참가자 정보</h3>
-            
+
             <div className="form-group">
               <label htmlFor="name">성명 *</label>
               <input
@@ -359,7 +372,9 @@ export default function CompetitionApplicationPage() {
                 className="primary lg"
                 disabled={submitting || selectedEvents.length === 0}
               >
-                {submitting ? '처리중...' : `${KRW(calculateTotalFee())} 결제하고 신청하기`}
+                {submitting
+                  ? '처리중...'
+                  : `${KRW(calculateTotalFee())} 결제하고 신청하기`}
               </button>
             </div>
           </form>

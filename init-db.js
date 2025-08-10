@@ -63,9 +63,10 @@ db.serialize(() => {
   const password = 'admin123';
   const hashedPassword = bcrypt.hashSync(password, 10);
 
-  db.run('INSERT OR REPLACE INTO users (email, password, name, role) VALUES (?, ?, ?, ?)', 
-    [email, hashedPassword, 'Administrator', 'administrator'], 
-    function(err) {
+  db.run(
+    'INSERT OR REPLACE INTO users (email, password, name, role) VALUES (?, ?, ?, ?)',
+    [email, hashedPassword, 'Administrator', 'administrator'],
+    function (err) {
       if (err) {
         console.error('Error creating admin:', err);
       } else {

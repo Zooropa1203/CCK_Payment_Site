@@ -16,7 +16,8 @@ interface RegistrationAttributes {
 }
 
 // 생성 시 선택적 속성
-interface RegistrationCreationAttributes extends Partial<RegistrationAttributes> {
+interface RegistrationCreationAttributes
+  extends Partial<RegistrationAttributes> {
   competition_id: number;
   user_id: number;
   selected_events: string[];
@@ -24,7 +25,10 @@ interface RegistrationCreationAttributes extends Partial<RegistrationAttributes>
 }
 
 // Registration 모델 클래스
-class Registration extends Model<RegistrationAttributes, RegistrationCreationAttributes> implements RegistrationAttributes {
+class Registration
+  extends Model<RegistrationAttributes, RegistrationCreationAttributes>
+  implements RegistrationAttributes
+{
   public id!: number;
   public competition_id!: number;
   public user_id!: number;
@@ -41,9 +45,12 @@ class Registration extends Model<RegistrationAttributes, RegistrationCreationAtt
   public User?: User;
 
   // 총 참가비 계산 메서드
-  public static calculateTotalFee(competition: Competition, selectedEvents: string[]): number {
+  public static calculateTotalFee(
+    competition: Competition,
+    selectedEvents: string[]
+  ): number {
     let total = competition.base_fee;
-    
+
     selectedEvents.forEach(event => {
       const eventFee = competition.event_fee[event];
       if (eventFee) {
@@ -70,7 +77,10 @@ class Registration extends Model<RegistrationAttributes, RegistrationCreationAtt
     const competition = await Competition.findByPk(this.competition_id);
     if (!competition) return false;
 
-    const calculatedFee = Registration.calculateTotalFee(competition, this.selected_events);
+    const calculatedFee = Registration.calculateTotalFee(
+      competition,
+      this.selected_events
+    );
     return Math.abs(this.total_fee - calculatedFee) < 0.01; // 소수점 오차 고려
   }
 }
@@ -152,19 +162,27 @@ Registration.init(
     hooks: {
       // 생성 전 참가비 검증
       beforeCreate: async (registration: Registration) => {
-        const competition = await Competition.findByPk(registration.competition_id);
+        const competition = await Competition.findByPk(
+          registration.competition_id
+        );
         if (!competition) {
           throw new Error('존재하지 않는 대회입니다.');
         }
 
         // 등록 기간 검증
         const now = new Date().toISOString().split('T')[0];
-        if (now < competition.reg_start_date || now > competition.reg_end_date) {
+        if (
+          now < competition.reg_start_date ||
+          now > competition.reg_end_date
+        ) {
           throw new Error('등록 기간이 아닙니다.');
         }
 
         // 참가비 자동 계산
-        registration.total_fee = Registration.calculateTotalFee(competition, registration.selected_events);
+        registration.total_fee = Registration.calculateTotalFee(
+          competition,
+          registration.selected_events
+        );
       },
     },
   }

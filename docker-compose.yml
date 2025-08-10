@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "5175:5175"
+    environment:
+      - NODE_ENV=production
+      - PORT=5175
+      - DB_PATH=/app/data/database.sqlite
+      - CORS_ORIGINS=http://localhost:3000,https://yourdomain.com
+      - JWT_SECRET=${JWT_SECRET}
+      - TOSS_CLIENT_KEY=${TOSS_CLIENT_KEY}
+      - TOSS_SECRET_KEY=${TOSS_SECRET_KEY}
+      - TOSS_SUCCESS_URL=${TOSS_SUCCESS_URL}
+      - TOSS_FAIL_URL=${TOSS_FAIL_URL}
+    volumes:
+      - app_data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5175/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+volumes:
+  app_data:
+    driver: local

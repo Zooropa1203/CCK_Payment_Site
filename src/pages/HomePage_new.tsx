@@ -20,28 +20,63 @@ interface Competition {
 
 const HomePage_new: React.FC = () => {
   const navigate = useNavigate();
-  const [useDummy, setUseDummy] = useState<boolean>(getUseDummy());
+  const [useDummy, _setUseDummy] = useState<boolean>(getUseDummy());
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [ongoingCompetitions, setOngoingCompetitions] = useState<Competition[]>([]);
-  const [upcomingCompetitions, setUpcomingCompetitions] = useState<Competition[]>([]);
+  const [ongoingCompetitions, setOngoingCompetitions] = useState<Competition[]>(
+    []
+  );
+  const [upcomingCompetitions, setUpcomingCompetitions] = useState<
+    Competition[]
+  >([]);
 
   // 더미 데이터 - 메모이제이션
-  const dummyOngoing: Competition[] = useMemo(() => [
-    { id: 1, date: '2025-08-15', name: '2025 큐빙클럽코리아 여름 대회', location: '서울시립청소년미디어센터' },
-    { id: 2, date: '2025-08-22', name: '제5회 부산 오픈', location: '부산문화회관' },
-  ], []);
+  const dummyOngoing: Competition[] = useMemo(
+    () => [
+      {
+        id: 1,
+        date: '2025-08-15',
+        name: '2025 큐빙클럽코리아 여름 대회',
+        location: '서울시립청소년미디어센터',
+      },
+      {
+        id: 2,
+        date: '2025-08-22',
+        name: '제5회 부산 오픈',
+        location: '부산문화회관',
+      },
+    ],
+    []
+  );
 
-  const dummyUpcoming: Competition[] = useMemo(() => [
-    { id: 3, date: '2025-09-01', name: '2025 추석 특별대회', location: '대전컨벤션센터' },
-    { id: 4, date: '2025-09-15', name: '제3회 대구 챔피언십', location: '대구 EXCO' },
-    { id: 5, date: '2025-09-29', name: '2025 가을 정기대회', location: '서울올림픽공원' },
-  ], []);
+  const dummyUpcoming: Competition[] = useMemo(
+    () => [
+      {
+        id: 3,
+        date: '2025-09-01',
+        name: '2025 추석 특별대회',
+        location: '대전컨벤션센터',
+      },
+      {
+        id: 4,
+        date: '2025-09-15',
+        name: '제3회 대구 챔피언십',
+        location: '대구 EXCO',
+      },
+      {
+        id: 5,
+        date: '2025-09-29',
+        name: '2025 가을 정기대회',
+        location: '서울올림픽공원',
+      },
+    ],
+    []
+  );
 
   useEffect(() => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       if (useDummy) {
         setOngoingCompetitions(dummyOngoing);
@@ -423,14 +458,16 @@ const HomePage_new: React.FC = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {ongoingCompetitions.map((competition) => (
-                            <tr 
+                          {ongoingCompetitions.map(competition => (
+                            <tr
                               key={competition.id}
                               role="button"
                               tabIndex={0}
                               className="row-clickable"
-                              onClick={() => navigate(`/competitions/${competition.id}`)}
-                              onKeyDown={(e) => {
+                              onClick={() =>
+                                navigate(`/competitions/${competition.id}`)
+                              }
+                              onKeyDown={e => {
                                 if (e.key === 'Enter' || e.key === ' ') {
                                   e.preventDefault();
                                   navigate(`/competitions/${competition.id}`);
@@ -438,7 +475,9 @@ const HomePage_new: React.FC = () => {
                               }}
                               style={{ cursor: 'pointer' }}
                             >
-                              <td data-label="날짜">{formatDate(competition.date)}</td>
+                              <td data-label="날짜">
+                                {formatDate(competition.date)}
+                              </td>
                               <td data-label="대회명">{competition.name}</td>
                               <td data-label="장소">{competition.location}</td>
                             </tr>
@@ -468,14 +507,16 @@ const HomePage_new: React.FC = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {upcomingCompetitions.map((competition) => (
-                            <tr 
+                          {upcomingCompetitions.map(competition => (
+                            <tr
                               key={competition.id}
                               role="button"
                               tabIndex={0}
                               className="row-clickable"
-                              onClick={() => navigate(`/competitions/${competition.id}`)}
-                              onKeyDown={(e) => {
+                              onClick={() =>
+                                navigate(`/competitions/${competition.id}`)
+                              }
+                              onKeyDown={e => {
                                 if (e.key === 'Enter' || e.key === ' ') {
                                   e.preventDefault();
                                   navigate(`/competitions/${competition.id}`);
@@ -483,7 +524,9 @@ const HomePage_new: React.FC = () => {
                               }}
                               style={{ cursor: 'pointer' }}
                             >
-                              <td data-label="날짜">{formatDate(competition.date)}</td>
+                              <td data-label="날짜">
+                                {formatDate(competition.date)}
+                              </td>
                               <td data-label="대회명">{competition.name}</td>
                               <td data-label="장소">{competition.location}</td>
                             </tr>
@@ -507,11 +550,10 @@ const HomePage_new: React.FC = () => {
           <div className="container">
             <div className="footer-content">
               <div className="footer-line">
-                큐빙클럽코리아 | 사업자등록번호 : 358-54-00896 | 대표 : 정현재 | 이메일 : cubingclubkorea@gmail.com
+                큐빙클럽코리아 | 사업자등록번호 : 358-54-00896 | 대표 : 정현재 |
+                이메일 : cubingclubkorea@gmail.com
               </div>
-              <div className="footer-line">
-                COPYRIGHT © Cubing Club Korea
-              </div>
+              <div className="footer-line">COPYRIGHT © Cubing Club Korea</div>
             </div>
           </div>
         </footer>

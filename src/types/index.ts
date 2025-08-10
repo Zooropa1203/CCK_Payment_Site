@@ -1,2 +1,14 @@
 // src/types/index.ts
-export type { Competition, EventFees } from "./competition";
+// Re-export types from shared schemas
+export type {
+  Competition,
+  CompetitionDetail,
+  EventFees,
+  User,
+  Participant,
+  Registration,
+  ScheduleItem,
+  LoginRequest,
+  SignupRequest,
+  RegistrationRequest,
+} from '../../shared/schemas.js';

@@ -1,0 +1,13 @@
+{
+  "name": "@cck-payment/shared",
+  "version": "1.0.0",
+  "description": "Shared types and schemas for CCK Payment system",
+  "main": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}
