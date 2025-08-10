@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ROUTES } from "../routes/paths";
 
 export default function LoginPage() {
   const [id, setId] = useState("");
@@ -391,9 +392,9 @@ export default function LoginPage() {
               </label>
 
               <nav className="login-links" aria-label="계정 링크">
-                <Link to="/signup/terms">회원가입</Link>
+                <Link to={ROUTES.SIGNUP.TERMS}>회원가입</Link>
                 <span className="divider" aria-hidden="true">|</span>
-                <Link to="/password-reset">비밀번호 찾기</Link>
+                <Link to={ROUTES.PASSWORD_RESET}>비밀번호 찾기</Link>
               </nav>
             </div>
 

@@ -1,6 +1,7 @@
 import { useSignup } from "../context/SignupContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { ROUTES } from "../routes/paths";
 
 const EMAIL_DOMAINS = [
   "직접입력",
@@ -105,11 +106,11 @@ export default function SignupInfo() {
     if (!validate() || !canSubmit) return;
     
     setForm({ email: emailComposed, password: pw });
-    nav("/signup/verify");
+    nav(ROUTES.SIGNUP.VERIFY);
   };
 
   const onBack = () => {
-    nav("/signup");
+    nav(ROUTES.SIGNUP.TERMS);
   };
 
   return (

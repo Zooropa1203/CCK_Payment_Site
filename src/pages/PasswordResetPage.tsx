@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ROUTES } from "../routes/paths";
 
 export default function PasswordResetPage() {
   const [email, setEmail] = useState("");
@@ -47,9 +48,9 @@ export default function PasswordResetPage() {
             </form>
             
             <div className="reset-links">
-              <Link to="/login" className="text-link">로그인으로 돌아가기</Link>
+              <Link to={ROUTES.LOGIN} className="text-link">로그인으로 돌아가기</Link>
               <span className="divider">|</span>
-              <Link to="/signup/terms" className="text-link">회원가입</Link>
+              <Link to={ROUTES.SIGNUP.TERMS} className="text-link">회원가입</Link>
             </div>
           </>
         ) : (
@@ -61,7 +62,7 @@ export default function PasswordResetPage() {
               이메일을 확인해주세요.
             </p>
             
-            <Link to="/login" className="reset-button-link">
+            <Link to={ROUTES.LOGIN} className="reset-button-link">
               로그인 페이지로 이동
             </Link>
           </>

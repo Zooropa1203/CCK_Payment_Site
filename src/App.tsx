@@ -1,7 +1,9 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from './contexts/ThemeContext';
 import { SignupProvider } from './context/SignupContext';
 import AppLayout from "./layouts/AppLayout";
+import { ROUTES, ROUTE_PATTERNS } from "./routes/paths";
+import SignupRouter from "./routes/SignupRouter";
 
 import HomePage_new from "./pages/HomePage_new"; // 메인
 import CompetitionRegisterPage from "./pages/CompetitionRegisterPage";
@@ -11,9 +13,7 @@ import CompetitionParticipantsPage from "./pages/CompetitionParticipantsPage";
 import CompetitionWaitlistPage from "./pages/CompetitionWaitlistPage";
 import LoginPage_new from "./pages/LoginPage_new";
 import PasswordResetPage from "./pages/PasswordResetPage";
-import SignupTerms from "./pages/SignupTerms";
-import SignupInfo from "./pages/SignupInfo";
-import SignupVerify from "./pages/SignupVerify";
+import NotFoundPage from "./pages/NotFoundPage";
 
 export default function App() {
   return (
@@ -22,19 +22,16 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<AppLayout />}>
-              <Route path="/" element={<HomePage_new />} />
-              <Route path="/login" element={<LoginPage_new />} />
-              <Route path="/password-reset" element={<PasswordResetPage />} />
-              <Route path="/signup" element={<Navigate to="/signup/terms" replace />} />
-              <Route path="/signup/terms" element={<SignupTerms />} />
-              <Route path="/signup/info" element={<SignupInfo />} />
-              <Route path="/signup/verify" element={<SignupVerify />} />
-              <Route path="/competitions/:id" element={<CompetitionRegisterPage />} />
-              <Route path="/competitions/:id/apply" element={<CompetitionApplicationPage />} />
-              <Route path="/competitions/:id/schedule" element={<CompetitionSchedulePage />} />
-              <Route path="/competitions/:id/participants" element={<CompetitionParticipantsPage />} />
-              <Route path="/competitions/:id/waitlist" element={<CompetitionWaitlistPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route index element={<HomePage_new />} />
+              <Route path={ROUTE_PATTERNS.COMPETITIONS.DETAIL} element={<CompetitionRegisterPage />} />
+              <Route path={ROUTE_PATTERNS.COMPETITIONS.APPLICATION} element={<CompetitionApplicationPage />} />
+              <Route path={ROUTE_PATTERNS.COMPETITIONS.SCHEDULE} element={<CompetitionSchedulePage />} />
+              <Route path={ROUTE_PATTERNS.COMPETITIONS.PARTICIPANTS} element={<CompetitionParticipantsPage />} />
+              <Route path={ROUTE_PATTERNS.COMPETITIONS.WAITLIST} element={<CompetitionWaitlistPage />} />
+              <Route path={ROUTES.LOGIN} element={<LoginPage_new />} />
+              <Route path={`${ROUTES.SIGNUP.ROOT}/*`} element={<SignupRouter />} />
+              <Route path={ROUTES.PASSWORD_RESET} element={<PasswordResetPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

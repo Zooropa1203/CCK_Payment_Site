@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ROUTES } from "../routes/paths";
 
 export default function Header() {
   return (
@@ -9,7 +10,7 @@ export default function Header() {
     >
       <div className="header-inner">
         {/* 좌측: 로고 */}
-        <Link to="/" className="logo-wrap" aria-label="Cubing Club Korea 메인으로 이동">
+        <Link to={ROUTES.HOME} className="logo-wrap" aria-label="Cubing Club Korea 메인으로 이동">
           <img
             src="/images/cck_logo.png"
             alt="Cubing Club Korea 로고"
@@ -22,7 +23,7 @@ export default function Header() {
 
         {/* 우측: 프로필(로그인) */}
         <nav aria-label="사용자 메뉴" className="header-right">
-          <Link to="/login" className="profile-btn" aria-label="로그인">
+          <Link to={ROUTES.LOGIN} className="profile-btn" aria-label="로그인">
             <img
               src="/images/person_icon.png"
               alt=""

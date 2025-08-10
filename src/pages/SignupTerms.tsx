@@ -1,6 +1,7 @@
 import { useSignup } from "../context/SignupContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { ROUTES } from "../routes/paths";
 
 export default function SignupTerms() {
   const { state, setAgreements } = useSignup();
@@ -18,7 +19,7 @@ export default function SignupTerms() {
       alert("필수 항목을 체크해주시기 바랍니다");
       return;
     }
-    nav("/signup/info");
+    nav(ROUTES.SIGNUP.INFO);
   };
 
   return (

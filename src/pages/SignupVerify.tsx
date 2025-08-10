@@ -1,6 +1,7 @@
 import { useSignup } from "../context/SignupContext";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { ROUTES } from "../routes/paths";
 
 export default function SignupVerify() {
   const { state, reset } = useSignup();
@@ -88,13 +89,13 @@ export default function SignupVerify() {
   };
 
   const onBack = () => {
-    nav("/signup/info");
+    nav(ROUTES.SIGNUP.INFO);
   };
 
   // 이메일이 없으면 첫 단계로 리다이렉트
   useEffect(() => {
     if (!state.email) {
-      nav("/signup");
+      nav(ROUTES.SIGNUP.TERMS);
     }
   }, [state.email, nav]);
 
