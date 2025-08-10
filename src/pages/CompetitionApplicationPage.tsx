@@ -53,6 +53,8 @@ export default function CompetitionApplicationPage() {
           id: Number(id) || 1,
           date: '2025-12-15',
           name: '2025 CCK Winter Championship',
+          created_at: '2025-01-01T00:00:00Z',
+          updated_at: '2025-01-01T00:00:00Z',
           location: '서울 강남구 코엑스',
           base_fee: 15000,
           event_fee: {
@@ -65,6 +67,7 @@ export default function CompetitionApplicationPage() {
           reg_start_date: '2025-08-01',
           reg_end_date: '2025-12-10',
           events: ['3x3', '4x4', '5x5', 'OH', 'Pyraminx'],
+          organizer: 'CCK',
           capacity: 100
         };
         

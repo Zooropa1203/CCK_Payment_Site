@@ -1,6 +1,6 @@
 import { CheckIcon, CurrencyYenIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 import { useAuth } from '../contexts/AuthContext';
 
@@ -42,7 +42,6 @@ const eventIcons: { [key: string]: string } = {
 export default function RegistrationPage() {
   const { id } = useParams<{ id: string }>();
   const { user, token } = useAuth();
-  const navigate = useNavigate();
   
   const [competition, setCompetition] = useState<Competition | null>(null);
   const [selectedEvents, setSelectedEvents] = useState<EventSelection>({});
@@ -149,7 +148,7 @@ export default function RegistrationPage() {
   };
 
   // 결제 시뮬레이션 (실제로는 토스 페이먼츠 API 호출)
-  const simulatePayment = async (paymentId: string, amount: number): Promise<boolean> => {
+  const simulatePayment = async (_paymentId: string, _amount: number): Promise<boolean> => {
     return new Promise((resolve) => {
       setTimeout(() => {
         // 90% 확률로 성공
