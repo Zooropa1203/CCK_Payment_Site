@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { useSignup } from "../context/SignupContext";
-import { ROUTES } from "../routes/paths";
+import { useSignup } from '../context/SignupContext';
+import { ROUTES } from '../routes/paths';
 
 export default function SignupTerms() {
   const { state, setAgreements } = useSignup();
@@ -17,7 +17,7 @@ export default function SignupTerms() {
 
   const onNext = () => {
     if (!(state.tos && state.privacy)) {
-      alert("필수 항목을 체크해주시기 바랍니다");
+      alert('필수 항목을 체크해주시기 바랍니다');
       return;
     }
     nav(ROUTES.SIGNUP.INFO);
@@ -429,48 +429,75 @@ export default function SignupTerms() {
             </ol>
 
             <label className="chk-row">
-              <input 
-                type="checkbox" 
-                checked={state.tos && state.privacy} 
+              <input
+                type="checkbox"
+                checked={state.tos && state.privacy}
                 onChange={onAll}
                 aria-describedby="all-agree-desc"
               />
               <span>전체 동의합니다.</span>
             </label>
-            <div id="all-agree-desc" className="sr-only">모든 필수 약관에 동의합니다</div>
+            <div id="all-agree-desc" className="sr-only">
+              모든 필수 약관에 동의합니다
+            </div>
 
             <div className="divider" />
 
             <div className="chk-acc">
               <label className="chk-row">
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={state.tos}
-                  onChange={(e) => setAgreements({ tos: e.target.checked })}
+                  onChange={e => setAgreements({ tos: e.target.checked })}
                   aria-describedby="tos-desc"
                 />
                 <span>(필수) 이용약관 동의</span>
-                <button 
-                  type="button" 
-                  className="acc-btn" 
-                  aria-expanded={openTos} 
+                <button
+                  type="button"
+                  className="acc-btn"
+                  aria-expanded={openTos}
                   onClick={() => setOpenTos(!openTos)}
                   aria-controls="tos-panel"
                 >
                   ▾
                 </button>
               </label>
-              <div id="tos-desc" className="sr-only">서비스 이용약관에 동의합니다</div>
+              <div id="tos-desc" className="sr-only">
+                서비스 이용약관에 동의합니다
+              </div>
               {openTos && (
-                <div id="tos-panel" className="acc-panel" role="region" aria-label="이용약관">
-                  <p><strong>이용약관 (요약)</strong></p>
+                <div
+                  id="tos-panel"
+                  className="acc-panel"
+                  role="region"
+                  aria-label="이용약관"
+                >
+                  <p>
+                    <strong>이용약관 (요약)</strong>
+                  </p>
                   <ol>
-                    <li>서비스 제공 및 계정 이용에 관한 기본 사항을 규정합니다.</li>
-                    <li>회원은 계정과 비밀번호를 안전하게 관리해야 하며, 제3자에게 양도/대여할 수 없습니다.</li>
-                    <li>회사는 안정적인 서비스 제공을 위해 필요한 범위에서 서비스 내용을 변경할 수 있습니다.</li>
-                    <li>회원은 관련 법령과 본 약관, 공지사항을 준수해야 합니다.</li>
-                    <li>회사의 귀책 없는 서비스 중단, 회원의 귀책 사유로 인한 손해에 대해서 회사는 책임을 지지 않습니다.</li>
-                    <li>계약 해지 및 이용 제한, 분쟁의 관할은 회사 소재지 관할 법원으로 합니다.</li>
+                    <li>
+                      서비스 제공 및 계정 이용에 관한 기본 사항을 규정합니다.
+                    </li>
+                    <li>
+                      회원은 계정과 비밀번호를 안전하게 관리해야 하며, 제3자에게
+                      양도/대여할 수 없습니다.
+                    </li>
+                    <li>
+                      회사는 안정적인 서비스 제공을 위해 필요한 범위에서 서비스
+                      내용을 변경할 수 있습니다.
+                    </li>
+                    <li>
+                      회원은 관련 법령과 본 약관, 공지사항을 준수해야 합니다.
+                    </li>
+                    <li>
+                      회사의 귀책 없는 서비스 중단, 회원의 귀책 사유로 인한
+                      손해에 대해서 회사는 책임을 지지 않습니다.
+                    </li>
+                    <li>
+                      계약 해지 및 이용 제한, 분쟁의 관할은 회사 소재지 관할
+                      법원으로 합니다.
+                    </li>
                   </ol>
                 </div>
               )}
@@ -478,34 +505,59 @@ export default function SignupTerms() {
 
             <div className="chk-acc">
               <label className="chk-row">
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={state.privacy}
-                  onChange={(e) => setAgreements({ privacy: e.target.checked })}
+                  onChange={e => setAgreements({ privacy: e.target.checked })}
                   aria-describedby="privacy-desc"
                 />
                 <span>(필수) 개인정보 수집 및 이용 동의</span>
-                <button 
-                  type="button" 
-                  className="acc-btn" 
-                  aria-expanded={openPrivacy} 
+                <button
+                  type="button"
+                  className="acc-btn"
+                  aria-expanded={openPrivacy}
                   onClick={() => setOpenPrivacy(!openPrivacy)}
                   aria-controls="privacy-panel"
                 >
                   ▾
                 </button>
               </label>
-              <div id="privacy-desc" className="sr-only">개인정보 수집 및 이용에 동의합니다</div>
+              <div id="privacy-desc" className="sr-only">
+                개인정보 수집 및 이용에 동의합니다
+              </div>
               {openPrivacy && (
-                <div id="privacy-panel" className="acc-panel" role="region" aria-label="개인정보 수집 및 이용">
-                  <p><strong>개인정보 수집 및 이용 동의 (요약)</strong></p>
+                <div
+                  id="privacy-panel"
+                  className="acc-panel"
+                  role="region"
+                  aria-label="개인정보 수집 및 이용"
+                >
+                  <p>
+                    <strong>개인정보 수집 및 이용 동의 (요약)</strong>
+                  </p>
                   <ol>
-                    <li>수집 항목: 아이디, 이메일, 비밀번호(해시), 접속 로그</li>
-                    <li>이용 목적: 회원 식별/가입 처리, 서비스 제공, 고객문의 대응, 보안 및 부정이용 방지</li>
-                    <li>보유/이용 기간: 회원 탈퇴 시까지(단, 관계법령에 따라 필요한 경우 해당 기간 보관)</li>
-                    <li>동의를 거부할 권리: 동의 거부 시 회원가입 및 서비스 이용이 제한될 수 있습니다.</li>
+                    <li>
+                      수집 항목: 아이디, 이메일, 비밀번호(해시), 접속 로그
+                    </li>
+                    <li>
+                      이용 목적: 회원 식별/가입 처리, 서비스 제공, 고객문의
+                      대응, 보안 및 부정이용 방지
+                    </li>
+                    <li>
+                      보유/이용 기간: 회원 탈퇴 시까지(단, 관계법령에 따라
+                      필요한 경우 해당 기간 보관)
+                    </li>
+                    <li>
+                      동의를 거부할 권리: 동의 거부 시 회원가입 및 서비스 이용이
+                      제한될 수 있습니다.
+                    </li>
                   </ol>
-                  <p><em>※ 실제 배포 전, 자사 개인정보처리방침에 맞춰 최종 검토/수정 필요</em></p>
+                  <p>
+                    <em>
+                      ※ 실제 배포 전, 자사 개인정보처리방침에 맞춰 최종
+                      검토/수정 필요
+                    </em>
+                  </p>
                 </div>
               )}
             </div>
@@ -520,11 +572,10 @@ export default function SignupTerms() {
         <footer className="footer" role="contentinfo">
           <div className="footer-content">
             <div className="footer-line">
-              큐빙클럽코리아 | 사업자등록번호 : 358-54-00896 | 대표 : 정현재 | 이메일 : cubingclubkorea@gmail.com
+              큐빙클럽코리아 | 사업자등록번호 : 358-54-00896 | 대표 : 정현재 |
+              이메일 : cubingclubkorea@gmail.com
             </div>
-            <div className="footer-line">
-              COPYRIGHT © Cubing Club Korea
-            </div>
+            <div className="footer-line">COPYRIGHT © Cubing Club Korea</div>
           </div>
         </footer>
       </div>

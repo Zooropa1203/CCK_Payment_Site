@@ -21,10 +21,7 @@ router.post('/register', async (req: Request, res: Response) => {
     // 중복 검사
     const existingUser = await User.findOne({
       where: {
-        [Op.or]: [
-          { username },
-          { email },
-        ],
+        [Op.or]: [{ username }, { email }],
       },
     });
 
@@ -77,10 +74,7 @@ router.post('/login', async (req: Request, res: Response) => {
     // 사용자 조회 (사용자명 또는 이메일로)
     const user = await User.findOne({
       where: {
-        [Op.or]: [
-          { username },
-          { email: username },
-        ],
+        [Op.or]: [{ username }, { email: username }],
       },
     });
 
@@ -123,7 +117,7 @@ router.post('/login', async (req: Request, res: Response) => {
 router.get('/profile/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    
+
     const user = await User.findByPk(id, {
       attributes: ['id', 'name', 'username', 'email', 'createdAt'],
     });

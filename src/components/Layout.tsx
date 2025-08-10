@@ -31,23 +31,24 @@ export default function Layout({ children }: LayoutProps) {
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium"
               >
                 대회 목록
               </Link>
               {user && (
                 <>
-                  <Link 
-                    to="/profile" 
+                  <Link
+                    to="/profile"
                     className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium"
                   >
                     내 정보
                   </Link>
-                  {(user.role === 'administrator' || user.role === 'organizer') && (
-                    <Link 
-                      to="/admin" 
+                  {(user.role === 'administrator' ||
+                    user.role === 'organizer') && (
+                    <Link
+                      to="/admin"
                       className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium"
                     >
                       관리자
@@ -80,10 +81,7 @@ export default function Layout({ children }: LayoutProps) {
                       {user.name}
                     </span>
                   </div>
-                  <button
-                    onClick={logout}
-                    className="btn-secondary text-sm"
-                  >
+                  <button onClick={logout} className="btn-secondary text-sm">
                     로그아웃
                   </button>
                 </div>

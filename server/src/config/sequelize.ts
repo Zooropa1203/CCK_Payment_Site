@@ -3,7 +3,7 @@ import { Sequelize } from 'sequelize';
 export const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: './data/cck.sqlite',
-  logging: false
+  logging: false,
 });
 
 export async function connectDB() {

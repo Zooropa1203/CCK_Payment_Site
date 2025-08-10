@@ -1,5 +1,10 @@
 // src/services/competition.ts
-import type { Competition, CompetitionDetail, ScheduleItem, Participant } from '../../shared/schemas.js';
+import type {
+  Competition,
+  CompetitionDetail,
+  ScheduleItem,
+  Participant,
+} from '../../shared/schemas.js';
 
 import { http } from './http.js';
 
@@ -39,8 +44,12 @@ export const competitionService = {
   },
 
   // Get competition participants
-  async getCompetitionParticipants(id: number | string): Promise<ParticipantsResponse> {
-    return http.get<ParticipantsResponse>(`/api/competitions/${id}/participants`);
+  async getCompetitionParticipants(
+    id: number | string
+  ): Promise<ParticipantsResponse> {
+    return http.get<ParticipantsResponse>(
+      `/api/competitions/${id}/participants`
+    );
   },
 
   // Get competition waitlist

@@ -48,13 +48,14 @@ export default function CompetitionPage() {
   const fetchCompetitionData = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch competition details
-      const [compResponse, participantsResponse, waitlistResponse] = await Promise.all([
-        fetch(`/api/competitions/${id}`),
-        fetch(`/api/competitions/${id}/participants`),
-        fetch(`/api/competitions/${id}/waitlist`)
-      ]);
+      const [compResponse, participantsResponse, waitlistResponse] =
+        await Promise.all([
+          fetch(`/api/competitions/${id}`),
+          fetch(`/api/competitions/${id}/participants`),
+          fetch(`/api/competitions/${id}/waitlist`),
+        ]);
 
       if (compResponse.ok) {
         const compData = await compResponse.json();
@@ -79,7 +80,7 @@ export default function CompetitionPage() {
 
   const getRegistrationStatus = () => {
     if (!competition) return null;
-    
+
     const now = new Date();
     const registrationStart = new Date(competition.registration_start);
     const registrationEnd = new Date(competition.registration_end);
@@ -134,13 +135,15 @@ export default function CompetitionPage() {
           </p>
         )}
         <div className="mt-4 flex justify-center">
-          <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-            registrationStatus?.color === 'green' 
-              ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
-              : registrationStatus?.color === 'red'
-              ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
-              : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
-          }`}>
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-medium ${
+              registrationStatus?.color === 'green'
+                ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
+                : registrationStatus?.color === 'red'
+                  ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
+                  : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+            }`}
+          >
             {registrationStatus?.text}
           </span>
         </div>
@@ -153,8 +156,8 @@ export default function CompetitionPage() {
             { id: 'general', label: '일반' },
             { id: 'schedule', label: '일정' },
             { id: 'participants', label: '참가자 명단' },
-            { id: 'waitlist', label: '대기자 명단' }
-          ].map((tab) => {
+            { id: 'waitlist', label: '대기자 명단' },
+          ].map(tab => {
             return (
               <button
                 key={tab.id}
@@ -191,7 +194,7 @@ export default function CompetitionPage() {
               <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
                 대회 정보
               </h3>
-              
+
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <div>
@@ -206,7 +209,11 @@ export default function CompetitionPage() {
 
                 <div className="flex items-center space-x-3">
                   <span className="text-gray-900 dark:text-gray-100">
-                    {format(new Date(competition.date), 'yyyy년 M월 d일 (EEEE)', { locale: ko })}
+                    {format(
+                      new Date(competition.date),
+                      'yyyy년 M월 d일 (EEEE)',
+                      { locale: ko }
+                    )}
                   </span>
                 </div>
 
@@ -227,7 +234,15 @@ export default function CompetitionPage() {
                     접수 기간
                   </p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {format(new Date(competition.registration_start), 'yyyy년 M월 d일')} - {format(new Date(competition.registration_end), 'yyyy년 M월 d일')}
+                    {format(
+                      new Date(competition.registration_start),
+                      'yyyy년 M월 d일'
+                    )}{' '}
+                    -{' '}
+                    {format(
+                      new Date(competition.registration_end),
+                      'yyyy년 M월 d일'
+                    )}
                   </p>
                 </div>
               </div>
@@ -274,7 +289,10 @@ export default function CompetitionPage() {
                       <p className="text-sm text-gray-600 dark:text-gray-400">
                         접수하려면 로그인이 필요합니다
                       </p>
-                      <Link to="/login" className="btn-primary w-full text-center block">
+                      <Link
+                        to="/login"
+                        className="btn-primary w-full text-center block"
+                      >
                         로그인 / 회원가입
                       </Link>
                     </div>
@@ -301,22 +319,40 @@ export default function CompetitionPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">시간</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">종목</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">내용</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        시간
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        종목
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        내용
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {/* Schedule data would be rendered here */}
                     <tr className="border-b border-gray-100 dark:border-gray-800">
-                      <td className="py-3 px-4 text-gray-600 dark:text-gray-400">09:00 - 09:30</td>
-                      <td className="py-3 px-4 text-gray-900 dark:text-gray-100">등록</td>
-                      <td className="py-3 px-4 text-gray-600 dark:text-gray-400">참가자 등록 및 체크인</td>
+                      <td className="py-3 px-4 text-gray-600 dark:text-gray-400">
+                        09:00 - 09:30
+                      </td>
+                      <td className="py-3 px-4 text-gray-900 dark:text-gray-100">
+                        등록
+                      </td>
+                      <td className="py-3 px-4 text-gray-600 dark:text-gray-400">
+                        참가자 등록 및 체크인
+                      </td>
                     </tr>
                     <tr className="border-b border-gray-100 dark:border-gray-800">
-                      <td className="py-3 px-4 text-gray-600 dark:text-gray-400">09:30 - 10:00</td>
-                      <td className="py-3 px-4 text-gray-900 dark:text-gray-100">연습</td>
-                      <td className="py-3 px-4 text-gray-600 dark:text-gray-400">자유 연습 시간</td>
+                      <td className="py-3 px-4 text-gray-600 dark:text-gray-400">
+                        09:30 - 10:00
+                      </td>
+                      <td className="py-3 px-4 text-gray-900 dark:text-gray-100">
+                        연습
+                      </td>
+                      <td className="py-3 px-4 text-gray-600 dark:text-gray-400">
+                        자유 연습 시간
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -339,14 +375,23 @@ export default function CompetitionPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">이름</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">CCK 아이디</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">참가 종목</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        이름
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        CCK 아이디
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        참가 종목
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {participants.map((participant, index) => (
-                      <tr key={index} className="border-b border-gray-100 dark:border-gray-800">
+                      <tr
+                        key={index}
+                        className="border-b border-gray-100 dark:border-gray-800"
+                      >
                         <td className="py-3 px-4 text-gray-900 dark:text-gray-100 font-medium">
                           {participant.name}
                         </td>
@@ -388,15 +433,26 @@ export default function CompetitionPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">순번</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">이름</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">CCK 아이디</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">참가 등록</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        순번
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        이름
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        CCK 아이디
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        참가 등록
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {waitlist.map((person, index) => (
-                      <tr key={index} className="border-b border-gray-100 dark:border-gray-800">
+                      <tr
+                        key={index}
+                        className="border-b border-gray-100 dark:border-gray-800"
+                      >
                         <td className="py-3 px-4 text-gray-600 dark:text-gray-400">
                           {index + 1}
                         </td>

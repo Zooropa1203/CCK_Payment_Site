@@ -20,7 +20,7 @@ export default function ResponsiveTable({
   columns,
   data,
   caption,
-  className = ''
+  className = '',
 }: ResponsiveTableProps) {
   const isMobile = useIsMobile();
 
@@ -36,7 +36,9 @@ export default function ResponsiveTable({
                   {column.label}
                 </div>
                 <div className="table-card-value">
-                  {column.render ? column.render(row[column.key], row) : row[column.key]}
+                  {column.render
+                    ? column.render(row[column.key], row)
+                    : row[column.key]}
                 </div>
               </div>
             ))}
@@ -53,11 +55,7 @@ export default function ResponsiveTable({
         <thead>
           <tr>
             {columns.map(column => (
-              <th 
-                key={column.key} 
-                scope="col"
-                className={column.className}
-              >
+              <th key={column.key} scope="col" className={column.className}>
                 {column.label}
               </th>
             ))}
@@ -68,7 +66,9 @@ export default function ResponsiveTable({
             <tr key={index}>
               {columns.map(column => (
                 <td key={column.key} className={column.className}>
-                  {column.render ? column.render(row[column.key], row) : row[column.key]}
+                  {column.render
+                    ? column.render(row[column.key], row)
+                    : row[column.key]}
                 </td>
               ))}
             </tr>

@@ -22,7 +22,10 @@ interface UserCreationAttributes extends Partial<UserAttributes> {
 }
 
 // User 모델 클래스
-class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
+class User
+  extends Model<UserAttributes, UserCreationAttributes>
+  implements UserAttributes
+{
   public id!: number;
   public name!: string;
   public username!: string;

@@ -7,6 +7,7 @@
 ## 주요 기능
 
 ### 사용자 기능
+
 - **메인 페이지**: 현재 공지된 대회 리스트 조회
 - **대회 상세 페이지**: 대회 정보, 일정, 참가자 명단, 대기자 명단 조회
 - **접수 페이지**: 종목 선택 및 온라인 결제
@@ -14,10 +15,12 @@
 - **프로필 페이지**: 개인정보 및 참가 내역 관리
 
 ### 관리 기능
+
 - **대회 관리**: 대회 생성, 수정, 삭제 (Organizer, Administrator)
 - **회원 관리**: 회원 리스트 조회 및 권한 관리 (Administrator)
 
 ### 기술적 특징
+
 - **반응형 디자인**: PC, 모바일, 태블릿 지원
 - **다크/라이트 모드**: 사용자 선호도에 따른 테마 변경
 - **토스 페이먼츠 연동**: 안전한 온라인 결제
@@ -28,6 +31,7 @@
 ## 기술 스택
 
 ### Frontend
+
 - **React 19** with TypeScript
 - **Vite 7** (빌드 도구)
 - **Design Tokens** (CSS 변수 기반 스타일링)
@@ -36,32 +40,37 @@
 - **Custom UI Components** (접근성 준수)
 
 ### Backend
+
 - **Node.js** with Express
 - **TypeScript**
 - **Sequelize** + **SQLite** (ORM과 데이터베이스)
 - **Zod** (스키마 검증)
 
 ### Shared
+
 - **Zod Schemas** (타입 공유)
 - **TypeScript Types** (클라이언트-서버 타입 일관성)
 
 ### 결제
+
 - **토스 페이먼츠 API**
 
 ## 설치 및 실행
 
 ### 1. 저장소 클론
+
 ```bash
 git clone [repository-url]
 cd CCK_Payment
 ```
 
 ### 2. 의존성 설치
+
 ```bash
 # 루트 프로젝트 의존성 설치
 npm install
 
-# 서버 의존성 설치  
+# 서버 의존성 설치
 cd server && npm install && cd ..
 
 # 공유 타입 의존성 설치
@@ -69,6 +78,7 @@ cd shared && npm install && cd ..
 ```
 
 ### 3. 환경 변수 설정
+
 ```bash
 # 클라이언트 환경 변수
 cp .env.example .env
@@ -85,25 +95,28 @@ cp server/.env.example server/.env
 ### 4. 개발 서버 실행
 
 #### 서버와 클라이언트 동시 실행 (권장)
+
 ```bash
 npm run dev:all
 ```
 
 #### 개별 실행
+
 ```bash
 # 서버만 실행 (포트 5175)
 npm run server:dev
 
-# 클라이언트만 실행 (포트 5173)  
+# 클라이언트만 실행 (포트 5173)
 npm run dev
 ```
 
 ### 5. 프로덕션 빌드
+
 ```bash
 # 클라이언트 빌드
 npm run build
 
-# 서버 빌드  
+# 서버 빌드
 cd server && npm run build
 ```
 
@@ -137,6 +150,7 @@ CCK_Payment/
 ## 개발 가이드
 
 ### 코드 스타일
+
 ```bash
 # 린팅
 npm run lint
@@ -148,6 +162,7 @@ npm run format
 ### API 엔드포인트
 
 #### 대회 관리
+
 - `GET /api/competitions` - 대회 목록 조회
 - `GET /api/competitions/:id` - 대회 상세 조회
 - `GET /api/competitions/:id/schedule` - 대회 일정 조회
@@ -155,18 +170,22 @@ npm run format
 - `GET /api/competitions/:id/waitlist` - 대기자 목록 조회
 
 #### 인증
+
 - `POST /api/auth/login` - 로그인
 - `POST /api/auth/signup` - 회원가입
 
 #### 참가 신청
+
 - `POST /api/registrations` - 대회 참가 신청
 
 ### 환경 변수
 
 #### 클라이언트 (.env)
+
 - `VITE_API_BASE_URL`: 서버 API 기본 URL
 
-#### 서버 (server/.env)  
+#### 서버 (server/.env)
+
 - `PORT`: 서버 포트 (기본값: 5175)
 - `DB_PATH`: SQLite 데이터베이스 파일 경로
 - `CORS_ORIGINS`: CORS 허용 오리진 (쉼표로 구분)
@@ -180,16 +199,19 @@ npm run format
 ### 개발 서버 실행
 
 #### 프론트엔드만 실행
+
 ```bash
 npm run dev
 ```
 
 #### 백엔드만 실행
+
 ```bash
 npm run server
 ```
 
 #### 프론트엔드 + 백엔드 동시 실행
+
 ```bash
 npm run dev:full
 ```
@@ -219,15 +241,15 @@ export default tseslint.config([
       // other options...
     },
   },
-])
+]);
 ```
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+import reactX from 'eslint-plugin-react-x';
+import reactDom from 'eslint-plugin-react-dom';
 
 export default tseslint.config([
   globalIgnores(['dist']),
@@ -248,5 +270,5 @@ export default tseslint.config([
       // other options...
     },
   },
-])
+]);
 ```

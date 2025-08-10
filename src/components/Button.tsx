@@ -11,49 +11,54 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
-  variant = 'primary',
-  size = 'md',
-  children,
-  loading = false,
-  fullWidth = false,
-  disabled,
-  className = '',
-  ...props
-}, ref) => {
-  const baseClass = 'btn';
-  const variantClass = `btn-${variant}`;
-  const sizeClass = `btn-${size}`;
-  const fullWidthClass = fullWidth ? 'btn-full-width' : '';
-  const loadingClass = loading ? 'btn-loading' : '';
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      variant = 'primary',
+      size = 'md',
+      children,
+      loading = false,
+      fullWidth = false,
+      disabled,
+      className = '',
+      ...props
+    },
+    ref
+  ) => {
+    const baseClass = 'btn';
+    const variantClass = `btn-${variant}`;
+    const sizeClass = `btn-${size}`;
+    const fullWidthClass = fullWidth ? 'btn-full-width' : '';
+    const loadingClass = loading ? 'btn-loading' : '';
 
-  const classes = [
-    baseClass,
-    variantClass, 
-    sizeClass,
-    fullWidthClass,
-    loadingClass,
-    className
-  ].filter(Boolean).join(' ');
+    const classes = [
+      baseClass,
+      variantClass,
+      sizeClass,
+      fullWidthClass,
+      loadingClass,
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ');
 
-  return (
-    <button
-      ref={ref}
-      className={classes}
-      disabled={disabled || loading}
-      {...props}
-    >
-      {loading && (
-        <div className="btn-spinner" aria-hidden="true">
-          <div className="spinner-circle" />
-        </div>
-      )}
-      <span className={loading ? 'btn-content-loading' : ''}>
-        {children}
-      </span>
-    </button>
-  );
-});
+    return (
+      <button
+        ref={ref}
+        className={classes}
+        disabled={disabled || loading}
+        {...props}
+      >
+        {loading && (
+          <div className="btn-spinner" aria-hidden="true">
+            <div className="spinner-circle" />
+          </div>
+        )}
+        <span className={loading ? 'btn-content-loading' : ''}>{children}</span>
+      </button>
+    );
+  }
+);
 
 Button.displayName = 'Button';
 

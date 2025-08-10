@@ -1,26 +1,26 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { useSignup } from "../context/SignupContext";
-import { ROUTES } from "../routes/paths";
+import { useSignup } from '../context/SignupContext';
+import { ROUTES } from '../routes/paths';
 
 export default function SignupVerify() {
   const { state, reset } = useSignup();
   const nav = useNavigate();
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState('');
   const [timeLeft, setTimeLeft] = useState(300); // 5분
   const [isResending, setIsResending] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // 타이머 효과
   useEffect(() => {
     if (timeLeft <= 0) return;
-    
+
     const timer = setInterval(() => {
       setTimeLeft(prev => prev - 1);
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, [timeLeft]);
 
@@ -34,19 +34,19 @@ export default function SignupVerify() {
   // 인증번호 재발송
   const resendCode = async () => {
     setIsResending(true);
-    setError("");
-    
+    setError('');
+
     try {
       // TODO: 실제 API 호출
       console.log(`인증번호 재발송: ${state.email}`);
-      
+
       // 임시 지연
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       setTimeLeft(300);
-      alert("인증번호가 재발송되었습니다.");
-    } catch (_err) {
-      setError("인증번호 재발송에 실패했습니다. 다시 시도해주세요.");
+      alert('인증번호가 재발송되었습니다.');
+    } catch {
+      setError('인증번호 재발송에 실패했습니다. 다시 시도해주세요.');
     } finally {
       setIsResending(false);
     }
@@ -55,35 +55,35 @@ export default function SignupVerify() {
   // 인증 확인
   const verifyCode = async () => {
     if (!code.trim()) {
-      setError("인증번호를 입력해주세요.");
+      setError('인증번호를 입력해주세요.');
       return;
     }
 
     if (code.length !== 6) {
-      setError("인증번호는 6자리입니다.");
+      setError('인증번호는 6자리입니다.');
       return;
     }
 
     setIsVerifying(true);
-    setError("");
+    setError('');
 
     try {
       // TODO: 실제 API 호출
       console.log(`인증 확인: ${state.email}, 코드: ${code}`);
-      
+
       // 임시 지연
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // 임시 인증 성공 처리 (실제로는 API 응답에 따라)
-      if (code === "123456") {
-        alert("회원가입이 완료되었습니다!");
+      if (code === '123456') {
+        alert('회원가입이 완료되었습니다!');
         reset();
-        nav("/login");
+        nav('/login');
       } else {
-        setError("인증번호가 올바르지 않습니다.");
+        setError('인증번호가 올바르지 않습니다.');
       }
-    } catch (_err) {
-      setError("인증 확인에 실패했습니다. 다시 시도해주세요.");
+    } catch {
+      setError('인증 확인에 실패했습니다. 다시 시도해주세요.');
     } finally {
       setIsVerifying(false);
     }
@@ -648,7 +648,7 @@ export default function SignupVerify() {
               </p>
             </div>
 
-            <form onSubmit={(e) => e.preventDefault()}>
+            <form onSubmit={e => e.preventDefault()}>
               <div className="form-group">
                 <label htmlFor="verify-code" className="form-label">
                   인증번호
@@ -659,18 +659,20 @@ export default function SignupVerify() {
                     type="text"
                     className={`code-input ${error ? 'error' : ''}`}
                     value={code}
-                    onChange={(e) => {
-                      const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+                    onChange={e => {
+                      const value = e.target.value
+                        .replace(/\D/g, '')
+                        .slice(0, 6);
                       setCode(value);
-                      if (error) setError("");
+                      if (error) setError('');
                     }}
                     placeholder="000000"
                     maxLength={6}
                     autoComplete="one-time-code"
-                    aria-describedby={error ? "code-error" : "code-help"}
+                    aria-describedby={error ? 'code-error' : 'code-help'}
                   />
                   <div className={`timer ${timeLeft <= 0 ? 'expired' : ''}`}>
-                    {timeLeft > 0 ? formatTime(timeLeft) : "만료"}
+                    {timeLeft > 0 ? formatTime(timeLeft) : '만료'}
                   </div>
                 </div>
                 {error ? (
@@ -686,9 +688,7 @@ export default function SignupVerify() {
             </form>
 
             <div className="resend-section">
-              <p className="resend-text">
-                인증번호를 받지 못하셨나요?
-              </p>
+              <p className="resend-text">인증번호를 받지 못하셨나요?</p>
               <button
                 type="button"
                 className="resend-btn"
@@ -701,23 +701,23 @@ export default function SignupVerify() {
                     발송중...
                   </>
                 ) : (
-                  "인증번호 재발송"
+                  '인증번호 재발송'
                 )}
               </button>
             </div>
 
             <div className="btn-group">
-              <button 
-                type="button" 
-                className="btn secondary" 
+              <button
+                type="button"
+                className="btn secondary"
                 onClick={onBack}
                 aria-label="이전 단계로 돌아가기"
               >
                 이전
               </button>
-              <button 
-                type="button" 
-                className="btn primary" 
+              <button
+                type="button"
+                className="btn primary"
                 onClick={verifyCode}
                 disabled={!code || code.length !== 6 || isVerifying}
                 aria-label="이메일 인증 완료하기"
@@ -728,7 +728,7 @@ export default function SignupVerify() {
                     인증중...
                   </>
                 ) : (
-                  "가입완료"
+                  '가입완료'
                 )}
               </button>
             </div>
@@ -739,11 +739,10 @@ export default function SignupVerify() {
         <footer className="footer" role="contentinfo">
           <div className="footer-content">
             <div className="footer-line">
-              큐빙클럽코리아 | 사업자등록번호 : 358-54-00896 | 대표 : 정현재 | 이메일 : cubingclubkorea@gmail.com
+              큐빙클럽코리아 | 사업자등록번호 : 358-54-00896 | 대표 : 정현재 |
+              이메일 : cubingclubkorea@gmail.com
             </div>
-            <div className="footer-line">
-              COPYRIGHT © Cubing Club Korea
-            </div>
+            <div className="footer-line">COPYRIGHT © Cubing Club Korea</div>
           </div>
         </footer>
       </div>

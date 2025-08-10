@@ -104,14 +104,14 @@ export function measurePerformance<T extends (...args: any[]) => any>(
     performanceMonitor.start(name);
     try {
       const result = fn(...args);
-      
+
       // Promise인 경우 처리
       if (result instanceof Promise) {
         return result.finally(() => {
           performanceMonitor.end(name);
         });
       }
-      
+
       performanceMonitor.end(name);
       return result;
     } catch (error) {
@@ -129,9 +129,11 @@ export function usePerformanceTracking(componentName: string) {
 
   React.useEffect(() => {
     const renderTime = performance.now() - renderStart;
-    
+
     if (import.meta.env.VITE_NODE_ENV === 'development') {
-      console.log(`🎨 Render: ${componentName} took ${renderTime.toFixed(2)}ms`);
+      console.log(
+        `🎨 Render: ${componentName} took ${renderTime.toFixed(2)}ms`
+      );
     }
   });
 }
@@ -142,7 +144,7 @@ export function usePerformanceTracking(componentName: string) {
 export function measureWebVitals() {
   // Largest Contentful Paint (LCP)
   if ('LargestContentfulPaint' in window) {
-    new PerformanceObserver((entryList) => {
+    new PerformanceObserver(entryList => {
       const entries = entryList.getEntries();
       const lastEntry = entries[entries.length - 1];
       console.log('LCP:', lastEntry.startTime);
@@ -151,9 +153,9 @@ export function measureWebVitals() {
 
   // First Input Delay (FID)
   if ('PerformanceEventTiming' in window) {
-    new PerformanceObserver((entryList) => {
+    new PerformanceObserver(entryList => {
       const entries = entryList.getEntries();
-      entries.forEach((entry) => {
+      entries.forEach(entry => {
         const fidEntry = entry as any; // PerformanceEventTiming은 experimental API
         if (fidEntry.processingStart) {
           console.log('FID:', fidEntry.processingStart - fidEntry.startTime);
@@ -165,7 +167,7 @@ export function measureWebVitals() {
   // Cumulative Layout Shift (CLS)
   if ('LayoutShift' in window) {
     let clsValue = 0;
-    new PerformanceObserver((entryList) => {
+    new PerformanceObserver(entryList => {
       const entries = entryList.getEntries();
       entries.forEach((entry: any) => {
         if (!entry.hadRecentInput) {

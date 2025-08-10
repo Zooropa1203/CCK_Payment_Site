@@ -15,7 +15,7 @@ export default function LoginPage() {
   // Login form state
   const [loginData, setLoginData] = useState({
     email: '',
-    password: ''
+    password: '',
   });
 
   // Register form state
@@ -25,7 +25,7 @@ export default function LoginPage() {
     confirmPassword: '',
     name: '',
     phone: '',
-    cck_id: ''
+    cck_id: '',
   });
 
   // Redirect if already logged in
@@ -70,7 +70,7 @@ export default function LoginPage() {
         password: registerData.password,
         name: registerData.name,
         phone: registerData.phone || undefined,
-        cck_id: registerData.cck_id || undefined
+        cck_id: registerData.cck_id || undefined,
       });
       navigate('/');
     } catch (error: any) {
@@ -137,29 +137,41 @@ export default function LoginPage() {
           {isLogin ? (
             <form onSubmit={handleLogin} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="login-email"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   이메일
                 </label>
                 <input
+                  id="login-email"
                   type="email"
                   required
                   value={loginData.email}
-                  onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                  onChange={e =>
+                    setLoginData({ ...loginData, email: e.target.value })
+                  }
                   className="input-field"
                   placeholder="your@email.com"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="login-password"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   비밀번호
                 </label>
                 <div className="relative">
                   <input
+                    id="login-password"
                     type={showPassword ? 'text' : 'password'}
                     required
                     value={loginData.password}
-                    onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                    onChange={e =>
+                      setLoginData({ ...loginData, password: e.target.value })
+                    }
                     className="input-field pr-10"
                     placeholder="비밀번호를 입력하세요"
                   />
@@ -189,69 +201,102 @@ export default function LoginPage() {
             /* Register Form */
             <form onSubmit={handleRegister} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="register-email"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   이메일 *
                 </label>
                 <input
+                  id="register-email"
                   type="email"
                   required
                   value={registerData.email}
-                  onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
+                  onChange={e =>
+                    setRegisterData({ ...registerData, email: e.target.value })
+                  }
                   className="input-field"
                   placeholder="your@email.com"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="register-name"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   이름 *
                 </label>
                 <input
+                  id="register-name"
                   type="text"
                   required
                   value={registerData.name}
-                  onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
+                  onChange={e =>
+                    setRegisterData({ ...registerData, name: e.target.value })
+                  }
                   className="input-field"
                   placeholder="홍길동"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="register-phone"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   전화번호
                 </label>
                 <input
+                  id="register-phone"
                   type="tel"
                   value={registerData.phone}
-                  onChange={(e) => setRegisterData({ ...registerData, phone: e.target.value })}
+                  onChange={e =>
+                    setRegisterData({ ...registerData, phone: e.target.value })
+                  }
                   className="input-field"
                   placeholder="010-1234-5678"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="register-cck-id"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   CCK 아이디
                 </label>
                 <input
+                  id="register-cck-id"
                   type="text"
                   value={registerData.cck_id}
-                  onChange={(e) => setRegisterData({ ...registerData, cck_id: e.target.value })}
+                  onChange={e =>
+                    setRegisterData({ ...registerData, cck_id: e.target.value })
+                  }
                   className="input-field"
                   placeholder="CCK 회원 아이디 (선택사항)"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="register-password"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   비밀번호 *
                 </label>
                 <div className="relative">
                   <input
+                    id="register-password"
                     type={showPassword ? 'text' : 'password'}
                     required
                     value={registerData.password}
-                    onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
+                    onChange={e =>
+                      setRegisterData({
+                        ...registerData,
+                        password: e.target.value,
+                      })
+                    }
                     className="input-field pr-10"
                     placeholder="최소 6자 이상"
                   />
@@ -270,14 +315,23 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="register-confirm-password"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   비밀번호 확인 *
                 </label>
                 <input
+                  id="register-confirm-password"
                   type="password"
                   required
                   value={registerData.confirmPassword}
-                  onChange={(e) => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
+                  onChange={e =>
+                    setRegisterData({
+                      ...registerData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
                   className="input-field"
                   placeholder="비밀번호를 다시 입력하세요"
                 />
@@ -310,7 +364,10 @@ export default function LoginPage() {
         </div>
 
         <div className="text-center">
-          <Link to="/" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600">
+          <Link
+            to="/"
+            className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600"
+          >
             ← 메인 페이지로 돌아가기
           </Link>
         </div>

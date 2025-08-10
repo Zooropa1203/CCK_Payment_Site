@@ -10,7 +10,14 @@ const sampleCompetition = {
   max_participants: 200,
   registration_start: '2025-08-01 09:00:00',
   registration_end: '2025-09-10 23:59:59',
-  events: JSON.stringify(['3x3x3', '2x2x2', '4x4x4', '3x3x3 One-Handed', 'Pyraminx', 'Megaminx']),
+  events: JSON.stringify([
+    '3x3x3',
+    '2x2x2',
+    '4x4x4',
+    '3x3x3 One-Handed',
+    'Pyraminx',
+    'Megaminx',
+  ]),
   entry_fee: 15000,
   status: 'upcoming',
   schedule: JSON.stringify([
@@ -18,19 +25,31 @@ const sampleCompetition = {
     { time: '11:00', event: '3x3x3 1라운드' },
     { time: '13:00', event: '점심 시간' },
     { time: '14:00', event: '2x2x2, 4x4x4' },
-    { time: '16:00', event: '결승전' }
+    { time: '16:00', event: '결승전' },
   ]),
-  created_by: 1
+  created_by: 1,
 };
 
-db.run(`INSERT INTO competitions 
+db.run(
+  `INSERT INTO competitions 
   (name, description, date, location, address, max_participants, registration_start, registration_end, events, entry_fee, status, schedule, created_by) 
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
-  [sampleCompetition.name, sampleCompetition.description, sampleCompetition.date, 
-   sampleCompetition.location, sampleCompetition.address, sampleCompetition.max_participants, 
-   sampleCompetition.registration_start, sampleCompetition.registration_end, sampleCompetition.events, 
-   sampleCompetition.entry_fee, sampleCompetition.status, sampleCompetition.schedule, sampleCompetition.created_by],
-  function(err) {
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  [
+    sampleCompetition.name,
+    sampleCompetition.description,
+    sampleCompetition.date,
+    sampleCompetition.location,
+    sampleCompetition.address,
+    sampleCompetition.max_participants,
+    sampleCompetition.registration_start,
+    sampleCompetition.registration_end,
+    sampleCompetition.events,
+    sampleCompetition.entry_fee,
+    sampleCompetition.status,
+    sampleCompetition.schedule,
+    sampleCompetition.created_by,
+  ],
+  function (err) {
     if (err) {
       console.error('Error:', err);
     } else {

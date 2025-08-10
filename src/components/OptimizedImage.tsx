@@ -50,7 +50,8 @@ export function OptimizedImage({
       if (ctx) {
         ctx.fillStyle = 'rgba(0,0,0,0.5)';
         ctx.fillRect(0, 0, 1, 1);
-        supportsWebP.current = canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+        supportsWebP.current =
+          canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
       } else {
         supportsWebP.current = false;
       }
@@ -62,7 +63,7 @@ export function OptimizedImage({
     if (loading === 'eager') return;
 
     const observer = new IntersectionObserver(
-      (entries) => {
+      entries => {
         const [entry] = entries;
         if (entry.isIntersecting) {
           setIsInView(true);
@@ -104,20 +105,20 @@ export function OptimizedImage({
 
   const handleError = () => {
     setHasError(true);
-    
+
     // WebP 실패 시 원본 이미지로 fallback
     if (imageSrc !== src && imageSrc.includes('.webp')) {
       setImageSrc(src);
       return;
     }
-    
+
     // 원본도 실패하면 fallback 이미지 사용
     if (fallback && imageSrc !== fallback) {
       setImageSrc(fallback);
       setHasError(false);
       return;
     }
-    
+
     onError?.();
   };
 
@@ -126,7 +127,9 @@ export function OptimizedImage({
     'transition-opacity duration-300',
     isLoaded ? 'opacity-100' : 'opacity-0',
     hasError ? 'hidden' : '',
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const placeholderClasses = [
     'absolute inset-0 bg-gray-200 dark:bg-gray-700',

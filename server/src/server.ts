@@ -1,4 +1,4 @@
-import "dotenv/config";
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { connectDB } from './config/sequelize.js';
@@ -10,14 +10,18 @@ import paymentsRouter from './routes/payments.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5175;
-const CORS_ORIGINS = process.env.CORS_ORIGINS?.split(',') || ['http://localhost:5173'];
+const CORS_ORIGINS = process.env.CORS_ORIGINS?.split(',') || [
+  'http://localhost:5173',
+];
 const DB_PATH = process.env.DB_PATH || './database.sqlite';
 
 // 미들웨어 설정
-app.use(cors({
-  origin: CORS_ORIGINS,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: CORS_ORIGINS,
+    credentials: true,
+  })
+);
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -47,32 +51,43 @@ app.use((req, res) => {
 });
 
 // 에러 핸들러
-app.use((error: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('서버 에러:', error);
-  
-  res.status(error.status || 500).json({
-    error: error.name || 'Internal Server Error',
-    message: error.message || '서버 내부 오류가 발생했습니다.',
-    ...(process.env.NODE_ENV === 'development' && { details: error.stack }),
-  });
-});
+app.use(
+  (
+    error: any,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error('서버 에러:', error);
+
+    res.status(error.status || 500).json({
+      error: error.name || 'Internal Server Error',
+      message: error.message || '서버 내부 오류가 발생했습니다.',
+      ...(process.env.NODE_ENV === 'development' && { details: error.stack }),
+    });
+  }
+);
 
 // 서버 시작
 async function startServer() {
   try {
     // 데이터베이스 연결
     await connectDB();
-    
+
     // 데이터베이스 초기화
     await initializeDatabase();
-    
+
     // 서버 시작
     app.listen(PORT, () => {
       console.log(`🚀 CCK Payment Server started on http://localhost:${PORT}`);
       console.log(`📊 Health check: http://localhost:${PORT}/health`);
-      console.log(`🏆 Competitions API: http://localhost:${PORT}/api/competitions`);
+      console.log(
+        `🏆 Competitions API: http://localhost:${PORT}/api/competitions`
+      );
       console.log(`👤 Auth API: http://localhost:${PORT}/api/auth`);
-      console.log(`📝 Registrations API: http://localhost:${PORT}/api/registrations`);
+      console.log(
+        `📝 Registrations API: http://localhost:${PORT}/api/registrations`
+      );
     });
   } catch (error) {
     console.error('❌ 서버 시작 실패:', error);

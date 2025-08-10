@@ -1,5 +1,9 @@
 // src/services/auth.ts
-import type { User, LoginRequest, SignupRequest } from '../../shared/schemas.js';
+import type {
+  User,
+  LoginRequest,
+  SignupRequest,
+} from '../../shared/schemas.js';
 
 import { http } from './http.js';
 
@@ -35,7 +39,9 @@ export const authService = {
   },
 
   // Request password reset
-  async requestPasswordReset(data: PasswordResetRequest): Promise<PasswordResetResponse> {
+  async requestPasswordReset(
+    data: PasswordResetRequest
+  ): Promise<PasswordResetResponse> {
     return http.post<PasswordResetResponse>('/api/auth/password-reset', data);
   },
 
@@ -51,6 +57,8 @@ export const authService = {
 
   // Resend verification email
   async resendVerificationEmail(email: string): Promise<{ message: string }> {
-    return http.post<{ message: string }>('/api/auth/resend-verification', { email });
+    return http.post<{ message: string }>('/api/auth/resend-verification', {
+      email,
+    });
   },
 };

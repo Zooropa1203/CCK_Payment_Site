@@ -89,8 +89,8 @@ export async function createSampleData() {
           '3x3': 5000,
           '4x4': 7000,
           '5x5': 8000,
-          'OH': 6000,
-          'Clock': 5000,
+          OH: 6000,
+          Clock: 5000,
         },
         reg_start_date: '2025-08-01',
         reg_end_date: '2025-09-10',
@@ -105,7 +105,7 @@ export async function createSampleData() {
           '3x3': 4000,
           '4x4': 6000,
           '2x2': 3000,
-          'OH': 5000,
+          OH: 5000,
         },
         reg_start_date: '2025-09-01',
         reg_end_date: '2025-10-15',
@@ -122,8 +122,8 @@ export async function createSampleData() {
           '5x5': 7000,
           '6x6': 8000,
           '7x7': 9000,
-          'OH': 4000,
-          'BLD': 6000,
+          OH: 4000,
+          BLD: 6000,
         },
         reg_start_date: '2025-10-01',
         reg_end_date: '2025-11-20',
@@ -166,7 +166,9 @@ export async function createSampleData() {
     ]);
 
     console.log('✅ 샘플 데이터 생성 완료');
-    console.log(`📊 생성된 데이터: 대회 ${competitions.length}개, 사용자 ${users.length}명`);
+    console.log(
+      `📊 생성된 데이터: 대회 ${competitions.length}개, 사용자 ${users.length}명`
+    );
   } catch (error) {
     console.error('❌ 샘플 데이터 생성 실패:', error);
     throw error;

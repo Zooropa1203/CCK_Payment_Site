@@ -1,6 +1,7 @@
 # CCK_Payment 접근성 및 다크모드 개선 - 파일별 Unified Diff
 
 ## 📁 변경된 파일 목록
+
 - `src/pages/HomePage_new.tsx` - 주요 개선사항 적용
 - `optimize_images.js` - 이미지 최적화 가이드 생성
 - `accessibility_test_checklist.md` - 종합 테스트 체크리스트 생성
@@ -10,6 +11,7 @@
 ## 📄 src/pages/HomePage_new.tsx
 
 ### 🎯 주요 변경사항
+
 1. **테이블 접근성 심화**: data-label 속성 추가로 모바일 카드형 전환 시 스크린리더 지원
 2. **다크모드 지원**: prefers-color-scheme 기반 자동 테마 전환, 4.5:1 대비 유지
 3. **성능 최적화**: React.memo, useCallback, useMemo 적용
@@ -23,18 +25,18 @@
 @@ -1,4 +1,4 @@
 -import React, { useState, useEffect } from 'react';
 +import React, { useState, useEffect, useCallback, useMemo } from 'react';
- 
+
  // 더미 데이터 사용 여부 (true=샘플 표시, false=모두 없음 상태)
  // URL 쿼리로도 제어 가능: ?dummy=true | ?dummy=false
 @@ -19,46 +19,105 @@ interface Competition {
- 
+
  const HomePage_new: React.FC = () => {
    const [useDummy, setUseDummy] = useState<boolean>(getUseDummy());
 +  const [isLoading, setIsLoading] = useState<boolean>(false);
 +  const [error, setError] = useState<string | null>(null);
    const [ongoingCompetitions, setOngoingCompetitions] = useState<Competition[]>([]);
    const [upcomingCompetitions, setUpcomingCompetitions] = useState<Competition[]>([]);
- 
+
 -  // 더미 데이터
 -  const dummyOngoing: Competition[] = [
 +  // 더미 데이터 - 메모이제이션
@@ -43,7 +45,7 @@
      { id: 2, date: '2025-08-22', name: '제5회 부산 오픈', location: '부산문화회관' },
 -  ];
 +  ], []);
- 
+
 -  const dummyUpcoming: Competition[] = [
 +  const dummyUpcoming: Competition[] = useMemo(() => [
      { id: 3, date: '2025-09-01', name: '2025 추석 특별대회', location: '대전컨벤션센터' },
@@ -51,7 +53,7 @@
      { id: 5, date: '2025-09-29', name: '2025 가을 정기대회', location: '서울올림픽공원' },
 -  ];
 +  ], []);
- 
+
    useEffect(() => {
 -    if (useDummy) {
 -      setOngoingCompetitions(dummyOngoing);
@@ -61,7 +63,7 @@
 -      setUpcomingCompetitions([]);
 +    setIsLoading(true);
 +    setError(null);
-+    
++
 +    try {
 +      if (useDummy) {
 +        setOngoingCompetitions(dummyOngoing);
@@ -78,7 +80,7 @@
      }
 -  }, [useDummy]);
 +  }, [useDummy, dummyOngoing, dummyUpcoming]);
- 
+
 -  const formatDate = (dateString: string): string => {
 +  const formatDate = useCallback((dateString: string): string => {
      const date = new Date(dateString);
@@ -88,13 +90,13 @@
      return `${year}.${month}.${day}`;
 -  };
 +  }, []);
- 
+
 -  const handleLoginClick = () => {
 +  const handleLoginClick = useCallback(() => {
      window.location.href = '/login';
 -  };
 +  }, []);
- 
+
    return (
      <>
        <style>{`
@@ -149,7 +151,7 @@
            margin: 0;
            padding: 0;
 @@ -67,27 +126,29 @@ const HomePage_new: React.FC = () => {
- 
+
          body {
            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 -          background-color: #ffffff;
@@ -159,14 +161,14 @@
            display: flex;
            flex-direction: column;
          }
- 
+
          .container {
 -          max-width: 1160px;
 +          max-width: var(--max-width);
            margin: 0 auto;
            padding: 0 24px;
          }
- 
+
          /* 헤더 스타일 */
          .header {
 -          background-color: #e5e5e5;
@@ -181,7 +183,7 @@
 -          border-bottom: 1px solid #d1d5db;
 +          border-bottom: 1px solid var(--border);
          }
- 
+
          .header-content {
 @@ -111,7 +172,7 @@ const HomePage_new: React.FC = () => {
          .site-name {
@@ -190,7 +192,7 @@
 -          color: #333333;
 +          color: var(--text);
          }
- 
+
          .header-right {
 @@ -120,12 +181,19 @@ const HomePage_new: React.FC = () => {
            gap: 8px;
@@ -201,7 +203,7 @@
            transition: background-color 0.2s;
 +          color: var(--text);
          }
- 
+
          .header-right:hover {
 -          background-color: rgba(0, 0, 0, 0.05);
 +          background-color: rgba(255, 255, 255, 0.1);
@@ -212,17 +214,17 @@
 +          outline: 2px solid var(--brand);
 +          outline-offset: 2px;
          }
- 
+
          .profile-icon {
 @@ -137,7 +205,7 @@ const HomePage_new: React.FC = () => {
- 
+
          .login-text {
            font-size: 16px;
 -          color: #333333;
 +          color: var(--text);
            font-weight: 500;
          }
- 
+
 @@ -154,7 +222,7 @@ const HomePage_new: React.FC = () => {
          .section-title {
            font-size: 24px;
@@ -239,12 +241,12 @@
 -          background-color: #3b82f6;
 +          background-color: var(--brand);
          }
- 
+
          .section-title.upcoming::after {
 -          background-color: #10b981;
 +          background-color: var(--brand-secondary);
          }
- 
+
 -        /* 테이블 스타일 */
 +        /* 테이블 기본 스타일 */
          .table-container {
@@ -257,18 +259,18 @@
 +          background-color: var(--surface);
 +          box-shadow: var(--shadow);
          }
- 
+
          .competition-table {
            width: 100%;
            border-collapse: collapse;
 +          background: var(--surface);
          }
- 
+
          .competition-table caption {
 @@ -199,19 +269,22 @@ const HomePage_new: React.FC = () => {
            border: 0;
          }
- 
+
 -        .competition-table thead th {
 -          background-color: #8b8b8b;
 -          color: #ffffff;
@@ -287,23 +289,23 @@
 +          font-weight: 600;
 +          border-bottom: 2px solid var(--border-dark);
          }
- 
+
          .competition-table tbody td {
 -          padding: 16px;
 -          border-bottom: 1px solid #e5e7eb;
 -          color: #374151;
 +          color: var(--text);
          }
- 
+
          .competition-table tbody tr:last-child td {
 @@ -219,32 +292,55 @@ const HomePage_new: React.FC = () => {
          }
- 
+
          .competition-table tbody tr:hover {
 -          background-color: #f9fafb;
 +          background-color: var(--table-hover);
          }
- 
+
          /* 빈 상태 메시지 */
          .empty-state {
            text-align: center;
@@ -315,7 +317,7 @@
 +          border: 1px solid var(--border);
 +          border-radius: var(--border-radius);
          }
- 
+
          /* 푸터 스타일 */
          .footer {
 -          background-color: #f3f4f6;
@@ -326,7 +328,7 @@
 +          border-top: 1px solid var(--border-light);
            margin-top: auto;
          }
- 
+
          .footer-content {
            text-align: center;
 -          color: #6b7280;
@@ -334,7 +336,7 @@
            font-size: 14px;
            line-height: 1.6;
          }
- 
+
 +        /* 로딩 및 에러 상태 스타일 */
 +        .loading-state, .error-state {
 +          text-align: center;
@@ -360,7 +362,7 @@
 @@ -253,7 +349,19 @@ const HomePage_new: React.FC = () => {
            margin-bottom: 0;
          }
- 
+
 -        /* 반응형 디자인 */
 +        /* 1024px 이하: 가로 스크롤 */
 +        @media (max-width: 1024px) {
@@ -368,7 +370,7 @@
 +            overflow-x: auto;
 +            -webkit-overflow-scrolling: touch;
 +          }
-+          
++
 +          .competition-table {
 +            min-width: 600px;
 +          }
@@ -381,13 +383,13 @@
 @@ -287,49 +395,98 @@ const HomePage_new: React.FC = () => {
              font-size: 20px;
            }
- 
+
 -          .competition-table {
 -            font-size: 14px;
 +          .footer-content {
 +            font-size: 12px;
            }
- 
+
 -          .competition-table thead th,
 -          .competition-table tbody td {
 -            padding: 12px 8px;
@@ -395,7 +397,7 @@
 +          .competition-table thead {
 +            display: none;
            }
- 
+
 -          .footer-content {
 -            font-size: 12px;
 +          .competition-table,
@@ -437,7 +439,7 @@
 +            white-space: nowrap;
            }
          }
- 
+
          @media (max-width: 480px) {
 -          .competition-table thead th,
 -          .competition-table tbody td {
@@ -460,15 +462,15 @@
 +          }
          }
        `}</style>
- 
+
        <div className="page-wrapper">
          {/* 헤더 */}
 -        <header className="header">
 +        <header className="header" role="banner">
            <div className="header-left">
-             <img 
-               src="/images/cck_logo.png" 
-               alt="Cubing Club Korea 로고" 
+             <img
+               src="/images/cck_logo.png"
+               alt="Cubing Club Korea 로고"
                className="logo"
 +              width="auto"
 +              height="36"
@@ -483,9 +485,9 @@
 +                   handleLoginClick();
 +                 }
 +               }}>
-             <img 
-               src="/images/person_icon.png" 
-               alt="사용자 프로필" 
+             <img
+               src="/images/person_icon.png"
+               alt="사용자 프로필"
                className="profile-icon"
 +              width="36"
 +              height="36"
@@ -642,7 +644,7 @@
 +            )}
            </div>
          </main>
- 
+
          {/* 푸터 */}
 -        <footer className="footer">
 +        <footer className="footer" role="contentinfo">
@@ -652,7 +654,7 @@
 @@ -422,4 +597,4 @@ const HomePage_new: React.FC = () => {
    );
  };
- 
+
 -export default HomePage_new;
 +export default React.memo(HomePage_new);
 ```
@@ -662,6 +664,7 @@
 ## 📄 optimize_images.js
 
 ### 🎯 목적
+
 이미지 최적화를 위한 가이드라인과 권장 도구 제공
 
 ### 📋 Unified Diff
@@ -690,6 +693,7 @@
 ## 📄 accessibility_test_checklist.md
 
 ### 🎯 목적
+
 포괄적인 접근성 및 반응형 테스트를 위한 체계적 체크리스트
 
 ### 📋 Unified Diff
@@ -711,7 +715,7 @@
 +
 +#### 다크 모드 (`prefers-color-scheme: dark`)
 +- [ ] 다크 테마가 자동으로 적용됨
-+- [ ] 모든 텍스트가 읽기 쉬움 (대비 4.5:1 이상)  
++- [ ] 모든 텍스트가 읽기 쉬움 (대비 4.5:1 이상)
 +- [ ] 브랜드 색상이 적절히 조정됨 (#60a5fa)
 +- [ ] 테이블 헤더 배경이 어둡게 표시됨 (#1b2430)
 +- [ ] 빈 상태/에러 메시지가 다크 테마에 맞게 표시됨
@@ -728,7 +732,7 @@
 +- [ ] 각 행이 카드로 변환됨
 +- [ ] `data-label` 속성이 올바르게 표시됨:
 +  - [ ] "날짜" 레이블이 표시됨
-+  - [ ] "대회명" 레이블이 표시됨  
++  - [ ] "대회명" 레이블이 표시됨
 +  - [ ] "장소" 레이블이 표시됨
 +- [ ] 카드 간격이 적절함 (12px)
 +- [ ] 패딩이 올바르게 적용됨 (120px left)

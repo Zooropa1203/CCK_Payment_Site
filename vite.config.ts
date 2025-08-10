@@ -1,13 +1,13 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@": resolve(__dirname, "src"),
+      '@': resolve(__dirname, 'src'),
     },
   },
   build: {
@@ -15,11 +15,11 @@ export default defineConfig({
     target: 'esnext',
     minify: 'esbuild',
     cssMinify: true,
-    
+
     // 코드 스플리팅 최적화
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
+        manualChunks: id => {
           // 벤더 라이브러리들을 별도 청크로 분리
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {
@@ -33,7 +33,7 @@ export default defineConfig({
             }
             return 'vendor';
           }
-          
+
           // 페이지별 청크 분리
           if (id.includes('src/pages/admin')) {
             return 'admin';
@@ -48,28 +48,30 @@ export default defineConfig({
         // 파일명 최적화
         entryFileNames: 'assets/js/[name]-[hash].js',
         chunkFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: (assetInfo) => {
+        assetFileNames: assetInfo => {
           const info = assetInfo.name?.split('.') || [];
           const extType = info[info.length - 1];
           if (/\.(css)$/.test(assetInfo.name || '')) {
             return 'assets/css/[name]-[hash].[ext]';
           }
-          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(assetInfo.name || '')) {
+          if (
+            /\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(assetInfo.name || '')
+          ) {
             return 'assets/images/[name]-[hash].[ext]';
           }
           return `assets/${extType}/[name]-[hash].[ext]`;
         },
       },
     },
-    
+
     // 성능 최적화
     chunkSizeWarningLimit: 1000,
     sourcemap: false, // 프로덕션에서는 소스맵 비활성화
-    
+
     // 압축 최적화
     assetsInlineLimit: 4096, // 4KB 이하의 asset을 인라인으로 처리
   },
-  
+
   // 개발 서버 최적화
   server: {
     proxy: {
@@ -85,7 +87,11 @@ export default defineConfig({
             console.log('Sending Request to the Target:', req.method, req.url);
           });
           proxy.on('proxyRes', (proxyRes, req, _res) => {
-            console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
+            console.log(
+              'Received Response from the Target:',
+              proxyRes.statusCode,
+              req.url
+            );
           });
         },
       },
@@ -95,13 +101,20 @@ export default defineConfig({
       overlay: false, // 에러 오버레이 비활성화로 성능 개선
     },
   },
-  
+
   // 미리보기 서버 설정
   preview: {
     port: 4173,
     strictPort: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5175',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
-  
+
   // 종속성 최적화
   optimizeDeps: {
     include: [
@@ -113,4 +126,4 @@ export default defineConfig({
     ],
     exclude: ['@vite/client', '@vite/env'],
   },
-})
+});

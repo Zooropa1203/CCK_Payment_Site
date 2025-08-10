@@ -45,14 +45,27 @@ export default function AdminPage() {
     registration_start: '',
     registration_end: '',
     events: [] as string[],
-    entry_fee: 0
+    entry_fee: 0,
   });
 
   const availableEvents = [
-    '3x3x3', '2x2x2', '4x4x4', '5x5x5', '6x6x6', '7x7x7',
-    '3x3x3 One-Handed', '3x3x3 Blindfolded', '3x3x3 Feet',
-    'Pyraminx', 'Megaminx', 'Skewb', 'Square-1', 'Clock',
-    '3x3x3 Multi-Blind', '4x4x4 Blindfolded', '5x5x5 Blindfolded'
+    '3x3x3',
+    '2x2x2',
+    '4x4x4',
+    '5x5x5',
+    '6x6x6',
+    '7x7x7',
+    '3x3x3 One-Handed',
+    '3x3x3 Blindfolded',
+    '3x3x3 Feet',
+    'Pyraminx',
+    'Megaminx',
+    'Skewb',
+    'Square-1',
+    'Clock',
+    '3x3x3 Multi-Blind',
+    '4x4x4 Blindfolded',
+    '5x5x5 Blindfolded',
   ];
 
   useEffect(() => {
@@ -83,8 +96,8 @@ export default function AdminPage() {
       setLoading(true);
       const response = await fetch('/api/users', {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (response.ok) {
         const data = await response.json();
@@ -99,20 +112,20 @@ export default function AdminPage() {
 
   const handleCreateCompetition = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     console.log('Form submission triggered');
     console.log('Competition form data:', competitionForm);
     console.log('Token:', token);
-    
+
     try {
       console.log('Sending request to /api/competitions');
       const response = await fetch('/api/competitions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(competitionForm)
+        body: JSON.stringify(competitionForm),
       });
 
       console.log('Response status:', response.status);
@@ -131,12 +144,16 @@ export default function AdminPage() {
           registration_start: '',
           registration_end: '',
           events: [],
-          entry_fee: 0
+          entry_fee: 0,
         });
         fetchCompetitions();
       } else {
         const errorData = await response.text();
-        console.error('Failed to create competition:', response.status, errorData);
+        console.error(
+          'Failed to create competition:',
+          response.status,
+          errorData
+        );
       }
     } catch (error) {
       console.error('Error creating competition:', error);
@@ -152,8 +169,8 @@ export default function AdminPage() {
       const response = await fetch(`/api/competitions/${id}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {
@@ -170,9 +187,9 @@ export default function AdminPage() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ role: newRole })
+        body: JSON.stringify({ role: newRole }),
       });
 
       if (response.ok) {
@@ -184,12 +201,17 @@ export default function AdminPage() {
   };
 
   const handleEventToggle = (event: string) => {
-    console.log('Event toggle clicked:', event, 'Current events:', competitionForm.events);
+    console.log(
+      'Event toggle clicked:',
+      event,
+      'Current events:',
+      competitionForm.events
+    );
     setCompetitionForm(prev => ({
       ...prev,
       events: prev.events.includes(event)
         ? prev.events.filter(e => e !== event)
-        : [...prev.events, event]
+        : [...prev.events, event],
     }));
   };
 
@@ -241,9 +263,7 @@ export default function AdminPage() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           관리자 페이지
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          대회 및 회원 관리
-        </p>
+        <p className="text-gray-600 dark:text-gray-400">대회 및 회원 관리</p>
       </div>
 
       {/* Tab Navigation */}
@@ -259,7 +279,7 @@ export default function AdminPage() {
           >
             <span>대회 관리</span>
           </button>
-          
+
           {user.role === 'administrator' && (
             <button
               onClick={() => setActiveTab('users')}
@@ -299,70 +319,118 @@ export default function AdminPage() {
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-6">
                     새 대회 만들기
                   </h3>
-                  
-                  <form onSubmit={handleCreateCompetition} className="space-y-4">
+
+                  <form
+                    onSubmit={handleCreateCompetition}
+                    className="space-y-4"
+                  >
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label
+                          htmlFor="comp-name"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                        >
                           대회명 *
                         </label>
                         <input
+                          id="comp-name"
                           type="text"
                           required
                           value={competitionForm.name}
-                          onChange={(e) => setCompetitionForm({...competitionForm, name: e.target.value})}
+                          onChange={e =>
+                            setCompetitionForm({
+                              ...competitionForm,
+                              name: e.target.value,
+                            })
+                          }
                           className="input-field"
                         />
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label
+                          htmlFor="comp-date"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                        >
                           대회 날짜 *
                         </label>
                         <input
+                          id="comp-date"
                           type="date"
                           required
                           value={competitionForm.date}
-                          onChange={(e) => setCompetitionForm({...competitionForm, date: e.target.value})}
+                          onChange={e =>
+                            setCompetitionForm({
+                              ...competitionForm,
+                              date: e.target.value,
+                            })
+                          }
                           className="input-field"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label
+                        htmlFor="comp-description"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                      >
                         설명
                       </label>
                       <textarea
+                        id="comp-description"
                         value={competitionForm.description}
-                        onChange={(e) => setCompetitionForm({...competitionForm, description: e.target.value})}
+                        onChange={e =>
+                          setCompetitionForm({
+                            ...competitionForm,
+                            description: e.target.value,
+                          })
+                        }
                         className="input-field h-20"
                       />
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label
+                          htmlFor="comp-location"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                        >
                           장소명 *
                         </label>
                         <input
+                          id="comp-location"
                           type="text"
                           required
                           value={competitionForm.location}
-                          onChange={(e) => setCompetitionForm({...competitionForm, location: e.target.value})}
+                          onChange={e =>
+                            setCompetitionForm({
+                              ...competitionForm,
+                              location: e.target.value,
+                            })
+                          }
                           className="input-field"
                         />
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label
+                          htmlFor="comp-address"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                        >
                           주소 *
                         </label>
                         <input
+                          id="comp-address"
                           type="text"
                           required
                           value={competitionForm.address}
-                          onChange={(e) => setCompetitionForm({...competitionForm, address: e.target.value})}
+                          onChange={e =>
+                            setCompetitionForm({
+                              ...competitionForm,
+                              address: e.target.value,
+                            })
+                          }
                           className="input-field"
                         />
                       </div>
@@ -370,25 +438,43 @@ export default function AdminPage() {
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label
+                          htmlFor="comp-capacity"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                        >
                           최대 참가자 수
                         </label>
                         <input
+                          id="comp-capacity"
                           type="number"
                           value={competitionForm.max_participants}
-                          onChange={(e) => setCompetitionForm({...competitionForm, max_participants: parseInt(e.target.value)})}
+                          onChange={e =>
+                            setCompetitionForm({
+                              ...competitionForm,
+                              max_participants: parseInt(e.target.value),
+                            })
+                          }
                           className="input-field"
                         />
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label
+                          htmlFor="comp-fee"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                        >
                           참가비 (원)
                         </label>
                         <input
+                          id="comp-fee"
                           type="number"
                           value={competitionForm.entry_fee}
-                          onChange={(e) => setCompetitionForm({...competitionForm, entry_fee: parseInt(e.target.value)})}
+                          onChange={e =>
+                            setCompetitionForm({
+                              ...competitionForm,
+                              entry_fee: parseInt(e.target.value),
+                            })
+                          }
                           className="input-field"
                         />
                       </div>
@@ -396,27 +482,45 @@ export default function AdminPage() {
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label
+                          htmlFor="comp-reg-start"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                        >
                           접수 시작일 *
                         </label>
                         <input
+                          id="comp-reg-start"
                           type="datetime-local"
                           required
                           value={competitionForm.registration_start}
-                          onChange={(e) => setCompetitionForm({...competitionForm, registration_start: e.target.value})}
+                          onChange={e =>
+                            setCompetitionForm({
+                              ...competitionForm,
+                              registration_start: e.target.value,
+                            })
+                          }
                           className="input-field"
                         />
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label
+                          htmlFor="comp-reg-end"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                        >
                           접수 마감일 *
                         </label>
                         <input
+                          id="comp-reg-end"
                           type="datetime-local"
                           required
                           value={competitionForm.registration_end}
-                          onChange={(e) => setCompetitionForm({...competitionForm, registration_end: e.target.value})}
+                          onChange={e =>
+                            setCompetitionForm({
+                              ...competitionForm,
+                              registration_end: e.target.value,
+                            })
+                          }
                           className="input-field"
                         />
                       </div>
@@ -424,10 +528,11 @@ export default function AdminPage() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                        대회 종목 선택 * ({competitionForm.events.length}개 선택됨)
+                        대회 종목 선택 * ({competitionForm.events.length}개
+                        선택됨)
                       </label>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-40 overflow-y-auto">
-                        {availableEvents.map((event) => (
+                        {availableEvents.map(event => (
                           <button
                             key={event}
                             type="button"
@@ -437,11 +542,15 @@ export default function AdminPage() {
                                 ? ''
                                 : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
                             }`}
-                            style={competitionForm.events.includes(event) ? {
-                              backgroundColor: 'rgb(10, 10, 233)',
-                              borderColor: 'rgb(10, 10, 233)',
-                              color: 'white'
-                            } : {}}
+                            style={
+                              competitionForm.events.includes(event)
+                                ? {
+                                    backgroundColor: 'rgb(10, 10, 233)',
+                                    borderColor: 'rgb(10, 10, 233)',
+                                    color: 'white',
+                                  }
+                                : {}
+                            }
                           >
                             {event}
                           </button>
@@ -450,10 +559,7 @@ export default function AdminPage() {
                     </div>
 
                     <div className="flex space-x-3 pt-4">
-                      <button
-                        type="submit"
-                        className="btn-primary flex-1"
-                      >
+                      <button type="submit" className="btn-primary flex-1">
                         대회 만들기
                       </button>
                       <button
@@ -481,22 +587,39 @@ export default function AdminPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">대회명</th>
-                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">날짜</th>
-                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">장소</th>
-                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">정원</th>
-                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">상태</th>
-                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">작업</th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        대회명
+                      </th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        날짜
+                      </th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        장소
+                      </th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        정원
+                      </th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        상태
+                      </th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        작업
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {competitions.map((competition) => (
-                      <tr key={competition.id} className="border-b border-gray-100 dark:border-gray-800">
+                    {competitions.map(competition => (
+                      <tr
+                        key={competition.id}
+                        className="border-b border-gray-100 dark:border-gray-800"
+                      >
                         <td className="py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
                           {competition.name}
                         </td>
                         <td className="py-4 px-4 text-gray-600 dark:text-gray-400">
-                          {format(new Date(competition.date), 'M월 d일', { locale: ko })}
+                          {format(new Date(competition.date), 'M월 d일', {
+                            locale: ko,
+                          })}
                         </td>
                         <td className="py-4 px-4 text-gray-600 dark:text-gray-400">
                           {competition.location}
@@ -505,7 +628,9 @@ export default function AdminPage() {
                           {competition.max_participants}명
                         </td>
                         <td className="py-4 px-4">
-                          <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(competition.status)}`}>
+                          <span
+                            className={`px-2 py-1 text-xs rounded-full ${getStatusColor(competition.status)}`}
+                          >
                             {competition.status}
                           </span>
                         </td>
@@ -515,8 +640,10 @@ export default function AdminPage() {
                               편집
                             </button>
                             {user.role === 'administrator' && (
-                              <button 
-                                onClick={() => handleDeleteCompetition(competition.id)}
+                              <button
+                                onClick={() =>
+                                  handleDeleteCompetition(competition.id)
+                                }
                                 className="p-1 text-gray-600 hover:text-red-600"
                               >
                                 삭제
@@ -551,17 +678,32 @@ export default function AdminPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">이름</th>
-                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">CCK 아이디</th>
-                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">전화번호</th>
-                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">이메일</th>
-                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">권한</th>
-                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">가입일</th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        이름
+                      </th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        CCK 아이디
+                      </th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        전화번호
+                      </th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        이메일
+                      </th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        권한
+                      </th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
+                        가입일
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {users.map((userData) => (
-                      <tr key={userData.id} className="border-b border-gray-100 dark:border-gray-800">
+                    {users.map(userData => (
+                      <tr
+                        key={userData.id}
+                        className="border-b border-gray-100 dark:border-gray-800"
+                      >
                         <td className="py-4 px-4 font-medium text-gray-900 dark:text-gray-100">
                           <div className="flex items-center space-x-2">
                             <span>{userData.name}</span>
@@ -579,7 +721,9 @@ export default function AdminPage() {
                         <td className="py-4 px-4">
                           <select
                             value={userData.role}
-                            onChange={(e) => handleRoleChange(userData.id, e.target.value)}
+                            onChange={e =>
+                              handleRoleChange(userData.id, e.target.value)
+                            }
                             className={`px-2 py-1 text-xs rounded-full border-none ${getRoleColor(userData.role)}`}
                           >
                             <option value="member">Member</option>

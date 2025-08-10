@@ -1,6 +1,11 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-export type ChipVariant = 'default' | 'primary' | 'success' | 'warning' | 'error';
+export type ChipVariant =
+  | 'default'
+  | 'primary'
+  | 'success'
+  | 'warning'
+  | 'error';
 export type ChipSize = 'sm' | 'md';
 
 interface ChipProps extends HTMLAttributes<HTMLDivElement> {
@@ -11,46 +16,44 @@ interface ChipProps extends HTMLAttributes<HTMLDivElement> {
   onRemove?: () => void;
 }
 
-const Chip = forwardRef<HTMLDivElement, ChipProps>(({
-  variant = 'default',
-  size = 'md',
-  children,
-  removable = false,
-  onRemove,
-  className = '',
-  ...props
-}, ref) => {
-  const baseClass = 'chip';
-  const variantClass = `chip-${variant}`;
-  const sizeClass = `chip-${size}`;
+const Chip = forwardRef<HTMLDivElement, ChipProps>(
+  (
+    {
+      variant = 'default',
+      size = 'md',
+      children,
+      removable = false,
+      onRemove,
+      className = '',
+      ...props
+    },
+    ref
+  ) => {
+    const baseClass = 'chip';
+    const variantClass = `chip-${variant}`;
+    const sizeClass = `chip-${size}`;
 
-  const classes = [
-    baseClass,
-    variantClass,
-    sizeClass,
-    className
-  ].filter(Boolean).join(' ');
+    const classes = [baseClass, variantClass, sizeClass, className]
+      .filter(Boolean)
+      .join(' ');
 
-  return (
-    <div
-      ref={ref}
-      className={classes}
-      {...props}
-    >
-      <span className="chip-content">{children}</span>
-      {removable && (
-        <button
-          type="button"
-          className="chip-remove"
-          onClick={onRemove}
-          aria-label="제거"
-        >
-          ✕
-        </button>
-      )}
-    </div>
-  );
-});
+    return (
+      <div ref={ref} className={classes} {...props}>
+        <span className="chip-content">{children}</span>
+        {removable && (
+          <button
+            type="button"
+            className="chip-remove"
+            onClick={onRemove}
+            aria-label="제거"
+          >
+            ✕
+          </button>
+        )}
+      </div>
+    );
+  }
+);
 
 Chip.displayName = 'Chip';
 

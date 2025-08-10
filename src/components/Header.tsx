@@ -1,19 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import { ROUTES } from "../routes/paths";
+import { ROUTES } from '../routes/paths';
 
-import ThemeToggle from "./ThemeToggle";
+import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
   return (
-    <header
-      role="banner"
-      className="site-header"
-      aria-label="사이트 헤더"
-    >
+    <header role="banner" className="site-header" aria-label="사이트 헤더">
       <div className="header-inner">
         {/* 좌측: 로고 */}
-        <Link to={ROUTES.HOME} className="logo-wrap" aria-label="Cubing Club Korea 메인으로 이동">
+        <Link
+          to={ROUTES.HOME}
+          className="logo-wrap"
+          aria-label="Cubing Club Korea 메인으로 이동"
+        >
           <img
             src="/images/cck_logo.png"
             alt="Cubing Club Korea 로고"

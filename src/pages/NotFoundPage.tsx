@@ -1,12 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import { ROUTES } from "../routes/paths";
+import { ROUTES } from '../routes/paths';
 
 export default function NotFoundPage() {
   return (
     <div className="min-h-[60vh] flex items-center justify-center">
       <div className="text-center">
-        <h1 className="text-9xl font-bold text-gray-300 dark:text-gray-600">404</h1>
+        <h1 className="text-9xl font-bold text-gray-300 dark:text-gray-600">
+          404
+        </h1>
         <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
           페이지를 찾을 수 없습니다
         </h2>

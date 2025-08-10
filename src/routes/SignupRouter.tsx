@@ -1,8 +1,8 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from 'react-router-dom';
 
-import SignupInfo from "../pages/SignupInfo";
-import SignupTerms from "../pages/SignupTerms";
-import SignupVerify from "../pages/SignupVerify";
+import SignupInfo from '../pages/SignupInfo';
+import SignupTerms from '../pages/SignupTerms';
+import SignupVerify from '../pages/SignupVerify';
 
 export default function SignupRouter() {
   return (

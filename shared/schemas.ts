@@ -10,7 +10,9 @@ export const userSchema = z.object({
   gender: z.enum(['M', 'F']),
   wca_id: z.string().optional(),
   emergency_contact: z.string().min(1, 'Emergency contact is required'),
-  emergency_phone: z.string().regex(/^[0-9-+().\s]+$/, 'Invalid emergency phone format'),
+  emergency_phone: z
+    .string()
+    .regex(/^[0-9-+().\s]+$/, 'Invalid emergency phone format'),
   role: z.enum(['Administrator', 'Organizer', 'Member']).default('Member'),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
@@ -34,37 +36,49 @@ export const competitionSchema = z.object({
 });
 
 export const competitionDetailSchema = competitionSchema.extend({
-  schedule: z.array(z.object({
-    id: z.number().int().positive(),
-    competition_id: z.number().int().positive(),
-    event: z.string(),
-    start_time: z.string().datetime(),
-    end_time: z.string().datetime(),
-    round: z.string(),
-    cutoff: z.string().optional(),
-    time_limit: z.string().optional(),
-  })).optional(),
-  participants: z.array(z.object({
-    id: z.number().int().positive(),
-    user_id: z.number().int().positive(),
-    competition_id: z.number().int().positive(),
-    events: z.array(z.string()),
-    total_fee: z.number().min(0),
-    status: z.enum(['pending', 'confirmed', 'cancelled']),
-    payment_status: z.enum(['pending', 'completed', 'failed', 'refunded']),
-    registered_at: z.string().datetime(),
-    user: userSchema.optional(),
-  })).optional(),
-  waitlist: z.array(z.object({
-    id: z.number().int().positive(),
-    user_id: z.number().int().positive(),
-    competition_id: z.number().int().positive(),
-    events: z.array(z.string()),
-    total_fee: z.number().min(0),
-    position: z.number().int().positive(),
-    registered_at: z.string().datetime(),
-    user: userSchema.optional(),
-  })).optional(),
+  schedule: z
+    .array(
+      z.object({
+        id: z.number().int().positive(),
+        competition_id: z.number().int().positive(),
+        event: z.string(),
+        start_time: z.string().datetime(),
+        end_time: z.string().datetime(),
+        round: z.string(),
+        cutoff: z.string().optional(),
+        time_limit: z.string().optional(),
+      })
+    )
+    .optional(),
+  participants: z
+    .array(
+      z.object({
+        id: z.number().int().positive(),
+        user_id: z.number().int().positive(),
+        competition_id: z.number().int().positive(),
+        events: z.array(z.string()),
+        total_fee: z.number().min(0),
+        status: z.enum(['pending', 'confirmed', 'cancelled']),
+        payment_status: z.enum(['pending', 'completed', 'failed', 'refunded']),
+        registered_at: z.string().datetime(),
+        user: userSchema.optional(),
+      })
+    )
+    .optional(),
+  waitlist: z
+    .array(
+      z.object({
+        id: z.number().int().positive(),
+        user_id: z.number().int().positive(),
+        competition_id: z.number().int().positive(),
+        events: z.array(z.string()),
+        total_fee: z.number().min(0),
+        position: z.number().int().positive(),
+        registered_at: z.string().datetime(),
+        user: userSchema.optional(),
+      })
+    )
+    .optional(),
 });
 
 export const scheduleItemSchema = z.object({
@@ -117,7 +131,9 @@ export const signupRequestSchema = z.object({
   gender: z.enum(['M', 'F']),
   wca_id: z.string().optional(),
   emergency_contact: z.string().min(1, 'Emergency contact is required'),
-  emergency_phone: z.string().regex(/^[0-9-+().\s]+$/, 'Invalid emergency phone format'),
+  emergency_phone: z
+    .string()
+    .regex(/^[0-9-+().\s]+$/, 'Invalid emergency phone format'),
 });
 
 export const registrationRequestSchema = z.object({

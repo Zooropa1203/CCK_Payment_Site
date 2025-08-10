@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import { ROUTES } from "../routes/paths";
+import { ROUTES } from '../routes/paths';
 
 export default function LoginPage() {
-  const [id, setId] = useState("");
-  const [pw, setPw] = useState("");
+  const [id, setId] = useState('');
+  const [pw, setPw] = useState('');
   const [remember, setRemember] = useState(false);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!id.trim() || !pw.trim()) {
-      alert("아이디와 비밀번호를 입력해주세요");
+      alert('아이디와 비밀번호를 입력해주세요');
       return;
     }
     console.log({ id, pw, remember }); // TODO: API 연동
@@ -356,9 +356,13 @@ export default function LoginPage() {
         {/* 로그인 메인 콘텐츠 */}
         <main className="login-page" aria-labelledby="login-title">
           <form className="login-card" onSubmit={onSubmit}>
-            <h1 id="login-title" className="login-title">로그인</h1>
+            <h1 id="login-title" className="login-title">
+              로그인
+            </h1>
 
-            <label htmlFor="login-id" className="sr-only">아이디</label>
+            <label htmlFor="login-id" className="sr-only">
+              아이디
+            </label>
             <input
               id="login-id"
               name="id"
@@ -366,11 +370,13 @@ export default function LoginPage() {
               autoComplete="username"
               placeholder="아이디 입력"
               value={id}
-              onChange={(e) => setId(e.target.value)}
+              onChange={e => setId(e.target.value)}
               className="login-input"
             />
 
-            <label htmlFor="login-pw" className="sr-only">비밀번호</label>
+            <label htmlFor="login-pw" className="sr-only">
+              비밀번호
+            </label>
             <input
               id="login-pw"
               name="password"
@@ -378,7 +384,7 @@ export default function LoginPage() {
               autoComplete="current-password"
               placeholder="비밀번호 입력"
               value={pw}
-              onChange={(e) => setPw(e.target.value)}
+              onChange={e => setPw(e.target.value)}
               className="login-input"
             />
 
@@ -387,19 +393,23 @@ export default function LoginPage() {
                 <input
                   type="checkbox"
                   checked={remember}
-                  onChange={(e) => setRemember(e.target.checked)}
+                  onChange={e => setRemember(e.target.checked)}
                 />
                 <span>아이디 저장</span>
               </label>
 
               <nav className="login-links" aria-label="계정 링크">
                 <Link to={ROUTES.SIGNUP.TERMS}>회원가입</Link>
-                <span className="divider" aria-hidden="true">|</span>
+                <span className="divider" aria-hidden="true">
+                  |
+                </span>
                 <Link to={ROUTES.PASSWORD_RESET}>비밀번호 찾기</Link>
               </nav>
             </div>
 
-            <button type="submit" className="login-button">로그인</button>
+            <button type="submit" className="login-button">
+              로그인
+            </button>
 
             {/* 장식 패턴은 선택: 필요 시 배경 이미지로 처리 */}
             <div className="login-deco deco-top-right" aria-hidden="true" />
@@ -411,11 +421,10 @@ export default function LoginPage() {
         <footer className="footer" role="contentinfo">
           <div className="footer-content">
             <div className="footer-line">
-              큐빙클럽코리아 | 사업자등록번호 : 358-54-00896 | 대표 : 정현재 | 이메일 : cubingclubkorea@gmail.com
+              큐빙클럽코리아 | 사업자등록번호 : 358-54-00896 | 대표 : 정현재 |
+              이메일 : cubingclubkorea@gmail.com
             </div>
-            <div className="footer-line">
-              COPYRIGHT © Cubing Club Korea
-            </div>
+            <div className="footer-line">COPYRIGHT © Cubing Club Korea</div>
           </div>
         </footer>
       </div>

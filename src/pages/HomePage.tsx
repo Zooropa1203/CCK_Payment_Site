@@ -52,8 +52,9 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* CSS 스타일 정의 */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         /* 기본 스타일 */
         .custom-header {
           background-color: #ffffff;
@@ -328,16 +329,17 @@ export default function HomePage() {
             font-size: 16px;
           }
         }
-      `
-      }} />
+      `,
+        }}
+      />
 
       {/* 헤더 */}
       <header className="custom-header">
         <div className="custom-header-container">
           <div className="custom-logo">
-            <img 
-              src="/images/cck_logo.png" 
-              alt="Cubing Club Korea 로고" 
+            <img
+              src="/images/cck_logo.png"
+              alt="Cubing Club Korea 로고"
               className="custom-logo-image"
             />
             Cubing Club Korea
@@ -356,8 +358,18 @@ export default function HomePage() {
             </div>
           ) : (
             <Link to="/login" className="custom-login-button">
-              <svg className="custom-login-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              <svg
+                className="custom-login-icon"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
               </svg>
               로그인
             </Link>
@@ -370,7 +382,7 @@ export default function HomePage() {
         {/* 접수 진행중인 행사 섹션 */}
         <section className="custom-section">
           <h2 className="custom-section-title">접수 진행중인 행사</h2>
-          
+
           {/* 테이블 형식 (PC/태블릿) */}
           <div className="custom-table-container">
             <table className="custom-table">
@@ -400,7 +412,7 @@ export default function HomePage() {
               </tbody>
             </table>
           </div>
-          
+
           {/* 카드 형식 (모바일) */}
           <div className="custom-card-container">
             <div className="custom-card">
@@ -417,7 +429,7 @@ export default function HomePage() {
                 <div className="custom-card-value">##서울시 강남구##</div>
               </div>
             </div>
-            
+
             <div className="custom-card">
               <div className="custom-card-item">
                 <div className="custom-card-label">날짜</div>
@@ -425,14 +437,16 @@ export default function HomePage() {
               </div>
               <div className="custom-card-item">
                 <div className="custom-card-label">대회명</div>
-                <div className="custom-card-value">##부산 스피드큐빙 대회##</div>
+                <div className="custom-card-value">
+                  ##부산 스피드큐빙 대회##
+                </div>
               </div>
               <div className="custom-card-item">
                 <div className="custom-card-label">장소</div>
                 <div className="custom-card-value">##부산시 해운대구##</div>
               </div>
             </div>
-            
+
             <div className="custom-card">
               <div className="custom-card-item">
                 <div className="custom-card-label">날짜</div>
@@ -453,7 +467,7 @@ export default function HomePage() {
         {/* 접수 예정인 행사 섹션 */}
         <section className="custom-section">
           <h2 className="custom-section-title upcoming">접수 예정인 행사</h2>
-          
+
           {/* 테이블 형식 (PC/태블릿) */}
           <div className="custom-table-container">
             <table className="custom-table">
@@ -483,7 +497,7 @@ export default function HomePage() {
               </tbody>
             </table>
           </div>
-          
+
           {/* 카드 형식 (모바일) */}
           <div className="custom-card-container">
             <div className="custom-card">
@@ -500,7 +514,7 @@ export default function HomePage() {
                 <div className="custom-card-value">##인천시 남동구##</div>
               </div>
             </div>
-            
+
             <div className="custom-card">
               <div className="custom-card-item">
                 <div className="custom-card-label">날짜</div>
@@ -515,7 +529,7 @@ export default function HomePage() {
                 <div className="custom-card-value">##광주시 서구##</div>
               </div>
             </div>
-            
+
             <div className="custom-card">
               <div className="custom-card-item">
                 <div className="custom-card-label">날짜</div>
@@ -538,17 +552,21 @@ export default function HomePage() {
       <footer className="custom-footer">
         <div className="custom-footer-content">
           <div className="custom-footer-info">
-            <span className="footer-text-desktop">큐빙클럽코리아 | 사업자등록번호 : 358-54-00896 | 대표 : 정현재 | 이메일 : cubingclubkorea@gmail.com</span>
+            <span className="footer-text-desktop">
+              큐빙클럽코리아 | 사업자등록번호 : 358-54-00896 | 대표 : 정현재 |
+              이메일 : cubingclubkorea@gmail.com
+            </span>
             <span className="footer-text-mobile">
-              큐빙클럽코리아<br />
-              사업자등록번호 : 358-54-00896<br />
-              대표 : 정현재<br />
+              큐빙클럽코리아
+              <br />
+              사업자등록번호 : 358-54-00896
+              <br />
+              대표 : 정현재
+              <br />
               이메일 : cubingclubkorea@gmail.com
             </span>
           </div>
-          <div className="custom-copyright">
-            COPYRIGHT © Cubing Club Korea
-          </div>
+          <div className="custom-copyright">COPYRIGHT © Cubing Club Korea</div>
         </div>
       </footer>
     </div>

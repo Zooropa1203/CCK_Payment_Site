@@ -322,13 +322,13 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .register-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
-  
+
   .header-actions {
     width: 100%;
     justify-content: flex-end;
@@ -340,41 +340,41 @@
   .subpage {
     padding: 1rem;
   }
-  
+
   .register-header h1,
   .sub-header h1 {
     font-size: 1.5rem;
   }
-  
+
   .info-list div {
     grid-template-columns: 1fr;
     gap: 4px;
   }
-  
+
   .info-list dt {
     font-size: 0.8rem;
   }
-  
+
   .event-grid,
   .selected-grid {
     gap: 6px;
   }
-  
+
   .chip {
     padding: 8px 12px;
     font-size: 0.8rem;
   }
-  
+
   .summary {
     flex-direction: column;
     gap: 0.5rem;
     text-align: center;
   }
-  
+
   .table-wrap {
     overflow-x: auto;
   }
-  
+
   .table {
     min-width: 600px;
   }
@@ -391,25 +391,25 @@
     --table-header-bg: #f3f4f6;
     --table-hover: #f9fafb;
   }
-  
+
   .chip {
     border-color: #d1d5db;
   }
-  
+
   .chip:hover {
     background: rgba(20, 83, 116, 0.05);
   }
-  
+
   .fee-summary {
     background: #f9fafb;
     border-color: #e5e7eb;
   }
-  
+
   .table th {
     background: #f3f4f6;
     color: #1f2937;
   }
-  
+
   .table td {
     color: #1f2937;
   }

@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop, refactor/* ]
+    branches: [main, develop, refactor/*]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 env:
   NODE_VERSION: '20'
@@ -15,7 +15,7 @@ jobs:
   lint-and-format:
     name: 🔍 Lint & Format Check
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: ✅ Checkout code
         uses: actions/checkout@v4
@@ -44,7 +44,7 @@ jobs:
   test:
     name: 🧪 Test Suite
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: ✅ Checkout code
         uses: actions/checkout@v4
@@ -80,7 +80,7 @@ jobs:
   typecheck:
     name: 🔧 TypeScript Check
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: ✅ Checkout code
         uses: actions/checkout@v4
@@ -107,7 +107,7 @@ jobs:
     name: 🏗 Build Application
     runs-on: ubuntu-latest
     needs: [lint-and-format, test, typecheck]
-    
+
     steps:
       - name: ✅ Checkout code
         uses: actions/checkout@v4
@@ -142,7 +142,7 @@ jobs:
   server-test:
     name: 🖥 Server Tests
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: ✅ Checkout code
         uses: actions/checkout@v4
@@ -177,7 +177,7 @@ jobs:
   security:
     name: 🔒 Security Audit
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: ✅ Checkout code
         uses: actions/checkout@v4
@@ -211,7 +211,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     needs: [build]
-    
+
     steps:
       - name: ✅ Checkout code
         uses: actions/checkout@v4
@@ -253,7 +253,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: [build, security, performance]
     environment: production
-    
+
     steps:
       - name: ✅ Checkout code
         uses: actions/checkout@v4

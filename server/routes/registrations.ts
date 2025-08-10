@@ -11,7 +11,13 @@ router.post('/', async (req: Request, res: Response) => {
     const { competition_id, user_id, selected_events } = req.body;
 
     // 필수 필드 검증
-    if (!competition_id || !user_id || !selected_events || !Array.isArray(selected_events) || selected_events.length === 0) {
+    if (
+      !competition_id ||
+      !user_id ||
+      !selected_events ||
+      !Array.isArray(selected_events) ||
+      selected_events.length === 0
+    ) {
       return res.status(400).json({
         success: false,
         message: '필수 정보가 누락되었습니다.',
@@ -54,7 +60,9 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     // 선택한 종목이 대회에서 제공하는 종목인지 확인
-    const invalidEvents = selected_events.filter(event => !competition.events.includes(event));
+    const invalidEvents = selected_events.filter(
+      event => !competition.events.includes(event)
+    );
     if (invalidEvents.length > 0) {
       return res.status(400).json({
         success: false,
@@ -79,7 +87,10 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     // 참가비 계산
-    const totalFee = Registration.calculateTotalFee(competition, selected_events);
+    const totalFee = Registration.calculateTotalFee(
+      competition,
+      selected_events
+    );
 
     // 등록 생성
     const registration = await Registration.create({
@@ -91,20 +102,23 @@ router.post('/', async (req: Request, res: Response) => {
     });
 
     // 생성된 등록 정보를 관련 데이터와 함께 조회
-    const registrationWithDetails = await Registration.findByPk(registration.id, {
-      include: [
-        {
-          model: Competition,
-          as: 'competition',
-          attributes: ['id', 'name', 'date', 'location'],
-        },
-        {
-          model: User,
-          as: 'user',
-          attributes: ['id', 'name', 'username'],
-        },
-      ],
-    });
+    const registrationWithDetails = await Registration.findByPk(
+      registration.id,
+      {
+        include: [
+          {
+            model: Competition,
+            as: 'competition',
+            attributes: ['id', 'name', 'date', 'location'],
+          },
+          {
+            model: User,
+            as: 'user',
+            attributes: ['id', 'name', 'username'],
+          },
+        ],
+      }
+    );
 
     res.status(201).json({
       success: true,
@@ -128,7 +142,7 @@ router.get('/user/:user_id', async (req: Request, res: Response) => {
     const { status } = req.query;
 
     let whereClause: any = { user_id };
-    
+
     if (status && ['pending', 'paid', 'cancelled'].includes(status as string)) {
       whereClause.payment_status = status;
     }
@@ -139,7 +153,14 @@ router.get('/user/:user_id', async (req: Request, res: Response) => {
         {
           model: Competition,
           as: 'competition',
-          attributes: ['id', 'name', 'date', 'location', 'reg_start_date', 'reg_end_date'],
+          attributes: [
+            'id',
+            'name',
+            'date',
+            'location',
+            'reg_start_date',
+            'reg_end_date',
+          ],
         },
       ],
       order: [['createdAt', 'DESC']],
@@ -163,59 +184,68 @@ router.get('/user/:user_id', async (req: Request, res: Response) => {
 });
 
 // 특정 대회의 참가자 목록
-router.get('/competition/:competition_id', async (req: Request, res: Response) => {
-  try {
-    const { competition_id } = req.params;
-    const { status } = req.query;
+router.get(
+  '/competition/:competition_id',
+  async (req: Request, res: Response) => {
+    try {
+      const { competition_id } = req.params;
+      const { status } = req.query;
 
-    let whereClause: any = { competition_id };
-    
-    if (status && ['pending', 'paid', 'cancelled'].includes(status as string)) {
-      whereClause.payment_status = status;
-    }
+      let whereClause: any = { competition_id };
 
-    const registrations = await Registration.findAll({
-      where: whereClause,
-      include: [
-        {
-          model: User,
-          as: 'user',
-          attributes: ['id', 'name', 'username'],
-        },
-      ],
-      order: [['createdAt', 'ASC']],
-    });
+      if (
+        status &&
+        ['pending', 'paid', 'cancelled'].includes(status as string)
+      ) {
+        whereClause.payment_status = status;
+      }
 
-    // 종목별 참가자 통계
-    const eventStats: Record<string, number> = {};
-    registrations.forEach(reg => {
-      reg.selected_events.forEach(event => {
-        eventStats[event] = (eventStats[event] || 0) + 1;
+      const registrations = await Registration.findAll({
+        where: whereClause,
+        include: [
+          {
+            model: User,
+            as: 'user',
+            attributes: ['id', 'name', 'username'],
+          },
+        ],
+        order: [['createdAt', 'ASC']],
       });
-    });
 
-    res.json({
-      success: true,
-      data: registrations,
-      meta: {
-        total: registrations.length,
-        competition_id: parseInt(competition_id),
-        event_stats: eventStats,
-        status_stats: {
-          paid: registrations.filter(r => r.payment_status === 'paid').length,
-          pending: registrations.filter(r => r.payment_status === 'pending').length,
-          cancelled: registrations.filter(r => r.payment_status === 'cancelled').length,
+      // 종목별 참가자 통계
+      const eventStats: Record<string, number> = {};
+      registrations.forEach(reg => {
+        reg.selected_events.forEach(event => {
+          eventStats[event] = (eventStats[event] || 0) + 1;
+        });
+      });
+
+      res.json({
+        success: true,
+        data: registrations,
+        meta: {
+          total: registrations.length,
+          competition_id: parseInt(competition_id),
+          event_stats: eventStats,
+          status_stats: {
+            paid: registrations.filter(r => r.payment_status === 'paid').length,
+            pending: registrations.filter(r => r.payment_status === 'pending')
+              .length,
+            cancelled: registrations.filter(
+              r => r.payment_status === 'cancelled'
+            ).length,
+          },
         },
-      },
-    });
-  } catch (error) {
-    console.error('대회 참가자 목록 조회 오류:', error);
-    res.status(500).json({
-      success: false,
-      message: '참가자 목록을 불러오는 중 오류가 발생했습니다.',
-    });
+      });
+    } catch (error) {
+      console.error('대회 참가자 목록 조회 오류:', error);
+      res.status(500).json({
+        success: false,
+        message: '참가자 목록을 불러오는 중 오류가 발생했습니다.',
+      });
+    }
   }
-});
+);
 
 // 특정 등록 정보 조회
 router.get('/:id', async (req: Request, res: Response) => {

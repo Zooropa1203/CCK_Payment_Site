@@ -20,7 +20,7 @@ export function useMatchMedia(query: string): boolean {
     if (mediaQuery.addEventListener) {
       mediaQuery.addEventListener('change', handler);
       return () => mediaQuery.removeEventListener('change', handler);
-    } 
+    }
     // Legacy browsers
     else if (mediaQuery.addListener) {
       mediaQuery.addListener(handler);
@@ -33,7 +33,10 @@ export function useMatchMedia(query: string): boolean {
 
 // Common breakpoint hooks
 export const useIsMobile = () => useMatchMedia('(max-width: 768px)');
-export const useIsTablet = () => useMatchMedia('(min-width: 769px) and (max-width: 1024px)');
+export const useIsTablet = () =>
+  useMatchMedia('(min-width: 769px) and (max-width: 1024px)');
 export const useIsDesktop = () => useMatchMedia('(min-width: 1025px)');
-export const useIsDarkMode = () => useMatchMedia('(prefers-color-scheme: dark)');
-export const useIsReducedMotion = () => useMatchMedia('(prefers-reduced-motion: reduce)');
+export const useIsDarkMode = () =>
+  useMatchMedia('(prefers-color-scheme: dark)');
+export const useIsReducedMotion = () =>
+  useMatchMedia('(prefers-reduced-motion: reduce)');

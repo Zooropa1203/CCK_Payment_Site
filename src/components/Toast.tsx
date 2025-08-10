@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  type ReactNode,
+} from 'react';
 
 export type ToastType = 'success' | 'warning' | 'error' | 'info';
 
@@ -28,7 +34,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
   const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
     const id = Math.random().toString(36).substring(2, 9);
     const newToast = { ...toast, id };
-    
+
     setToasts(prev => [...prev, newToast]);
 
     // Auto remove after duration
@@ -66,9 +72,18 @@ function ToastContainer() {
   if (toasts.length === 0) return null;
 
   return (
-    <div className="toast-container" aria-live="polite" role="region" aria-label="알림">
+    <div
+      className="toast-container"
+      aria-live="polite"
+      role="region"
+      aria-label="알림"
+    >
       {toasts.map(toast => (
-        <ToastItem key={toast.id} toast={toast} onClose={() => removeToast(toast.id)} />
+        <ToastItem
+          key={toast.id}
+          toast={toast}
+          onClose={() => removeToast(toast.id)}
+        />
       ))}
     </div>
   );
@@ -95,7 +110,7 @@ function ToastItem({ toast, onClose }: ToastItemProps) {
   };
 
   return (
-    <div 
+    <div
       className={`toast toast-${toast.type}`}
       role="alert"
       aria-live="assertive"
@@ -105,9 +120,7 @@ function ToastItem({ toast, onClose }: ToastItemProps) {
       </div>
       <div className="toast-content">
         <div className="toast-title">{toast.title}</div>
-        {toast.message && (
-          <div className="toast-message">{toast.message}</div>
-        )}
+        {toast.message && <div className="toast-message">{toast.message}</div>}
       </div>
       <button
         type="button"

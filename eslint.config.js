@@ -1,24 +1,27 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import jsxA11y from 'eslint-plugin-jsx-a11y'
-import importPlugin from 'eslint-plugin-import'
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import importPlugin from 'eslint-plugin-import';
 
 export default tseslint.config([
   // Global ignores
   {
-    ignores: ['dist/**', 'build/**', 'node_modules/**', '*.config.js', '*.config.ts']
+    ignores: [
+      'dist/**',
+      'build/**',
+      'node_modules/**',
+      '*.config.js',
+      '*.config.ts',
+    ],
   },
-  
+
   // Base configuration for all files
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommended,
-    ],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
@@ -37,18 +40,18 @@ export default tseslint.config([
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'jsx-a11y': jsxA11y,
-      'import': importPlugin,
+      import: importPlugin,
     },
     rules: {
       // React Hooks rules
       ...reactHooks.configs.recommended.rules,
-      
+
       // React Refresh rules
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      
+
       // Accessibility rules
       'jsx-a11y/alt-text': 'error',
       'jsx-a11y/anchor-has-content': 'error',
@@ -67,7 +70,7 @@ export default tseslint.config([
       'jsx-a11y/no-redundant-roles': 'warn',
       'jsx-a11y/role-has-required-aria-props': 'error',
       'jsx-a11y/role-supports-aria-props': 'error',
-      
+
       // Import rules
       'import/order': [
         'error',
@@ -90,11 +93,11 @@ export default tseslint.config([
       'import/no-duplicates': 'error',
       'import/no-unused-modules': 'warn',
       'import/no-cycle': 'error',
-      
+
       // TypeScript rules
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { 
+        {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
           ignoreRestSiblings: true,
@@ -103,7 +106,7 @@ export default tseslint.config([
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-inferrable-types': 'warn',
       '@typescript-eslint/no-empty-function': 'warn',
-      
+
       // General code quality rules
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-debugger': 'error',
@@ -115,7 +118,7 @@ export default tseslint.config([
       'prefer-arrow-callback': 'error',
     },
   },
-  
+
   // Specific rules for test files
   {
     files: ['**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}'],
@@ -124,7 +127,7 @@ export default tseslint.config([
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },
-  
+
   // Specific rules for config files
   {
     files: ['*.config.{js,ts}', 'vite.config.{js,ts}'],
@@ -133,4 +136,4 @@ export default tseslint.config([
       '@typescript-eslint/no-var-requires': 'off',
     },
   },
-])
+]);

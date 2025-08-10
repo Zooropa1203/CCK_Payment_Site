@@ -29,7 +29,10 @@ interface CompetitionCreationAttributes extends Partial<CompetitionAttributes> {
 }
 
 // Competition 모델 클래스
-class Competition extends Model<CompetitionAttributes, CompetitionCreationAttributes> implements CompetitionAttributes {
+class Competition
+  extends Model<CompetitionAttributes, CompetitionCreationAttributes>
+  implements CompetitionAttributes
+{
   public id!: number;
   public date!: string;
   public name!: string;

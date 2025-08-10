@@ -8,9 +8,15 @@ const router = Router();
 // 대회 등록
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { competition_id, user_id, selected_events, participant_info } = req.body;
+    const { competition_id, user_id, selected_events, participant_info } =
+      req.body;
 
-    if (!competition_id || !user_id || !selected_events || !Array.isArray(selected_events)) {
+    if (
+      !competition_id ||
+      !user_id ||
+      !selected_events ||
+      !Array.isArray(selected_events)
+    ) {
       return res.status(400).json({
         success: false,
         message: '필수 필드가 누락되었습니다.',
@@ -42,20 +48,23 @@ router.post('/', async (req: Request, res: Response) => {
     });
 
     // 관련 정보와 함께 조회
-    const registrationWithDetails = await Registration.findByPk(registration.id, {
-      include: [
-        {
-          model: Competition,
-          as: 'Competition',
-          attributes: ['id', 'name', 'date', 'location'],
-        },
-        {
-          model: User,
-          as: 'User',
-          attributes: ['id', 'name', 'username'],
-        },
-      ],
-    });
+    const registrationWithDetails = await Registration.findByPk(
+      registration.id,
+      {
+        include: [
+          {
+            model: Competition,
+            as: 'Competition',
+            attributes: ['id', 'name', 'date', 'location'],
+          },
+          {
+            model: User,
+            as: 'User',
+            attributes: ['id', 'name', 'username'],
+          },
+        ],
+      }
+    );
 
     res.status(201).json({
       success: true,
@@ -108,40 +117,43 @@ router.get('/user/:userId', async (req: Request, res: Response) => {
 });
 
 // 등록 목록 조회 (대회별)
-router.get('/competition/:competitionId', async (req: Request, res: Response) => {
-  try {
-    const { competitionId } = req.params;
-    const { status } = req.query;
+router.get(
+  '/competition/:competitionId',
+  async (req: Request, res: Response) => {
+    try {
+      const { competitionId } = req.params;
+      const { status } = req.query;
 
-    const whereCondition: any = { competition_id: competitionId };
-    if (status && typeof status === 'string') {
-      whereCondition.payment_status = status;
+      const whereCondition: any = { competition_id: competitionId };
+      if (status && typeof status === 'string') {
+        whereCondition.payment_status = status;
+      }
+
+      const registrations = await Registration.findAll({
+        where: whereCondition,
+        include: [
+          {
+            model: User,
+            as: 'User',
+            attributes: ['id', 'name', 'username'],
+          },
+        ],
+        order: [['createdAt', 'ASC']],
+      });
+
+      res.json({
+        success: true,
+        data: registrations,
+      });
+    } catch (error) {
+      console.error('대회별 등록 목록 조회 오류:', error);
+      res.status(500).json({
+        success: false,
+        message: '등록 목록 조회 중 오류가 발생했습니다.',
+      });
     }
-
-    const registrations = await Registration.findAll({
-      where: whereCondition,
-      include: [
-        {
-          model: User,
-          as: 'User',
-          attributes: ['id', 'name', 'username'],
-        },
-      ],
-      order: [['createdAt', 'ASC']],
-    });
-
-    res.json({
-      success: true,
-      data: registrations,
-    });
-  } catch (error) {
-    console.error('대회별 등록 목록 조회 오류:', error);
-    res.status(500).json({
-      success: false,
-      message: '등록 목록 조회 중 오류가 발생했습니다.',
-    });
   }
-});
+);
 
 // 특정 등록 정보 조회
 router.get('/:id', async (req: Request, res: Response) => {
@@ -153,7 +165,15 @@ router.get('/:id', async (req: Request, res: Response) => {
         {
           model: Competition,
           as: 'Competition',
-          attributes: ['id', 'name', 'date', 'location', 'events', 'base_fee', 'event_fee'],
+          attributes: [
+            'id',
+            'name',
+            'date',
+            'location',
+            'events',
+            'base_fee',
+            'event_fee',
+          ],
         },
         {
           model: User,
@@ -296,7 +316,8 @@ router.delete('/:id', async (req: Request, res: Response) => {
     if (registration.payment_status === 'paid') {
       return res.status(400).json({
         success: false,
-        message: '결제 완료된 등록은 취소할 수 없습니다. 관리자에게 문의하세요.',
+        message:
+          '결제 완료된 등록은 취소할 수 없습니다. 관리자에게 문의하세요.',
       });
     }
 

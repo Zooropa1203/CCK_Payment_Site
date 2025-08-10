@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { loginRequestSchema, type LoginRequest } from '../../shared/schemas.js';
 import { authService } from '../services/auth.js';
 
-
 interface LoginFormProps {
   onSuccess?: (data: LoginRequest) => void;
 }
@@ -26,7 +25,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
   const onSubmit = async (data: LoginRequest) => {
     setIsSubmitting(true);
     setSubmitError('');
-    
+
     try {
       const response = await authService.login(data);
       console.log('Login successful:', response);
@@ -45,7 +44,10 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
     <form onSubmit={handleSubmit(onSubmit)} className="login-form" noValidate>
       <div className="form-group">
         <label htmlFor="email" className="form-label">
-          이메일 <span className="required" aria-label="필수 입력">*</span>
+          이메일{' '}
+          <span className="required" aria-label="필수 입력">
+            *
+          </span>
         </label>
         <input
           {...register('email')}
@@ -65,7 +67,10 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
 
       <div className="form-group">
         <label htmlFor="password" className="form-label">
-          비밀번호 <span className="required" aria-label="필수 입력">*</span>
+          비밀번호{' '}
+          <span className="required" aria-label="필수 입력">
+            *
+          </span>
         </label>
         <input
           {...register('password')}

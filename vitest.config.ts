@@ -1,13 +1,13 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@": resolve(__dirname, "src"),
+      '@': resolve(__dirname, 'src'),
     },
   },
   test: {
@@ -34,13 +34,7 @@ export default defineConfig({
       'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
       'src/**/__tests__/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
     ],
-    exclude: [
-      'node_modules/',
-      'dist/',
-      '.idea/',
-      '.git/',
-      '.cache/',
-    ],
+    exclude: ['node_modules/', 'dist/', '.idea/', '.git/', '.cache/'],
     // 성능 최적화
     pool: 'threads',
     poolOptions: {
@@ -52,4 +46,4 @@ export default defineConfig({
     testTimeout: 10000,
     hookTimeout: 10000,
   },
-})
+});

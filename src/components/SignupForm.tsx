@@ -2,9 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { signupRequestSchema, type SignupRequest } from '../../shared/schemas.js';
+import {
+  signupRequestSchema,
+  type SignupRequest,
+} from '../../shared/schemas.js';
 import { authService } from '../services/auth.js';
-
 
 interface SignupFormProps {
   onSuccess?: (data: SignupRequest) => void;
@@ -26,7 +28,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
   const onSubmit = async (data: SignupRequest) => {
     setIsSubmitting(true);
     setSubmitError('');
-    
+
     try {
       const response = await authService.signup(data);
       console.log('Signup successful:', response);
@@ -45,10 +47,13 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
     <form onSubmit={handleSubmit(onSubmit)} className="signup-form" noValidate>
       <fieldset>
         <legend className="sr-only">회원 정보 입력</legend>
-        
+
         <div className="form-group">
           <label htmlFor="email" className="form-label">
-            이메일 <span className="required" aria-label="필수 입력">*</span>
+            이메일{' '}
+            <span className="required" aria-label="필수 입력">
+              *
+            </span>
           </label>
           <input
             {...register('email')}
@@ -68,7 +73,10 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
 
         <div className="form-group">
           <label htmlFor="password" className="form-label">
-            비밀번호 <span className="required" aria-label="필수 입력">*</span>
+            비밀번호{' '}
+            <span className="required" aria-label="필수 입력">
+              *
+            </span>
           </label>
           <input
             {...register('password')}
@@ -77,7 +85,9 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
             className={`input-field ${errors.password ? 'error' : ''}`}
             placeholder="6자 이상의 비밀번호를 입력하세요"
             aria-invalid={!!errors.password}
-            aria-describedby={errors.password ? 'password-error password-help' : 'password-help'}
+            aria-describedby={
+              errors.password ? 'password-error password-help' : 'password-help'
+            }
           />
           <div id="password-help" className="help-text">
             최소 6자 이상 입력해주세요.
@@ -91,7 +101,10 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
 
         <div className="form-group">
           <label htmlFor="name" className="form-label">
-            이름 <span className="required" aria-label="필수 입력">*</span>
+            이름{' '}
+            <span className="required" aria-label="필수 입력">
+              *
+            </span>
           </label>
           <input
             {...register('name')}
@@ -111,7 +124,10 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
 
         <div className="form-group">
           <label htmlFor="phone" className="form-label">
-            전화번호 <span className="required" aria-label="필수 입력">*</span>
+            전화번호{' '}
+            <span className="required" aria-label="필수 입력">
+              *
+            </span>
           </label>
           <input
             {...register('phone')}
@@ -131,7 +147,10 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
 
         <div className="form-group">
           <label htmlFor="birth_date" className="form-label">
-            생년월일 <span className="required" aria-label="필수 입력">*</span>
+            생년월일{' '}
+            <span className="required" aria-label="필수 입력">
+              *
+            </span>
           </label>
           <input
             {...register('birth_date')}
@@ -139,7 +158,9 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
             type="date"
             className={`input-field ${errors.birth_date ? 'error' : ''}`}
             aria-invalid={!!errors.birth_date}
-            aria-describedby={errors.birth_date ? 'birth-date-error' : undefined}
+            aria-describedby={
+              errors.birth_date ? 'birth-date-error' : undefined
+            }
           />
           {errors.birth_date && (
             <div id="birth-date-error" className="error-message" role="alert">
@@ -150,7 +171,10 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
 
         <fieldset className="form-group">
           <legend className="form-label">
-            성별 <span className="required" aria-label="필수 입력">*</span>
+            성별{' '}
+            <span className="required" aria-label="필수 입력">
+              *
+            </span>
           </legend>
           <div className="radio-group">
             <label className="radio-label">
@@ -201,7 +225,10 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
 
         <div className="form-group">
           <label htmlFor="emergency_contact" className="form-label">
-            비상연락처 <span className="required" aria-label="필수 입력">*</span>
+            비상연락처{' '}
+            <span className="required" aria-label="필수 입력">
+              *
+            </span>
           </label>
           <input
             {...register('emergency_contact')}
@@ -210,10 +237,16 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
             className={`input-field ${errors.emergency_contact ? 'error' : ''}`}
             placeholder="비상시 연락할 분의 이름"
             aria-invalid={!!errors.emergency_contact}
-            aria-describedby={errors.emergency_contact ? 'emergency-contact-error' : undefined}
+            aria-describedby={
+              errors.emergency_contact ? 'emergency-contact-error' : undefined
+            }
           />
           {errors.emergency_contact && (
-            <div id="emergency-contact-error" className="error-message" role="alert">
+            <div
+              id="emergency-contact-error"
+              className="error-message"
+              role="alert"
+            >
               {errors.emergency_contact.message}
             </div>
           )}
@@ -221,7 +254,10 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
 
         <div className="form-group">
           <label htmlFor="emergency_phone" className="form-label">
-            비상연락처 전화번호 <span className="required" aria-label="필수 입력">*</span>
+            비상연락처 전화번호{' '}
+            <span className="required" aria-label="필수 입력">
+              *
+            </span>
           </label>
           <input
             {...register('emergency_phone')}
@@ -230,10 +266,16 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
             className={`input-field ${errors.emergency_phone ? 'error' : ''}`}
             placeholder="010-1234-5678"
             aria-invalid={!!errors.emergency_phone}
-            aria-describedby={errors.emergency_phone ? 'emergency-phone-error' : undefined}
+            aria-describedby={
+              errors.emergency_phone ? 'emergency-phone-error' : undefined
+            }
           />
           {errors.emergency_phone && (
-            <div id="emergency-phone-error" className="error-message" role="alert">
+            <div
+              id="emergency-phone-error"
+              className="error-message"
+              role="alert"
+            >
               {errors.emergency_phone.message}
             </div>
           )}

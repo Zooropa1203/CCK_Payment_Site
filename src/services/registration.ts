@@ -1,5 +1,8 @@
 // src/services/registration.ts
-import type { Registration, RegistrationRequest } from '../../shared/schemas.js';
+import type {
+  Registration,
+  RegistrationRequest,
+} from '../../shared/schemas.js';
 
 import { http } from './http.js';
 
@@ -14,12 +17,16 @@ export interface RegistrationStatusResponse {
 
 export const registrationService = {
   // Create new registration
-  async createRegistration(data: RegistrationRequest): Promise<RegistrationResponse> {
+  async createRegistration(
+    data: RegistrationRequest
+  ): Promise<RegistrationResponse> {
     return http.post<RegistrationResponse>('/api/registrations', data);
   },
 
   // Get registration status
-  async getRegistrationStatus(id: number | string): Promise<RegistrationStatusResponse> {
+  async getRegistrationStatus(
+    id: number | string
+  ): Promise<RegistrationStatusResponse> {
     return http.get<RegistrationStatusResponse>(`/api/registrations/${id}`);
   },
 

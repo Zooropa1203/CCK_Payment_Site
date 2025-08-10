@@ -102,7 +102,9 @@ export function VariableVirtualScroll<T>({
   overscan = 5,
 }: VariableVirtualScrollProps<T>) {
   const [scrollTop, setScrollTop] = useState(0);
-  const [measuredHeights, setMeasuredHeights] = useState<Map<number, number>>(new Map());
+  const [measuredHeights, setMeasuredHeights] = useState<Map<number, number>>(
+    new Map()
+  );
   const scrollElementRef = useRef<HTMLDivElement>(null);
   const itemElementsRef = useRef<Map<number, HTMLDivElement>>(new Map());
 
@@ -206,13 +208,16 @@ export function VariableVirtualScroll<T>({
   }, [visibleItems, getItemHeight, measuredHeights]);
 
   // 아이템 ref 설정
-  const setItemRef = useCallback((index: number) => (el: HTMLDivElement | null) => {
-    if (el) {
-      itemElementsRef.current.set(index, el);
-    } else {
-      itemElementsRef.current.delete(index);
-    }
-  }, []);
+  const setItemRef = useCallback(
+    (index: number) => (el: HTMLDivElement | null) => {
+      if (el) {
+        itemElementsRef.current.set(index, el);
+      } else {
+        itemElementsRef.current.delete(index);
+      }
+    },
+    []
+  );
 
   return (
     <div
@@ -223,11 +228,7 @@ export function VariableVirtualScroll<T>({
     >
       <div style={{ height: totalHeight, position: 'relative' }}>
         {visibleItems.map(({ index, item, style }) => (
-          <div
-            key={index}
-            ref={setItemRef(index)}
-            style={style}
-          >
+          <div key={index} ref={setItemRef(index)} style={style}>
             {renderItem(item, index)}
           </div>
         ))}
