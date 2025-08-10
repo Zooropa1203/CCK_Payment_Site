@@ -18,6 +18,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     localStorage.setItem('theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
+    
+    // Keep Tailwind dark class for backward compatibility
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {

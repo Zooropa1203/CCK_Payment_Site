@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../routes/paths";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   return (
@@ -21,8 +22,9 @@ export default function Header() {
           <span className="logo-text">Cubing Club Korea</span>
         </Link>
 
-        {/* 우측: 프로필(로그인) */}
+        {/* 우측: 테마 토글 + 프로필(로그인) */}
         <nav aria-label="사용자 메뉴" className="header-right">
+          <ThemeToggle />
           <Link to={ROUTES.LOGIN} className="profile-btn" aria-label="로그인">
             <img
               src="/images/person_icon.png"
