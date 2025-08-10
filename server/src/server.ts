@@ -10,10 +10,12 @@ import paymentsRouter from './routes/payments.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5175;
+const CORS_ORIGINS = process.env.CORS_ORIGINS?.split(',') || ['http://localhost:5173'];
+const DB_PATH = process.env.DB_PATH || './database.sqlite';
 
 // 미들웨어 설정
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: CORS_ORIGINS,
   credentials: true,
 }));
 
@@ -39,7 +41,7 @@ app.use('/api/payments', paymentsRouter);
 // 404 핸들러
 app.use((req, res) => {
   res.status(404).json({
-    success: false,
+    error: 'Not Found',
     message: `Route ${req.originalUrl} not found`,
   });
 });
@@ -49,9 +51,9 @@ app.use((error: any, req: express.Request, res: express.Response, next: express.
   console.error('서버 에러:', error);
   
   res.status(error.status || 500).json({
-    success: false,
+    error: error.name || 'Internal Server Error',
     message: error.message || '서버 내부 오류가 발생했습니다.',
-    error: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+    ...(process.env.NODE_ENV === 'development' && { details: error.stack }),
   });
 });
 
