@@ -6,13 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx}\"",
     "preview": "vite preview",
-    "server": "cd server && nodemon index.ts",
-    "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
-    "build:server": "tsc server/index.ts --outDir dist/server"
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "format": "prettier --write .",
+    "test": "echo \"No tests specified\" && exit 0",
+    "server:dev": "cd server && npm run dev",
+    "dev:all": "concurrently \"npm run server:dev\" \"npm run dev\""
   },
   "dependencies": {
     "@headlessui/react": "^2.2.7",
