@@ -1,21 +1,25 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
 import { ThemeProvider } from './contexts/ThemeContext';
 import { SignupProvider } from './context/SignupContext';
 import { ToastProvider } from './components/Toast';
 import ErrorBoundary from './components/ErrorBoundary';
+import { LoadingState } from './components/LoadingStates';
 import AppLayout from "./layouts/AppLayout";
 import { ROUTES, ROUTE_PATTERNS } from "./routes/paths";
 import SignupRouter from "./routes/SignupRouter";
 
-import HomePage_new from "./pages/HomePage_new"; // 메인
-import CompetitionRegisterPage from "./pages/CompetitionRegisterPage";
-import CompetitionApplicationPage from "./pages/CompetitionApplicationPage";
-import CompetitionSchedulePage from "./pages/CompetitionSchedulePage";
-import CompetitionParticipantsPage from "./pages/CompetitionParticipantsPage";
-import CompetitionWaitlistPage from "./pages/CompetitionWaitlistPage";
+import HomePage_new from "./pages/HomePage_new"; // 메인 페이지는 즉시 로드
 import LoginPage_new from "./pages/LoginPage_new";
 import PasswordResetPage from "./pages/PasswordResetPage";
 import NotFoundPage from "./pages/NotFoundPage";
+
+// 상세/스케줄/명단 페이지는 지연 로딩
+const CompetitionRegisterPage = lazy(() => import("./pages/CompetitionRegisterPage"));
+const CompetitionApplicationPage = lazy(() => import("./pages/CompetitionApplicationPage"));
+const CompetitionSchedulePage = lazy(() => import("./pages/CompetitionSchedulePage"));
+const CompetitionParticipantsPage = lazy(() => import("./pages/CompetitionParticipantsPage"));
+const CompetitionWaitlistPage = lazy(() => import("./pages/CompetitionWaitlistPage"));
 
 export default function App() {
   return (
@@ -27,11 +31,46 @@ export default function App() {
               <Routes>
                 <Route element={<AppLayout />}>
                   <Route index element={<HomePage_new />} />
-                  <Route path={ROUTE_PATTERNS.COMPETITIONS.DETAIL} element={<CompetitionRegisterPage />} />
-                  <Route path={ROUTE_PATTERNS.COMPETITIONS.APPLICATION} element={<CompetitionApplicationPage />} />
-                  <Route path={ROUTE_PATTERNS.COMPETITIONS.SCHEDULE} element={<CompetitionSchedulePage />} />
-                  <Route path={ROUTE_PATTERNS.COMPETITIONS.PARTICIPANTS} element={<CompetitionParticipantsPage />} />
-                  <Route path={ROUTE_PATTERNS.COMPETITIONS.WAITLIST} element={<CompetitionWaitlistPage />} />
+                  <Route 
+                    path={ROUTE_PATTERNS.COMPETITIONS.DETAIL} 
+                    element={
+                      <Suspense fallback={<LoadingState message="대회 정보를 불러오는 중..." />}>
+                        <CompetitionRegisterPage />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path={ROUTE_PATTERNS.COMPETITIONS.APPLICATION} 
+                    element={
+                      <Suspense fallback={<LoadingState message="신청 페이지를 불러오는 중..." />}>
+                        <CompetitionApplicationPage />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path={ROUTE_PATTERNS.COMPETITIONS.SCHEDULE} 
+                    element={
+                      <Suspense fallback={<LoadingState message="일정을 불러오는 중..." />}>
+                        <CompetitionSchedulePage />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path={ROUTE_PATTERNS.COMPETITIONS.PARTICIPANTS} 
+                    element={
+                      <Suspense fallback={<LoadingState message="참가자 명단을 불러오는 중..." />}>
+                        <CompetitionParticipantsPage />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path={ROUTE_PATTERNS.COMPETITIONS.WAITLIST} 
+                    element={
+                      <Suspense fallback={<LoadingState message="대기자 명단을 불러오는 중..." />}>
+                        <CompetitionWaitlistPage />
+                      </Suspense>
+                    } 
+                  />
                   <Route path={ROUTES.LOGIN} element={<LoginPage_new />} />
                   <Route path={`${ROUTES.SIGNUP.ROOT}/*`} element={<SignupRouter />} />
                   <Route path={ROUTES.PASSWORD_RESET} element={<PasswordResetPage />} />
