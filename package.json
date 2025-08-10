@@ -6,12 +6,18 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:analyze": "tsc -b && vite build --mode analyze",
     "preview": "vite preview",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "format": "prettier --write .",
     "test": "echo \"No tests specified\" && exit 0",
     "server:dev": "cd server && npm run dev",
-    "dev:all": "concurrently \"npm run server:dev\" \"npm run dev\""
+    "dev:all": "concurrently \"npm run server:dev\" \"npm run dev\"",
+    "performance:audit": "lighthouse http://localhost:4173 --output=html --output-path=./lighthouse-report.html",
+    "bundle:analyze": "npx vite-bundle-analyzer",
+    "check:bundle": "npm run build && npm run bundle:analyze",
+    "optimize:images": "imagemin src/assets/images/* --out-dir=dist/assets/images --plugin=imagemin-webp",
+    "check:size": "npm run build && du -sh dist/*"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.7",
